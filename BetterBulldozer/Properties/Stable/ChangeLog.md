@@ -1,2 +1,3 @@
-﻿# Patch V1.3.17
-* Additional minor compatibility  changes for combinations with the Traffic Mod including removing sub-elements from networks with custom intersection lane connections. Thanks to phillycheese!
+﻿# Patch V1.3.18
+* Rebuilt project for game v.1.5.7f1.
+* Update Localization
