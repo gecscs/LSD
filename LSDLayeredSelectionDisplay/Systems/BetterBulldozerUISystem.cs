@@ -163,6 +163,8 @@ namespace LSD_Layered_Selection_Display.Systems
 
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
+            m_IsGame = CreateBinding("IsGame", false);
+            m_SelectedVanillaFilters = CreateBinding("SelectedVanillaFilters", VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props);
 
             // These handle events activating actions triggered by clicking buttons in the UI.
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
