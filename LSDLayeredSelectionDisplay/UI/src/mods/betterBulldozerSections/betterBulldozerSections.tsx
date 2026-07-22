@@ -26,8 +26,8 @@ const buildingSrc =         uilStandard + "House.svg";
 const propsSrc =            uilStandard + "BenchAndLampProps.svg"; 
 
 // Saving strings for events and translations.
-const tooltipDescriptionPrefix ="YY_LSD_LAYERED_SELECTION_DISPLAY_DESCRIPTION.";
-const sectionTitlePrefix =      "YY_LSD_LAYERED_SELECTION_DISPLAY.";
+const tooltipDescriptionPrefix ="LSD_LAYERED_SELECTION_DISPLAY_DESCRIPTION.";
+const sectionTitlePrefix =      "LSD_LAYERED_SELECTION_DISPLAY.";
 
 // This functions trigger an event on C# side and C# designates the method to implement.
 function handleClick(eventName: string) {
@@ -76,14 +76,21 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
         const bulldozeToolActive = useValue(tool.activeTool$).id == tool.DEFAULT_TOOL;
         const selectedVanillaFilters = useValue(selectedVanillaFilters$);
         const isGame = useValue(isGame$);
-                        
+        const raycastTarget = useValue(raycastTarget$);
         
+        // Saving strings for events and translations.
+        const surfacesID =              "SurfacesFilterButton";
+                              
         // translation handling. Translates using locale keys that are defined in C# or fallback string here.
         const { translate } = useLocalization();
-        const filterSectionTitle =          translate(sectionTitlePrefix + "Filter",                        locale["YY_LSD_LAYERED_SELECTION_DISPLAY.Filter"]);
+        const filterSectionTitle =          translate(sectionTitlePrefix + "Filter",                        locale["LSD_LAYERED_SELECTION_DISPLAY.Filter"]);
+        const surfacesFilterTooltip =       translate(tooltipDescriptionPrefix + surfacesID,                locale["LSD_LAYERED_SELECTION_DISPLAY_DESCRIPTION.SurfacesFilterButton"]);
         
         const toolModeTitle =               translate("Toolbar.TOOL_MODE_TITLE", "Tool Mode");
+        
+        const surfacesSrc =                     uilStandard + "ShovelSurface.svg";
 
+        const surfacesFilterTitle =         translate("LSDLayeredSelectionDisplay.TOOLTIP_TITLE[SurfacesFilterButton]" ,locale["LSDLayeredSelectionDisplay.TOOLTIP_TITLE[SurfacesFilterButton]"]);
         const allFiltersTitle = translate("LSDLayeredSelectionDisplay.TOOLTIP_TITLE[AllFilters]" ,locale["LSDLayeredSelectionDisplay.TOOLTIP_TITLE[AllFilters]"]);
         const allFiltersDescription = translate("LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[AllFilters]" ,locale["LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[AllFilters]"]);
         const vanillaNetworksFilterTitle = translate("LSDLayeredSelectionDisplay.TOOLTIP_TITLE[VanillaNetworksFilter]" ,locale["LSDLayeredSelectionDisplay.TOOLTIP_TITLE[VanillaNetworksFilter]"]);
@@ -102,7 +109,31 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
 
 
         // This gets the original component that we may alter and return.
-        var result : JSX.Element = Component();        
+        var result: JSX.Element = Component();        
+        // It is important that we coordinate how to handle the tool options panel because it is possibile to create a mod that works for your mod but prevents others from doing the same thing.
+        // If bulldoze tool active add better bulldozer sections.
+        if (bulldozeToolActive && isGame) {
+            result.props.children?.push(
+                /* 
+                All properties of the buttons and sections have been previously defined in variables above.
+                */
+                <>
+                    { raycastTarget == 0 && (                    
+                        // This section is only showing while using vanilla bulldozer.
+                        <VanillaComponentResolver.instance.Section title={filterSectionTitle}>
+                            <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.All) == VanillaFilters.All}               tooltip={descriptionTooltip(allFiltersTitle ,allFiltersDescription)}                        src={allSrc}            onSelect={() => changeSelectedVanillaFilter(VanillaFilters.All)}        className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
+                            <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Surfaces) == VanillaFilters.Surfaces}     tooltip={descriptionTooltip(surfacesFilterTitle, vanillaSurfaceFilterDescription)}          src={surfacesSrc}       onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Surfaces)}   className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}></VanillaComponentResolver.instance.ToolButton>
+                            <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Networks) == VanillaFilters.Networks}     tooltip={descriptionTooltip(vanillaNetworksFilterTitle ,vanillaNetworksFilterDescription)}  src={networkSrc}        onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Networks)}   className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
+                            <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Buildings) == VanillaFilters.Buildings}   tooltip={descriptionTooltip(buildingFilterTitle ,buildingFilterDescription)}                src={buildingSrc}       onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Buildings)}  className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
+                            <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Trees) == VanillaFilters.Trees}           tooltip={descriptionTooltip(treeFilterTitle ,treeFilterDescription)}                        src={treeSrc}           onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Trees)}      className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
+                            <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Plants) == VanillaFilters.Plants}         tooltip={descriptionTooltip(plantFilterTitle ,plantFilterDescription)}                      src={plantSrc}          onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Plants)}     className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
+                            <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Decals) == VanillaFilters.Decals}         tooltip={descriptionTooltip(decalFilterTitle ,decalFilterDescription)}                      src={decalsSrc}         onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Decals)}     className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
+                            <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Props) == VanillaFilters.Props}           tooltip={descriptionTooltip(propFilterTitle ,propFilterDescription)}                        src={propsSrc}          onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Props)}      className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
+                        </VanillaComponentResolver.instance.Section>                    
+                    )}
+                </>
+            );                   
+        }
 
         return result;
     };
