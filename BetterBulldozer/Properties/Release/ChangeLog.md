@@ -1,2 +1,0 @@
-﻿# Patch V1.3.16.1
-* Additional minor compatibility  changes for combinations with the Traffic Mod including removing sub-elements from networks with custom intersection lane connections. Thanks to phillycheese!
