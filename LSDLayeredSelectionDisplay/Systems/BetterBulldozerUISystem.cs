@@ -20,7 +20,6 @@ namespace LSD_Layered_Selection_Display.Systems
     using Game.Tools;
     using Game.UI.InGame;
     using LSD_Layered_Selection_Display.Extensions;
-    using LSD_Layered_Selection_Display.Tools;
     using LSD_Layered_Selection_Display.Utils;
     using Unity.Collections.LowLevel.Unsafe;
     using Unity.Entities;
@@ -38,30 +37,12 @@ namespace LSD_Layered_Selection_Display.Systems
         private ILog m_Log;
         private RenderingSystem m_RenderingSystem;
         private PrefabSystem m_PrefabSystem;
-        private BulldozeToolSystem m_BulldozeToolSystem;
-        private AreaToolSystem m_AreaToolSystem;
-        private SubElementBulldozerTool m_SubElementBulldozeToolSystem;
-        private bool m_RecordedShowMarkers;
-        private bool m_PrefabIsMarker = false;
-        private NetToolSystem m_NetToolSystem;
-        private ObjectToolSystem m_ObjectToolSystem;
         private DefaultToolSystem m_DefaultToolSystem;
+        private ObjectToolSystem m_ObjectToolSystem;
         private ValueBinding<int> m_RaycastTarget;
-        private ValueBinding<int> m_AreasFilter;
-        private ValueBinding<int> m_MarkersFilter;
-        private ValueBinding<bool> m_BypassConfirmation;
-        private ValueBinding<bool> m_UpgradeIsMain;
         private ValueBindingHelper<bool> m_IsGame;
-        private ValueBindingHelper<int> m_SelectionMode;
-        private ValueBindingHelper<int> m_VehicleCimsAnimalsSelectionMode;
-        private ValueBindingHelper<int> m_SelectionRadius;
-        private ValueBindingHelper<int> m_FocusEntityIndex;
-        private ValueBindingHelper<int> m_FocusEntityVersion;
-        private ValueBindingHelper<int> m_FocusEntityNonce;
         private ValueBindingHelper<VanillaFilters> m_SelectedVanillaFilters;
-        private RemoveVehiclesCimsAndAnimalsTool m_RemoveVehiclesCimsAndAnimalsTool;
-        private ValueBinding<bool> m_SubElementBulldozeToolActive;
-        private ToolBaseSystem m_ActiveBulldozeToolSystem;
+        private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
         private cohtml.Net.View m_UiView;
 
@@ -74,68 +55,6 @@ namespace LSD_Layered_Selection_Display.Systems
             /// Do not change the raycast targets.
             /// </summary>
             Vanilla,
-
-            /// <summary>
-            /// Exclusively target surfaces and spaces
-            /// </summary>
-            Areas,
-
-            /// <summary>
-            /// Exclusively target markers.
-            /// </summary>
-            Markers,
-
-            /// <summary>
-            /// Exclusively target standalone lanes such as fences, hedges, street markings, or vehicle lanes.
-            /// </summary>
-            Lanes,
-
-            /// <summary>
-            /// Exclusively target vehciles, cims and animals.
-            /// </summary>
-            VehiclesCimsAndAnimals,
-        }
-
-        /// <summary>
-        /// Selection mode for subelement bulldozer.
-        /// </summary>
-        public enum SelectionMode
-        {
-            /// <summary>
-            /// One item at a time.
-            /// </summary>
-            Single,
-
-            /// <summary>
-            /// All exact match of prefab with same owner.
-            /// </summary>
-            Matching,
-
-            /// <summary>
-            /// Same family of prefab with same owner.
-            /// </summary>
-            Similar,
-
-            /// <summary>
-            /// Handles reseting assets.
-            /// </summary>
-            Reset,
-        }
-
-        /// <summary>
-        /// Selection mode for removing vehicles, cims, and animals.
-        /// </summary>
-        public enum VCAselectionMode
-        {
-            /// <summary>
-            /// One item at a time.
-            /// </summary>
-            Single,
-
-            /// <summary>
-            /// uses a radius and can delete broken ones.
-            /// </summary>
-            Radius,
         }
 
         /// <summary>
@@ -195,61 +114,9 @@ namespace LSD_Layered_Selection_Display.Systems
         public RaycastTarget SelectedRaycastTarget { get => (RaycastTarget)m_RaycastTarget.value; }
 
         /// <summary>
-        /// Gets a value indicating the filter to apply to areas.
-        /// </summary>
-        public AreaTypeMask AreasFilter { get => (AreaTypeMask)m_AreasFilter.value; }
-
-        /// <summary>
-        /// Gets a value indicating the filter to apply to Markers.
-        /// </summary>
-        public TypeMask MarkersFilter { get => (TypeMask)m_MarkersFilter.value; }
-
-        /// <summary>
-        /// Gets a value indicating whether UpgradeIsMain.
-        /// </summary>
-        public bool UpgradeIsMain { get => m_UpgradeIsMain.value; }
-
-        /// <summary>
-        /// Gets a value indicating the selection radius.
-        /// </summary>
-        public int SelectionRadius { get => m_SelectionRadius.Value; }
-
-        /// <summary>
         /// Gets a value indicating the selected vanilla bulldoze tool filters.
         /// </summary>
         public VanillaFilters SelectedVanillaFilters { get => m_SelectedVanillaFilters.Value; }
-
-        /// <summary>
-        /// Gets a value indicating the active selection mode for subelement bulldozer.
-        /// </summary>
-        public SelectionMode ActiveSelectionMode { get => (SelectionMode)m_SelectionMode.Value; }
-
-        /// <summary>
-        /// Gets a value indicating the active selection mode for subelement bulldozer.
-        /// </summary>
-        public VCAselectionMode VehicleCimsAnimalsSelectionMode { get => (VCAselectionMode)m_VehicleCimsAnimalsSelectionMode.Value; }
-
-        /// <summary>
-        /// Gets a value indicating whether VCATool should be active.
-        /// </summary>
-        public bool VCAToolActive
-        {
-            get
-            {
-                return m_ActiveBulldozeToolSystem == m_RemoveVehiclesCimsAndAnimalsTool ||
-                      (m_VehicleCimsAnimalsSelectionMode.Value == (int)VCAselectionMode.Radius &&
-                       m_RaycastTarget.value == (int)RaycastTarget.VehiclesCimsAndAnimals);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether subelement tool should be avtive.
-        /// </summary>
-        public bool SubElementBulldozeToolActive
-        {
-            get { return m_SubElementBulldozeToolActive.value || m_ActiveBulldozeToolSystem == m_SubElementBulldozeToolSystem; }
-            set { m_SubElementBulldozeToolActive.Update(value); }
-        }
 
         /// <summary>
         /// Hacks UI to ensure button for bulldozer in main toolbar is appropriately selected or not.
@@ -264,9 +131,7 @@ namespace LSD_Layered_Selection_Display.Systems
             // This script creates the LSDLayeredSelectionDisplay object if it doesn't exist.
             m_UiView.ExecuteScript("if (yyLSDLayeredSelectionDisplay == null) var yyLSDLayeredSelectionDisplay = {};");
 
-            if (m_ToolSystem.activeTool == m_BulldozeToolSystem ||
-                m_ToolSystem.activeTool == m_SubElementBulldozeToolSystem ||
-                m_ToolSystem.activeTool == m_RemoveVehiclesCimsAndAnimalsTool)
+            if (m_ToolSystem.activeTool == m_DefaultToolSystem)
             {
                 // This script searches through all img and adds removes selected if the src of that image contains the bulldozer.svg.
                 m_UiView.ExecuteScript($"yyLSDLayeredSelectionDisplay.tagElements = document.getElementsByTagName(\"img\"); for (yyLSDLayeredSelectionDisplay.i = 0; yyLSDLayeredSelectionDisplay.i < yyLSDLayeredSelectionDisplay.tagElements.length; yyLSDLayeredSelectionDisplay.i++) {{ if (yyLSDLayeredSelectionDisplay.tagElements[yyLSDLayeredSelectionDisplay.i].src.includes(\"Bulldozer.svg\")) {{ yyLSDLayeredSelectionDisplay.tagElements[yyLSDLayeredSelectionDisplay.i].parentNode.classList.add(\"selected\");  }} }} ");
@@ -278,22 +143,6 @@ namespace LSD_Layered_Selection_Display.Systems
             }
         }
 
-        /// <summary>
-        /// Requests focus on a specific entity in the game world. This method updates the focus entity index, version, and increments a nonce to signal a change in focus.
-        /// </summary>
-        /// <param name="entity">The entity to focus on.</param>
-        public void RequestFocusEntity(Entity entity)
-        {
-            if (entity == Entity.Null)
-            {
-                return;
-            }
-
-            m_FocusEntityIndex.Value = entity.Index;
-            m_FocusEntityVersion.Value = entity.Version;
-            m_FocusEntityNonce.Value++;
-        }
-
         /// <inheritdoc/>
         protected override void OnCreate()
         {
@@ -301,75 +150,21 @@ namespace LSD_Layered_Selection_Display.Systems
             m_Log = LSDLayeredSelectionDisplayMod.Instance.Logger;
             m_Log.Info($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnCreate)}");
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
-            m_BulldozeToolSystem = World.GetOrCreateSystemManaged<BulldozeToolSystem>();
+            m_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_RenderingSystem = World.GetOrCreateSystemManaged<RenderingSystem>();
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_ObjectToolSystem = World.GetOrCreateSystemManaged<ObjectToolSystem>();
-            m_SubElementBulldozeToolSystem = World.GetOrCreateSystemManaged<SubElementBulldozerTool>();
-            m_NetToolSystem = World.GetOrCreateSystemManaged<NetToolSystem>();
             m_ToolUISystem = World.GetOrCreateSystemManaged<ToolUISystem>();
             m_ToolSystem.EventToolChanged += OnToolChanged;
             m_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
-            m_RemoveVehiclesCimsAndAnimalsTool = World.GetOrCreateSystemManaged<RemoveVehiclesCimsAndAnimalsTool>();
-            m_AreaToolSystem = World.GetOrCreateSystemManaged<AreaToolSystem>();
             m_ToolSystem.EventPrefabChanged += OnPrefabChanged;
-            m_ActiveBulldozeToolSystem = m_BulldozeToolSystem;
+            m_ActiveDefaultToolSystem = m_DefaultToolSystem;
             m_UiView = GameManager.instance.userInterface.view.View;
 
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
-            AddBinding(m_AreasFilter = new ValueBinding<int>(ModId, "AreasFilter", (int)AreaTypeMask.Surfaces));
-            AddBinding(m_MarkersFilter = new ValueBinding<int>(ModId, "MarkersFilter", (int)TypeMask.Net));
-            AddBinding(m_BypassConfirmation = new ValueBinding<bool>(ModId, "BypassConfirmation", false));
-            AddBinding(m_UpgradeIsMain = new ValueBinding<bool>(ModId, "UpgradeIsMain", false));
-            AddBinding(m_SubElementBulldozeToolActive = new ValueBinding<bool>(ModId, "SubElementBulldozeToolActive", false));
-            m_SelectionMode = CreateBinding("SelectionMode", (int)LSDLayeredSelectionDisplayMod.Instance.Settings.PreviousSelectionMode);
-            m_IsGame = CreateBinding("IsGame", false);
-            m_VehicleCimsAnimalsSelectionMode = CreateBinding("VehicleCimsAnimalsSelectionMode", (int)VCAselectionMode.Single);
-            m_SelectionRadius = CreateBinding("SelectionRadius", 10);
-            m_SelectedVanillaFilters = CreateBinding("SelectedVanillaFilters", VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props);
-
-            m_FocusEntityIndex = CreateBinding("FocusEntityIndex", -1);
-            m_FocusEntityVersion = CreateBinding("FocusEntityVersion", -1);
-            m_FocusEntityNonce = CreateBinding("FocusEntityNonce", 0);
 
             // These handle events activating actions triggered by clicking buttons in the UI.
-            AddBinding(new TriggerBinding(ModId, "BypassConfirmationButton", BypassConfirmationToggled));
-            AddBinding(new TriggerBinding(ModId, "GameplayManipulationButton", GameplayManipulationToggled));
-            AddBinding(new TriggerBinding(ModId, "RaycastMarkersButton", RaycastMarkersButtonToggled));
-            AddBinding(new TriggerBinding(ModId, "SurfacesFilterButton", SurfacesFilterToggled));
-            AddBinding(new TriggerBinding(ModId, "SpacesFilterButton", SpacesFilterToggled));
-            AddBinding(new TriggerBinding(ModId, "StaticObjectsFilterButton", StaticObjectsFilterToggled));
-            AddBinding(new TriggerBinding(ModId, "NetworksFilterButton", NetworksFilterToggled));
-            AddBinding(new TriggerBinding(ModId, "RaycastAreasButton", RaycastAreasButtonToggled));
-            AddBinding(new TriggerBinding(ModId, "RaycastLanesButton", RaycastLanesButtonToggled));
-            AddBinding(new TriggerBinding(ModId, "SubElementBulldozerButton", SubElementBulldozerButtonToggled));
-            AddBinding(new TriggerBinding(ModId, "UpgradeIsMain", () => m_UpgradeIsMain.Update(true)));
-            AddBinding(new TriggerBinding(ModId, "SubElementsOfMainElement", () => m_UpgradeIsMain.Update(false)));
-            CreateTrigger("ChangeSelectionMode", (int value) => ChangeSelectionMode(value));
-            CreateTrigger("ChangeVCAselectionMode", (int value) => ChangeVCAselectionMode(value));
-            CreateTrigger("IncreaseRadius", () =>
-            {
-                if (m_SelectionRadius.Value >= 10)
-                {
-                    m_SelectionRadius.Value = Math.Min(m_SelectionRadius.Value + 10, 100);
-                }
-                else
-                {
-                    m_SelectionRadius.Value = Math.Min(m_SelectionRadius.Value + 1, 10);
-                }
-            });
-            CreateTrigger("DecreaseRadius", () =>
-            {
-                if (m_SelectionRadius.Value > 10)
-                {
-                    m_SelectionRadius.Value = Math.Max(m_SelectionRadius.Value - 10, 10);
-                }
-                else
-                {
-                    m_SelectionRadius.Value = Math.Max(m_SelectionRadius.Value - 1, 1);
-                }
-            });
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
         }
 
@@ -384,10 +179,6 @@ namespace LSD_Layered_Selection_Display.Systems
             }
 
             m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} New Order:");
-            m_ToolSystem.tools.Remove(m_SubElementBulldozeToolSystem);
-            m_ToolSystem.tools.Remove(m_RemoveVehiclesCimsAndAnimalsTool);
-            m_ToolSystem.tools.Insert(0, m_SubElementBulldozeToolSystem);
-            m_ToolSystem.tools.Insert(0, m_RemoveVehiclesCimsAndAnimalsTool);
 
             foreach (ToolBaseSystem toolBaseSystem in m_ToolSystem.tools)
             {
@@ -429,115 +220,22 @@ namespace LSD_Layered_Selection_Display.Systems
         protected override void OnUpdate()
         {
             base.OnUpdate();
-            if (m_BulldozeToolSystem.debugBypassBulldozeConfirmation != m_BypassConfirmation.value)
-            {
-                m_BypassConfirmation.Update(m_BulldozeToolSystem.debugBypassBulldozeConfirmation);
-            }
-
-            if (SelectedRaycastTarget == RaycastTarget.Areas && AreasFilter == AreaTypeMask.Spaces)
-            {
-                AreaTypeMask areaTypeMask = m_BulldozeToolSystem.requireAreas;
-                areaTypeMask |= AreaTypeMask.Spaces;
-                areaTypeMask &= ~AreaTypeMask.Surfaces;
-                m_BulldozeToolSystem.SetMemberValue("requireAreas", areaTypeMask);
-            }
-            else if (SelectedRaycastTarget == RaycastTarget.Areas)
-            {
-                AreaTypeMask areaTypeMask = m_BulldozeToolSystem.requireAreas;
-                areaTypeMask &= ~AreaTypeMask.Spaces;
-                m_BulldozeToolSystem.SetMemberValue("requireAreas", areaTypeMask);
-            }
-
-            if (m_SubElementBulldozeToolSystem.MustStartRunning &&
-                m_ToolSystem.activeTool != m_SubElementBulldozeToolSystem)
-            {
-                m_ActiveBulldozeToolSystem = m_SubElementBulldozeToolSystem;
-                m_ToolSystem.activeTool = m_SubElementBulldozeToolSystem;
-                EnsureToolbarBulldozerClassList();
-            }
-            else if (m_RemoveVehiclesCimsAndAnimalsTool.MustStartRunning &&
-                m_ToolSystem.activeTool != m_RemoveVehiclesCimsAndAnimalsTool)
-            {
-                m_ActiveBulldozeToolSystem = m_RemoveVehiclesCimsAndAnimalsTool;
-                m_ToolSystem.activeTool = m_RemoveVehiclesCimsAndAnimalsTool;
-                EnsureToolbarBulldozerClassList();
-            }
 
             /*
-            if (m_ToolSystem.activeTool == m_BulldozeToolSystem &&
-                m_ActiveBulldozeToolSystem != m_BulldozeToolSystem)
+            if (m_ToolSystem.activeTool == m_DefaultToolSystem &&
+                m_ActiveDefaultToolSystem != m_DefaultToolSystem)
             {
-                if (m_ActiveBulldozeToolSystem == m_RemoveVehiclesCimsAndAnimalsTool)
+                if (m_ActiveDefaultToolSystem == m_RemoveVehiclesCimsAndAnimalsTool)
                 {
                     m_RemoveVehiclesCimsAndAnimalsTool.MustStartRunning = true;
                 }
-                else if (m_ActiveBulldozeToolSystem == m_SubElementBulldozeToolSystem)
+                else if (m_ActiveDefaultToolSystem == m_SubElementDefaultToolSystem)
                 {
-                    m_SubElementBulldozeToolSystem.MustStartRunning = true;
+                    m_SubElementDefaultToolSystem.MustStartRunning = true;
                 }
 
-                m_ToolSystem.activeTool = m_ActiveBulldozeToolSystem;
+                m_ToolSystem.activeTool = m_ActiveDefaultToolSystem;
             }*/
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. Toggles the bypassConfirmation field of the bulldozer system.
-        /// </summary>
-        /// <param name="flag">A bool for what to set the field to.</param>
-        private void BypassConfirmationToggled()
-        {
-            m_BypassConfirmation.Update(!m_BypassConfirmation.value);
-            m_BulldozeToolSystem.debugBypassBulldozeConfirmation = m_BypassConfirmation.value;
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. Toggles the game playmanipulation field of the bulldozer system.
-        /// </summary>
-        private void GameplayManipulationToggled()
-        {
-            if (m_RaycastTarget.value != (int)RaycastTarget.VehiclesCimsAndAnimals)
-            {
-                m_RaycastTarget.Update((int)RaycastTarget.VehiclesCimsAndAnimals);
-            }
-            else
-            {
-                m_RaycastTarget.Update((int)RaycastTarget.Vanilla);
-            }
-
-            if (m_VehicleCimsAnimalsSelectionMode.Value == (int)VCAselectionMode.Radius &&
-                m_ToolSystem.activeTool != m_RemoveVehiclesCimsAndAnimalsTool)
-            {
-                m_RemoveVehiclesCimsAndAnimalsTool.MustStartRunning = true;
-                m_ActiveBulldozeToolSystem = m_RemoveVehiclesCimsAndAnimalsTool;
-                m_ToolSystem.activeTool = m_RemoveVehiclesCimsAndAnimalsTool;
-            }
-            else if (m_ToolSystem.activeTool == m_RemoveVehiclesCimsAndAnimalsTool ||
-                     m_ToolSystem.activeTool == m_SubElementBulldozeToolSystem)
-            {
-                m_ActiveBulldozeToolSystem = m_BulldozeToolSystem;
-                m_ToolSystem.activeTool = m_BulldozeToolSystem;
-            }
-
-            HandleShowMarkers(m_ToolSystem.activePrefab);
-        }
-
-        private void ChangeVCAselectionMode(int mode)
-        {
-            m_VehicleCimsAnimalsSelectionMode.Value = mode;
-
-            if (m_VehicleCimsAnimalsSelectionMode.Value == (int)VCAselectionMode.Radius && m_ToolSystem.activeTool != m_RemoveVehiclesCimsAndAnimalsTool)
-            {
-                m_RemoveVehiclesCimsAndAnimalsTool.MustStartRunning = true;
-                m_ActiveBulldozeToolSystem = m_RemoveVehiclesCimsAndAnimalsTool;
-                m_ToolSystem.activeTool = m_RemoveVehiclesCimsAndAnimalsTool;
-            }
-            else if (m_ToolSystem.activeTool == m_RemoveVehiclesCimsAndAnimalsTool && m_VehicleCimsAnimalsSelectionMode.Value == (int)VCAselectionMode.Single)
-            {
-                m_ActiveBulldozeToolSystem = m_BulldozeToolSystem;
-                m_ToolSystem.activeTool = m_BulldozeToolSystem;
-            }
-
-            HandleShowMarkers(m_ToolSystem.activePrefab);
         }
 
         private void ChangeVanillaFilters(VanillaFilters toggledFilter)
@@ -572,228 +270,6 @@ namespace LSD_Layered_Selection_Display.Systems
             }
         }
 
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. Toggles the m_RenderingSystem.MarkersVisible.
-        /// </summary>
-        private void RaycastMarkersButtonToggled()
-        {
-            if (SelectedRaycastTarget != RaycastTarget.Markers)
-            {
-                m_RaycastTarget.Update((int)RaycastTarget.Markers);
-            }
-            else
-            {
-                m_RaycastTarget.Update((int)RaycastTarget.Vanilla);
-            }
-
-            HandleShowMarkers(m_ToolSystem.activePrefab);
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. For filtering for surfaces.
-        /// </summary>
-        private void SurfacesFilterToggled()
-        {
-            if (AreasFilter != AreaTypeMask.Surfaces)
-            {
-                m_AreasFilter.Update((int)AreaTypeMask.Surfaces);
-            }
-            else
-            {
-                m_AreasFilter.Update((int)AreaTypeMask.Spaces);
-            }
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. For filtering for spaces.
-        /// </summary>
-        private void SpacesFilterToggled()
-        {
-            if (AreasFilter != AreaTypeMask.Spaces)
-            {
-                m_AreasFilter.Update((int)AreaTypeMask.Spaces);
-            }
-            else
-            {
-                m_AreasFilter.Update((int)AreaTypeMask.Surfaces);
-            }
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. For filtering for static objects.
-        /// </summary>
-        private void StaticObjectsFilterToggled()
-        {
-            if (MarkersFilter != TypeMask.StaticObjects)
-            {
-                m_MarkersFilter.Update((int)TypeMask.StaticObjects);
-            }
-            else
-            {
-                m_MarkersFilter.Update((int)TypeMask.Net);
-            }
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. For filtering for nets.
-        /// </summary>
-        private void NetworksFilterToggled()
-        {
-            if (MarkersFilter != TypeMask.Net)
-            {
-                m_MarkersFilter.Update((int)TypeMask.Net);
-            }
-            else
-            {
-                m_MarkersFilter.Update((int)TypeMask.StaticObjects);
-            }
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. Toggles the m_RaycastAreas.
-        /// </summary>
-        private void RaycastAreasButtonToggled()
-        {
-            if (SelectedRaycastTarget != RaycastTarget.Areas)
-            {
-                m_RaycastTarget.Update((int)RaycastTarget.Areas);
-            }
-            else
-            {
-                m_RaycastTarget.Update((int)RaycastTarget.Vanilla);
-            }
-
-            if (m_ToolSystem.activeTool != m_BulldozeToolSystem)
-            {
-                m_ActiveBulldozeToolSystem = m_BulldozeToolSystem;
-                m_ToolSystem.activeTool = m_BulldozeToolSystem;
-            }
-
-            HandleShowMarkers(m_ToolSystem.activePrefab);
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. Toggles the m_RaycastAreas.
-        /// </summary>
-        private void RaycastLanesButtonToggled()
-        {
-            if (SelectedRaycastTarget != RaycastTarget.Lanes)
-            {
-                m_RaycastTarget.Update((int)RaycastTarget.Lanes);
-            }
-            else
-            {
-                m_RaycastTarget.Update((int)RaycastTarget.Vanilla);
-            }
-
-            if (m_ToolSystem.activeTool != m_BulldozeToolSystem)
-            {
-                m_ActiveBulldozeToolSystem = m_BulldozeToolSystem;
-                m_ToolSystem.activeTool = m_BulldozeToolSystem;
-            }
-
-            HandleShowMarkers(m_ToolSystem.activePrefab);
-        }
-
-        /// <summary>
-        /// C# event handler for event callback from UI JavaScript. Toggles the m_RaycastAreas.
-        /// </summary>
-        private void SubElementBulldozerButtonToggled()
-        {
-            if (m_ToolSystem.activeTool != m_SubElementBulldozeToolSystem)
-            {
-                m_SubElementBulldozeToolSystem.MustStartRunning = true;
-                m_ActiveBulldozeToolSystem = m_SubElementBulldozeToolSystem;
-                m_ToolSystem.activeTool = m_SubElementBulldozeToolSystem;
-                if (m_RaycastTarget.value != (int)RaycastTarget.Vanilla && m_RaycastTarget.value != (int)RaycastTarget.Markers)
-                {
-                    m_RaycastTarget.Update((int)RaycastTarget.Vanilla);
-                }
-            }
-            else if (m_ToolSystem.activeTool == m_SubElementBulldozeToolSystem)
-            {
-                m_ActiveBulldozeToolSystem = m_BulldozeToolSystem;
-                m_ToolSystem.activeTool = m_BulldozeToolSystem;
-            }
-
-            HandleShowMarkers(m_ToolSystem.activePrefab);
-        }
-
-        private void HandleShowMarkers(PrefabBase prefab)
-        {
-            if (prefab != null &&
-                m_PrefabSystem.TryGetEntity(prefab, out Entity prefabEntity) &&
-                m_ToolSystem.activeTool != m_DefaultToolSystem)
-            {
-                if (EntityManager.HasComponent<MarkerNetData>(prefabEntity)
-                 || prefab is MarkerObjectPrefab || prefab is NetLaneGeometryPrefab || prefab is NetLanePrefab || prefab is TransformPrefab
-                 || (prefab is BulldozePrefab && SelectedRaycastTarget == RaycastTarget.Markers)
-                 || (prefab is BulldozePrefab && SelectedRaycastTarget == RaycastTarget.Lanes))
-                {
-                    if (!m_PrefabIsMarker)
-                    {
-                        m_RecordedShowMarkers = m_RenderingSystem.markersVisible;
-                        m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)} m_RecordedShowMarkers = {m_RecordedShowMarkers}");
-                    }
-
-                    m_RenderingSystem.markersVisible = true;
-                    m_PrefabIsMarker = true;
-                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)} m_PrefabIsMarker = {m_PrefabIsMarker}");
-
-                    if (m_ToolSystem.activeTool != null &&
-                         m_ToolSystem.activeTool != m_AreaToolSystem &&
-                        m_ToolSystem.activeTool != m_BulldozeToolSystem)
-                    {
-                        AreaTypeMask areaTypeMask = m_ToolSystem.activeTool.requireAreas;
-                        areaTypeMask |= AreaTypeMask.Spaces;
-                        m_ToolSystem.activeTool.SetMemberValue("requireAreas", areaTypeMask);
-                    }
-                }
-                else if (m_PrefabIsMarker)
-                {
-                    m_PrefabIsMarker = false;
-                    m_RenderingSystem.markersVisible = m_RecordedShowMarkers;
-                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)} EntityManager.HasComponent<MarkerNetData>(prefabEntity) : {EntityManager.HasComponent<MarkerNetData>(prefabEntity)}");
-                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)} prefab is MarkerObjectPrefab : {prefab is MarkerObjectPrefab}");
-                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)} prefab is BulldozePrefab : {prefab is BulldozePrefab}");
-
-                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)}  m_RaycastTarget == RaycastTarget.Markers: {SelectedRaycastTarget == RaycastTarget.Markers}");
-
-                    if (m_ToolSystem.activeTool != null &&
-                        m_ToolSystem.activeTool != m_AreaToolSystem &&
-                        m_ToolSystem.activeTool != m_BulldozeToolSystem &&
-                        (m_ToolSystem.activeTool.requireAreas & AreaTypeMask.Spaces) == AreaTypeMask.Spaces)
-                    {
-                        AreaTypeMask areaTypeMask = m_ToolSystem.activeTool.requireAreas;
-                        areaTypeMask &= ~AreaTypeMask.Spaces;
-                        m_ToolSystem.activeTool.SetMemberValue("requireAreas", areaTypeMask);
-                    }
-                }
-            }
-            else if (m_PrefabIsMarker)
-            {
-                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)} prefab != null : {prefab != null}");
-                if (prefab != null)
-                {
-                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)} m_PrefabSystem.TryGetEntity(prefab, out Entity prefabEntity) : {m_PrefabSystem.TryGetEntity(prefab, out Entity prefabEntity2)}");
-                }
-
-                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(HandleShowMarkers)} m_ToolSystem.activeTool != m_DefaultToolSystem : {m_ToolSystem.activeTool != m_DefaultToolSystem}");
-                m_PrefabIsMarker = false;
-                m_RenderingSystem.markersVisible = m_RecordedShowMarkers;
-
-                if (m_ToolSystem.activeTool != null &&
-                    m_ToolSystem.activeTool != m_AreaToolSystem &&
-                    m_ToolSystem.activeTool != m_BulldozeToolSystem &&
-                    (m_ToolSystem.activeTool.requireAreas & AreaTypeMask.Spaces) == AreaTypeMask.Spaces)
-                {
-                    AreaTypeMask areaTypeMask = m_ToolSystem.activeTool.requireAreas;
-                    areaTypeMask &= ~AreaTypeMask.Spaces;
-                    m_ToolSystem.activeTool.SetMemberValue("requireAreas", areaTypeMask);
-                }
-            }
-        }
-
         private void OnToolChanged(ToolBaseSystem tool)
         {
             if (tool == null)
@@ -807,7 +283,6 @@ namespace LSD_Layered_Selection_Display.Systems
                 return;
             }
 
-            HandleShowMarkers(m_ToolSystem.activePrefab);
             m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnToolChanged)} tool.toolID:{tool.toolID} m_ToolSystem.activePrefab?.GetPrefabID():{m_ToolSystem.activePrefab?.GetPrefabID()} tool.GetPrefab()?.GetPrefabID():{tool.GetPrefab()?.GetPrefabID()}");
 
             EnsureToolbarBulldozerClassList();
@@ -825,14 +300,6 @@ namespace LSD_Layered_Selection_Display.Systems
             }
 
             m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnPrefabChanged)} {prefab.GetPrefabID()}");
-            HandleShowMarkers(prefab);
-        }
-
-        private void ChangeSelectionMode(int value)
-        {
-            m_SelectionMode.Value = value;
-            LSDLayeredSelectionDisplayMod.Instance.Settings.PreviousSelectionMode = (SelectionMode)value;
-            LSDLayeredSelectionDisplayMod.Instance.Settings.ApplyAndSave();
         }
     }
 }

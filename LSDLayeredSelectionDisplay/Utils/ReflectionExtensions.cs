@@ -118,11 +118,5 @@ namespace LSD_Layered_Selection_Display.Utils
         {
             return (T)obj;
         }
-
-        /// <summary>
-        /// Quick way to use all relevent binding flags.
-        /// </summary>
-        /// <returns>BindingFlags for all relevent flags.</returns>
-        public static readonly BindingFlags allFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.GetProperty;
     }
 }

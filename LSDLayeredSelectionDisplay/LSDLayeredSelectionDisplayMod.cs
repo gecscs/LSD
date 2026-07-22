@@ -19,7 +19,6 @@ namespace LSD_Layered_Selection_Display
     using HarmonyLib;
     using LSD_Layered_Selection_Display.Settings;
     using LSD_Layered_Selection_Display.Systems;
-    using LSD_Layered_Selection_Display.Tools;
 #if DEBUG && EXPORT_EN_US
     using Newtonsoft.Json;
     using Colossal;
@@ -101,7 +100,7 @@ namespace LSD_Layered_Selection_Display
             AssetDatabase.global.LoadSettings(nameof(LSDLayeredSelectionDisplayMod), Settings, new LSDLayeredSelectionDisplayModSettings(this));
             Logger.Info($"[{nameof(LSDLayeredSelectionDisplayMod)}] {nameof(OnLoad)} finished loading settings.");
             Logger.Info($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnLoad)} Injecting Harmony Patches.");
-            m_Harmony = new Harmony("Mods_Yenyang_LSD_Layered_Selection_Display");
+            m_Harmony = new Harmony("Mods_0belix_LSD_Layered_Selection_Display");
             m_Harmony.PatchAll();
             Logger.Info($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnLoad)} Loading en-US");
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Settings));
@@ -112,20 +111,6 @@ namespace LSD_Layered_Selection_Display
 #endif
             Logger.Info($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnLoad)} Injecting systems.");
             updateSystem.UpdateAt<LSDLayeredSelectionDisplayUISystem>(SystemUpdatePhase.UIUpdate);
-            updateSystem.UpdateAt<SubElementBulldozerTool>(SystemUpdatePhase.ToolUpdate);
-            updateSystem.UpdateAt<SubelementBulldozerWarningTooltipSystem>(SystemUpdatePhase.UITooltip);
-            updateSystem.UpdateAt<HandleDeleteInXFramesSystem>(SystemUpdatePhase.ToolUpdate);
-            updateSystem.UpdateAt<SafelyRemoveSystem>(SystemUpdatePhase.ToolUpdate);
-            updateSystem.UpdateAt<AutomaticallyRemoveFencesAndHedges>(SystemUpdatePhase.ModificationEnd);
-            updateSystem.UpdateAt<AutomaticallyRemoveBrandingObjects>(SystemUpdatePhase.ModificationEnd);
-            updateSystem.UpdateAt<RemoveRegeneratedSubelementPrefabsSystem>(SystemUpdatePhase.ModificationEnd);
-            updateSystem.UpdateBefore<AutomaticallyRemoveManicuredGrassSurfaceSystem>(SystemUpdatePhase.Modification1);
-            updateSystem.UpdateAt<CleanUpOwnerRecordsSystem>(SystemUpdatePhase.Deserialize);
-            updateSystem.UpdateAt<RestoreFencesAndHedgesSystem>(SystemUpdatePhase.ToolUpdate);
-            updateSystem.UpdateAt<RestoreBrandingObjects>(SystemUpdatePhase.ToolUpdate);
-            updateSystem.UpdateAt<RemoveVehiclesCimsAndAnimalsTool>(SystemUpdatePhase.ToolUpdate);
-            updateSystem.UpdateAt<RemoveExistingOwnedGrassSurfaces>(SystemUpdatePhase.ToolUpdate);
-            updateSystem.UpdateAt<HandleUpdateNextFrameSystem>(SystemUpdatePhase.Modification5);
             Logger.Info($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnLoad)} Complete.");
         }
 
