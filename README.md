@@ -1,6 +1,4 @@
-﻿Easily delete things that you otherwise could not delete or easily delete.
-
-Sully made a Youtube video about custom car parks (aka Parking Lots) and this functionality helped make that safe.
+﻿Easily Select things that you otherwise could not select or easily select.
 
 ## Dependencies
 Unified Icon Library
@@ -54,13 +52,7 @@ One configuration I built/demolished resulted in a crash to desktop because I le
 I will respond on the code modding channels on **Cities: Skylines Modding Discord**
 
 # Credits 
-* yenyang - Mod Author
-* Chameleon TBN - Testing, Feedback, Icons, and Logo
-* Sully - Testing, Feedback, and Promotional Material.
-* Klyte45, Algernon - Help with UI, Cooperative Development and Code Sharing
-* T.D.W., krzychu124, Triton Supreme, and Quboid - Cooperative Development and Code Sharing
-* City Rat - Icons
-* Localization - Hendrix (German), RilkeXS (Chinese Simplified), TwotoolusFly_LSh.st (Korean), OWSEEX (Russian), felipecollucci (Brazilian Portuguese), Karmel68 and Lisek (Polish), Citadino (Spanish), Karg (French), yui hei lai (Chinese Traditional)
-* Testing, Feedback - Dante, starrysum, HarbourMaster Jay, Dome, Tigon Ologdring, BruceyBoy, RaftermanNZ, Elektrotek, SpaceChad 
+* yenyang - Mentor and Author of the Better Bulldoze Mod which is the base for this mod. Most of the code inside it is a copy from it, sanctioned by Yenyang himself.
+* Gagaxmxm - For expanding my initial idea that had already evolved from of using the cursor to certain types of assets from being selected, to listing all the assets behind the cursor, adding the possibility of using a marquee tool to instead of the single point where the cursor is, selecting all assets within the area drawn using the marquee tool.
 
 This mod is not affiliated with any C:S1 mod with similar titles. 
