@@ -1,15 +1,21 @@
+import { useLocalization } from "cs2/l10n";
 import { Panel, Portal, Scrollable } from "cs2/ui";
+import locale from "../mods/lang/en-US.json";
 import styles from "./myComponent.module.scss";
+
 export const MyComponent = () => {
+    const { translate } = useLocalization();
+    const listPanelTitle =          translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title",            locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title"]);
+    const listPanelIntro =          translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro",            locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro"]);
+
    return (
         <>
             <Portal>
                 <Panel 
                     className={styles.mainPanel}
-                    header={"LSD"}
+                    header={listPanelTitle}
                 >
-                  <h1>LSD Test Panel</h1>
-                  <div>Hello World!</div>
+                  <div>{listPanelIntro}</div>
                   <Scrollable className={styles.scrollablePanel}>
                     <ul className={styles.listedAssets}>
                         <li>Item 1</li>

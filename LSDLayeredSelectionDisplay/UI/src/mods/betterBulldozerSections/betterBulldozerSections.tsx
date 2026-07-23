@@ -109,7 +109,6 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
         const vanillaSurfaceFilterDescription = translate("LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]", locale["LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]"]);
 
 
-
         // This gets the original component that we may alter and return.
         var result: JSX.Element = Component();        
         // It is important that we coordinate how to handle the tool options panel because it is possibile to create a mod that works for your mod but prevents others from doing the same thing.

@@ -22,5 +22,8 @@
   "LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[DecalFilter]": "Toggling this off will prevent the Bulldoze Tool from removing decals.",
   "LSDLayeredSelectionDisplay.TOOLTIP_TITLE[PropFilter]": "Any other Prop Filter",
   "LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[PropFilter]": "Toggling this off will prevent the Bulldoze Tool from removing any props that are not trees, plants, or decals.",
-  "LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Toggling this off will prevent the Bulldoze Tool from removing surfaces."
+  "LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Toggling this off will prevent the Bulldoze Tool from removing surfaces.",
+
+  "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Selected Assets",
+  "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Click any asset from the list to open its info panel."
 }

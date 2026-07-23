@@ -69,7 +69,9 @@ namespace LSD_Layered_Selection_Display.Settings
                 { TooltipDescriptionKey("DecalFilter"), "Toggling this off will prevent the Bulldoze Tool from removing decals." },
                 { TooltipTitleKey("PropFilter"), "Any other Prop Filter" },
                 { TooltipDescriptionKey("PropFilter"), "Toggling this off will prevent the Bulldoze Tool from removing any props that are not trees, plants, or decals." },
-                { TooltipDescriptionKey("VanillaSurfaceFilter"), "Toggling this off will prevent the Bulldoze Tool from removing surfaces." }
+                { TooltipDescriptionKey("VanillaSurfaceFilter"), "Toggling this off will prevent the Bulldoze Tool from removing surfaces." },
+                { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title", "LSD - Selected Assets" },
+                { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", "Click any asset from the list to open its info panel." },
             };
         }
 
