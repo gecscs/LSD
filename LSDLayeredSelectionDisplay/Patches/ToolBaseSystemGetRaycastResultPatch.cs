@@ -30,7 +30,7 @@ namespace LSD_Layered_Selection_Display.Patches
         public static bool Prefix(out Entity entity, out RaycastHit hit)
         {
             LSDLayeredSelectionDisplayUISystem betterBulldozerUISystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<LSDLayeredSelectionDisplayUISystem>();
-            if (betterBulldozerUISystem.SelectedRaycastTarget != LSDLayeredSelectionDisplayUISystem.RaycastTarget.Lanes && betterBulldozerUISystem.SelectedRaycastTarget != LSDLayeredSelectionDisplayUISystem.RaycastTarget.Vanilla)
+            if (betterBulldozerUISystem.SelectedRaycastTarget != LSDLayeredSelectionDisplayUISystem.RaycastTarget.Vanilla)
             {
                 entity = Entity.Null;
                 hit = default;
@@ -38,7 +38,7 @@ namespace LSD_Layered_Selection_Display.Patches
             }
 
             ToolSystem toolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<ToolSystem>();
-            BulldozeToolSystem bulldozeToolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<BulldozeToolSystem>();
+            DefaultToolSystem bulldozeToolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<DefaultToolSystem>();
             if (toolSystem.activeTool != bulldozeToolSystem || !toolSystem.actionMode.IsGame())
             {
                 entity = Entity.Null;
