@@ -52,7 +52,8 @@ namespace LSD_Layered_Selection_Display.Patches
 
             if (raycastHitSomething
                 && !toolSystem.EntityManager.HasComponent<Deleted>(result.m_Owner)
-                && !toolSystem.EntityManager.HasComponent<Game.Tools.EditorContainer>(result.m_Hit.m_HitEntity))
+                && !toolSystem.EntityManager.HasComponent<Game.Tools.EditorContainer>(result.m_Hit.m_HitEntity)
+                && betterBulldozerUISystem.SelectedRaycastTarget == LSDLayeredSelectionDisplayUISystem.RaycastTarget.Lanes)
             {
                 entity = Entity.Null;
                 hit = default;

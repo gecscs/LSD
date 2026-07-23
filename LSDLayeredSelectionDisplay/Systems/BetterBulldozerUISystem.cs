@@ -44,7 +44,6 @@ namespace LSD_Layered_Selection_Display.Systems
         private ValueBindingHelper<VanillaFilters> m_SelectedVanillaFilters;
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
-        private cohtml.Net.View m_UiView;
 
         /// <summary>
         /// An enum to handle different raycast target options.
@@ -55,6 +54,11 @@ namespace LSD_Layered_Selection_Display.Systems
             /// Do not change the raycast targets.
             /// </summary>
             Vanilla,
+
+            /// <summary>
+            /// Exclusively target standalone lanes such as fences, hedges, street markings, or vehicle lanes.
+            /// </summary>
+            Lanes,
         }
 
         /// <summary>
@@ -118,31 +122,6 @@ namespace LSD_Layered_Selection_Display.Systems
         /// </summary>
         public VanillaFilters SelectedVanillaFilters { get => m_SelectedVanillaFilters.Value; }
 
-        /// <summary>
-        /// Hacks UI to ensure button for bulldozer in main toolbar is appropriately selected or not.
-        /// </summary>
-        public void EnsureToolbarBulldozerClassList()
-        {
-            if (m_UiView == null)
-            {
-                m_UiView = GameManager.instance.userInterface.view.View;
-            }
-
-            // This script creates the LSDLayeredSelectionDisplay object if it doesn't exist.
-            m_UiView.ExecuteScript("if (yyLSDLayeredSelectionDisplay == null) var yyLSDLayeredSelectionDisplay = {};");
-
-            if (m_ToolSystem.activeTool == m_DefaultToolSystem)
-            {
-                // This script searches through all img and adds removes selected if the src of that image contains the bulldozer.svg.
-                m_UiView.ExecuteScript($"yyLSDLayeredSelectionDisplay.tagElements = document.getElementsByTagName(\"img\"); for (yyLSDLayeredSelectionDisplay.i = 0; yyLSDLayeredSelectionDisplay.i < yyLSDLayeredSelectionDisplay.tagElements.length; yyLSDLayeredSelectionDisplay.i++) {{ if (yyLSDLayeredSelectionDisplay.tagElements[yyLSDLayeredSelectionDisplay.i].src.includes(\"Bulldozer.svg\")) {{ yyLSDLayeredSelectionDisplay.tagElements[yyLSDLayeredSelectionDisplay.i].parentNode.classList.add(\"selected\");  }} }} ");
-            }
-            else
-            {
-                // This script searches through all img and adds removes selected if the src of that image contains the bulldozer.svg.
-                m_UiView.ExecuteScript($"yyLSDLayeredSelectionDisplay.tagElements = document.getElementsByTagName(\"img\"); for (yyLSDLayeredSelectionDisplay.i = 0; yyLSDLayeredSelectionDisplay.i < yyLSDLayeredSelectionDisplay.tagElements.length; yyLSDLayeredSelectionDisplay.i++) {{ if (yyLSDLayeredSelectionDisplay.tagElements[yyLSDLayeredSelectionDisplay.i].src.includes(\"Bulldozer.svg\")) {{ yyLSDLayeredSelectionDisplay.tagElements[yyLSDLayeredSelectionDisplay.i].parentNode.classList.remove(\"selected\");  }} }} ");
-            }
-        }
-
         /// <inheritdoc/>
         protected override void OnCreate()
         {
@@ -155,11 +134,8 @@ namespace LSD_Layered_Selection_Display.Systems
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_ObjectToolSystem = World.GetOrCreateSystemManaged<ObjectToolSystem>();
             m_ToolUISystem = World.GetOrCreateSystemManaged<ToolUISystem>();
-            m_ToolSystem.EventToolChanged += OnToolChanged;
             m_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
-            m_ToolSystem.EventPrefabChanged += OnPrefabChanged;
             m_ActiveDefaultToolSystem = m_DefaultToolSystem;
-            m_UiView = GameManager.instance.userInterface.view.View;
 
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
@@ -218,28 +194,6 @@ namespace LSD_Layered_Selection_Display.Systems
             m_IsGame.Value = false;
         }
 
-        /// <inheritdoc/>
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            /*
-            if (m_ToolSystem.activeTool == m_DefaultToolSystem &&
-                m_ActiveDefaultToolSystem != m_DefaultToolSystem)
-            {
-                if (m_ActiveDefaultToolSystem == m_RemoveVehiclesCimsAndAnimalsTool)
-                {
-                    m_RemoveVehiclesCimsAndAnimalsTool.MustStartRunning = true;
-                }
-                else if (m_ActiveDefaultToolSystem == m_SubElementDefaultToolSystem)
-                {
-                    m_SubElementDefaultToolSystem.MustStartRunning = true;
-                }
-
-                m_ToolSystem.activeTool = m_ActiveDefaultToolSystem;
-            }*/
-        }
-
         private void ChangeVanillaFilters(VanillaFilters toggledFilter)
         {
             if (toggledFilter != VanillaFilters.All && (m_SelectedVanillaFilters.Value & VanillaFilters.All) == VanillaFilters.All)
@@ -270,38 +224,6 @@ namespace LSD_Layered_Selection_Display.Systems
             {
                 m_SelectedVanillaFilters.Value |= VanillaFilters.All;
             }
-        }
-
-        private void OnToolChanged(ToolBaseSystem tool)
-        {
-            if (tool == null)
-            {
-                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnToolChanged)} something is null.");
-                return;
-            }
-
-            if (m_ToolSystem.actionMode.IsEditor())
-            {
-                return;
-            }
-
-            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnToolChanged)} tool.toolID:{tool.toolID} m_ToolSystem.activePrefab?.GetPrefabID():{m_ToolSystem.activePrefab?.GetPrefabID()} tool.GetPrefab()?.GetPrefabID():{tool.GetPrefab()?.GetPrefabID()}");
-
-            EnsureToolbarBulldozerClassList();
-        }
-
-        /// <summary>
-        /// Method implemented by event triggered by prefab changing.
-        /// </summary>
-        /// <param name="prefab">The new prefab.</param>
-        private void OnPrefabChanged(PrefabBase prefab)
-        {
-            if (prefab == null)
-            {
-                return;
-            }
-
-            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnPrefabChanged)} {prefab.GetPrefabID()}");
         }
     }
 }

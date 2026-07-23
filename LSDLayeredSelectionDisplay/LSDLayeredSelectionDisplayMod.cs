@@ -76,9 +76,9 @@ namespace LSD_Layered_Selection_Display
         {
             Instance = this;
 #if DEBUG || VERBOSE
-            Logger = LogManager.GetLogger("Mods_Yenyang_LSD_Layered_Selection_Display").SetShowsErrorsInUI(true);
+            Logger = LogManager.GetLogger("Mods_0belix_LSD_Layered_Selection_Display").SetShowsErrorsInUI(true);
 #else
-            Logger = LogManager.GetLogger("Mods_Yenyang_LSD_Layered_Selection_Display").SetShowsErrorsInUI(false);
+            Logger = LogManager.GetLogger("Mods_0belix_LSD_Layered_Selection_Display").SetShowsErrorsInUI(false);
 #endif
             Logger.Info(nameof(OnLoad));
 #if VERBOSE
