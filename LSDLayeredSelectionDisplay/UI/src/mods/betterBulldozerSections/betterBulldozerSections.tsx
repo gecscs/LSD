@@ -7,6 +7,7 @@ import mod from "../../../mod.json";
 import { tool } from "cs2/bindings";
 import locale from "../lang/en-US.json";
 import { getModule } from "cs2/modding";
+import { Button } from "cs2/ui";
 
 // These establishes the binding with C# side. Without C# side game ui will crash.
 const raycastTarget$ = bindValue<number>(mod.id, 'RaycastTarget');
@@ -108,6 +109,7 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
         const vanillaSurfaceFilterDescription = translate("LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]", locale["LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]"]);
 
 
+
         // This gets the original component that we may alter and return.
         var result: JSX.Element = Component();        
         // It is important that we coordinate how to handle the tool options panel because it is possibile to create a mod that works for your mod but prevents others from doing the same thing.
@@ -129,7 +131,8 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
                             <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Plants) == VanillaFilters.Plants}         tooltip={descriptionTooltip(plantFilterTitle ,plantFilterDescription)}                      src={plantSrc}          onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Plants)}     className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
                             <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Decals) == VanillaFilters.Decals}         tooltip={descriptionTooltip(decalFilterTitle ,decalFilterDescription)}                      src={decalsSrc}         onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Decals)}     className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
                             <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.Props) == VanillaFilters.Props}           tooltip={descriptionTooltip(propFilterTitle ,propFilterDescription)}                        src={propsSrc}          onSelect={() => changeSelectedVanillaFilter(VanillaFilters.Props)}      className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
-                        </VanillaComponentResolver.instance.Section>                    
+                        </VanillaComponentResolver.instance.Section>       
+         
                     )}
                 </>
             );                   
