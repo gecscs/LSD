@@ -2,13 +2,13 @@ import { useLocalization } from "cs2/l10n";
 import { Panel, Portal, Scrollable,  } from "cs2/ui";
 import { bindValue, trigger, useValue } from "cs2/api";
 import locale from "../mods/lang/en-US.json";
-import styles from "./myComponent.module.scss";
+import styles from "./selectionListPanel.module.scss";
 import mod from "../../mod.json";
 
 const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
 const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
 
-export const MyComponent = () => {
+export const SelectionListPanel = () => {
     const { translate } = useLocalization();
     const listPanelTitle =          translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title",            locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title"]);
     const listPanelIntro = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro"]);

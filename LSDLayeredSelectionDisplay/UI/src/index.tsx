@@ -1,9 +1,9 @@
 import { ModRegistrar } from "cs2/modding";
-import { LSDLayeredSelectionDisplayComponent } from "mods/betterBulldozerSections/betterBulldozerSections";
+import { LSDLayeredSelectionDisplaySectionsComponent } from "mods/lsdLayeredSelectionDisplaySections/lsdLayeredSelectionDisplaySections";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../mod.json";
 import { ToolOptionsVisibility } from "mods/ToolOptionsVisible/toolOptionsVisible";
-import { MyComponent } from "components/myComponent";
+import { SelectionListPanel } from "components/selectionListPanel";
 
 const register: ModRegistrar = (moduleRegistry) => {
      // To find modules in the registry un comment the next line and go to the console on localhost:9444. You must have -uiDeveloperMode launch option enabled.
@@ -13,12 +13,12 @@ const register: ModRegistrar = (moduleRegistry) => {
      VanillaComponentResolver.setRegistry(moduleRegistry);
 
      // This extends mouse tooltip options with mod component. It may or may not work with gamepads.
-     moduleRegistry.extend("game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.tsx", 'MouseToolOptions', LSDLayeredSelectionDisplayComponent);
+    moduleRegistry.extend("game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.tsx", 'MouseToolOptions', LSDLayeredSelectionDisplaySectionsComponent);
 
      moduleRegistry.extend("game-ui/game/components/tool-options/tool-options-panel.tsx", 'useToolOptionsVisible', ToolOptionsVisibility);
 
     // This the panel that shows the marquee tool selected assets in a list and will allow selecting one from it.
-     moduleRegistry.append("Game", MyComponent);
+    moduleRegistry.append("Game", SelectionListPanel);
 
      // This is just to verify using UI console that all the component registriations was completed.
      console.log(mod.id + " UI module registrations completed.");

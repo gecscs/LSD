@@ -29,8 +29,8 @@ namespace LSD_Layered_Selection_Display.Patches
         /// <returns>True is not actually patching method. False if patching method.</returns>
         public static bool Prefix(out Entity entity, out RaycastHit hit)
         {
-            LSDLayeredSelectionDisplayUISystem betterBulldozerUISystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<LSDLayeredSelectionDisplayUISystem>();
-            if (betterBulldozerUISystem.SelectedRaycastTarget != LSDLayeredSelectionDisplayUISystem.RaycastTarget.Vanilla)
+            LSDLayeredSelectionDisplayUISystem lsdLayeredSelectionDIsplayUISystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<LSDLayeredSelectionDisplayUISystem>();
+            if (lsdLayeredSelectionDIsplayUISystem.SelectedRaycastTarget != LSDLayeredSelectionDisplayUISystem.RaycastTarget.Vanilla)
             {
                 entity = Entity.Null;
                 hit = default;
@@ -38,8 +38,8 @@ namespace LSD_Layered_Selection_Display.Patches
             }
 
             ToolSystem toolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<ToolSystem>();
-            DefaultToolSystem bulldozeToolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<DefaultToolSystem>();
-            if (toolSystem.activeTool != bulldozeToolSystem || !toolSystem.actionMode.IsGame())
+            DefaultToolSystem lsdLayeredSelectionDIsplaySystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<DefaultToolSystem>();
+            if (toolSystem.activeTool != lsdLayeredSelectionDIsplaySystem || !toolSystem.actionMode.IsGame())
             {
                 entity = Entity.Null;
                 hit = default;
@@ -53,7 +53,7 @@ namespace LSD_Layered_Selection_Display.Patches
             if (raycastHitSomething
                 && !toolSystem.EntityManager.HasComponent<Deleted>(result.m_Owner)
                 && !toolSystem.EntityManager.HasComponent<Game.Tools.EditorContainer>(result.m_Hit.m_HitEntity)
-                && betterBulldozerUISystem.SelectedRaycastTarget == LSDLayeredSelectionDisplayUISystem.RaycastTarget.Lanes)
+                && lsdLayeredSelectionDIsplayUISystem.SelectedRaycastTarget == LSDLayeredSelectionDisplayUISystem.RaycastTarget.Lanes)
             {
                 entity = Entity.Null;
                 hit = default;
@@ -63,17 +63,17 @@ namespace LSD_Layered_Selection_Display.Patches
 
             if (raycastHitSomething
                 && !toolSystem.EntityManager.HasComponent<Deleted>(result.m_Owner)
-                && betterBulldozerUISystem.SelectedRaycastTarget == LSDLayeredSelectionDisplayUISystem.RaycastTarget.Vanilla)
+                && lsdLayeredSelectionDIsplayUISystem.SelectedRaycastTarget == LSDLayeredSelectionDisplayUISystem.RaycastTarget.Vanilla)
             {
-                if (((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Buildings) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Buildings
+                if (((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Buildings) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Buildings
                     && (toolSystem.EntityManager.HasComponent<Game.Buildings.Building>(result.m_Hit.m_HitEntity)
                     || toolSystem.EntityManager.HasComponent<Game.Buildings.Building>(result.m_Owner)))
-                    || ((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Trees) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Trees
+                    || ((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Trees) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Trees
                     && toolSystem.EntityManager.HasComponent<Game.Objects.Tree>(result.m_Hit.m_HitEntity))
-                    || ((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Plants) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Plants
+                    || ((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Plants) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Plants
                     && toolSystem.EntityManager.HasComponent<Game.Objects.Plant>(result.m_Hit.m_HitEntity)
                     && !toolSystem.EntityManager.HasComponent<Game.Objects.Tree>(result.m_Hit.m_HitEntity))
-                    || ((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Decals) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Decals
+                    || ((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Decals) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Decals
                     && toolSystem.EntityManager.TryGetComponent(result.m_Hit.m_HitEntity, out PrefabRef prefabRef)
                     && toolSystem.EntityManager.TryGetBuffer(prefabRef, isReadOnly: true, out DynamicBuffer<SubMesh> submeshes)
                     && submeshes.Length > 0 && toolSystem.EntityManager.TryGetComponent(submeshes[0].m_SubMesh, out MeshData meshData)
@@ -85,21 +85,21 @@ namespace LSD_Layered_Selection_Display.Patches
                     return false;
                 }
 
-                if ((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Props) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Props &&
+                if ((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Props) != LSDLayeredSelectionDisplayUISystem.VanillaFilters.Props &&
                    ((toolSystem.EntityManager.HasComponent<Game.Objects.Object>(result.m_Hit.m_HitEntity) &&
                      toolSystem.EntityManager.HasComponent<Game.Objects.Static>(result.m_Hit.m_HitEntity)) ||
                     (toolSystem.EntityManager.HasComponent<Game.Objects.Object>(result.m_Owner) &&
                      toolSystem.EntityManager.HasComponent<Game.Objects.Static>(result.m_Owner))))
                 {
-                    if (((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Buildings) == LSDLayeredSelectionDisplayUISystem.VanillaFilters.Buildings
+                    if (((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Buildings) == LSDLayeredSelectionDisplayUISystem.VanillaFilters.Buildings
                     && (toolSystem.EntityManager.HasComponent<Game.Buildings.Building>(result.m_Hit.m_HitEntity)
                     || toolSystem.EntityManager.HasComponent<Game.Buildings.Building>(result.m_Owner)))
-                    || ((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Trees) == LSDLayeredSelectionDisplayUISystem.VanillaFilters.Trees
+                    || ((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Trees) == LSDLayeredSelectionDisplayUISystem.VanillaFilters.Trees
                     && toolSystem.EntityManager.HasComponent<Game.Objects.Tree>(result.m_Hit.m_HitEntity))
-                    || ((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Plants) == LSDLayeredSelectionDisplayUISystem.VanillaFilters.Plants
+                    || ((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Plants) == LSDLayeredSelectionDisplayUISystem.VanillaFilters.Plants
                     && toolSystem.EntityManager.HasComponent<Game.Objects.Plant>(result.m_Hit.m_HitEntity)
                     && !toolSystem.EntityManager.HasComponent<Game.Objects.Tree>(result.m_Hit.m_HitEntity))
-                    || ((betterBulldozerUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Decals) == LSDLayeredSelectionDisplayUISystem.VanillaFilters.Decals
+                    || ((lsdLayeredSelectionDIsplayUISystem.SelectedVanillaFilters & LSDLayeredSelectionDisplayUISystem.VanillaFilters.Decals) == LSDLayeredSelectionDisplayUISystem.VanillaFilters.Decals
                     && toolSystem.EntityManager.TryGetComponent(result.m_Hit.m_HitEntity, out PrefabRef prefabRef1)
                     && toolSystem.EntityManager.TryGetBuffer(prefabRef1, isReadOnly: true, out DynamicBuffer<SubMesh> submeshes1)
                     && submeshes1.Length > 0 && toolSystem.EntityManager.TryGetComponent(submeshes1[0].m_SubMesh, out MeshData meshData1)

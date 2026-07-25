@@ -74,15 +74,14 @@ function descriptionTooltip(tooltipTitle: string | null, tooltipDescription: str
     );
 }
 
-export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Component : any) => {
+export const LSDLayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend = (Component : any) => {
     // I believe you should not put anything here.
     return (props) => {
         // This defines aspects of the components.
         const {children, ...otherProps} = props || {};
 
         // These get the value of the bindings.
-        //const subElementBulldozerToolActive = useValue(subElementBulldozeToolActive$);
-        const bulldozeToolActive = useValue(tool.activeTool$).id == tool.DEFAULT_TOOL;
+        const defaultToolActive = useValue(tool.activeTool$).id == tool.DEFAULT_TOOL;
         const selectedVanillaFilters = useValue(selectedVanillaFilters$);
         const isGame = useValue(isGame$);
         const raycastTarget = useValue(raycastTarget$);
@@ -126,8 +125,7 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
         // This gets the original component that we may alter and return.
         var result: JSX.Element = Component();        
         // It is important that we coordinate how to handle the tool options panel because it is possibile to create a mod that works for your mod but prevents others from doing the same thing.
-        // If bulldoze tool active add better bulldozer sections.
-        if (bulldozeToolActive && isGame) {
+        if (defaultToolActive && isGame) {
             result.props.children?.push(
                 /* 
                 All properties of the buttons and sections have been previously defined in variables above.

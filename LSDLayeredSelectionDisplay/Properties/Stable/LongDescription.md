@@ -41,35 +41,31 @@ Terminology:
 * Extensions are visible upgrades connected directly to the main building.
 * 'Permanently Removes' means that anytime the object would regenerate it will be automatically removed shortly afterwards.
 
-Selection Modes:
-* Single Item - similar but more powerful than DevUI: Simulation -> Debug Toggle + UIBindings -> ActionsSection -> Delete. Props, trees, decals, fences, and hedges can/will REGENERATE later. Networks do not regenerate.
-* Exact Match - Selects all exact matches of that sub-element. (i.e. All oak trees in this park). Networks are not supported. 'Permanently Removes' props, trees, decals, fences, hedges.
-* Similar Category - Selects all sub-elements in a similar category within the building, subbuilding, extension or network and 'permanently removes' them. Categories include: trees, plants, street lights, trash bins, branding objects and advertisements, activity locations, and all hedges and fences. (i.e. all trees in this asset). 'Permanently Removes' props, trees, decals, fences, hedges.
-* Reset Asset - Reset assets by selecting ones that have any sub-elements 'permanently removed' using Exact Match or Similar Category.
+## Dependencies
+Unified Icon Library
 
-## Safely Remove Button
-There is a safely remove button in the options menu. It is only recommeneded if you have been using Exact Match and Similar Category to remove sub-elements. Pressing this button and confirming it will reset all assets that have had sub-elements 'permanently removed'.
+## Donations
+If you want to say thank you with a donation you can do so on Paypal or Buy me a Coffee.
 
-## Invisible Paths and Markers
-Drawing invisible paths and markers is an unsupported feature of the game. You need DevUI to access the 'Add Object' menu via the home button to draw invisible paths and markers, unless another mod makes this more convenient.
+## Translations
+I am looking for volunteers to help translate the mod into the other languages. For those interested please discuss the translation project in the discord link. CSL2:CODEMODS -&gt; mods-wip -&gt; Better Bulldozer: Translations. CrowdIn Link available there or here.
+	  The mod is fully or partially translated into: Chinese Simplified, German, Korean, Polish, Spanish, Chinese Traditional, French, Italian, and Russian.
 
-With the Bulldoze tool you can select an icon and filters to show and EXCLUSIVELY demolish invisible networks or invisible parking decals, various spots, points, and spawners, BUT SAVE BEFORE HAND!
+	  ## Supplemental Mods
+	  I18n Everywhere and European Portuguese Localization (Only needed for European Portuguese Translations)
 
-One configuration I built/demolished resulted in a crash to desktop because I left a segment that was too short. Deleting them in a different order worked.
+	  # Detailed Description
+	  * Filters for the vanilla default tool with no tool modes selected including: Buildings, Trees, Plants, Decals, and Props. Toggling these filters off makes it so the default tool cannot select those items.
 
-# Support
-I will respond on the code modding channels on **Cities: Skylines Modding Discord**
 
-# Credits 
-* yenyang - Mod Author 
-* phillycheese - Code Contribution
-* Chameleon TBN - Testing, Feedback, Icons, and Logo
-* Sully - Testing, Feedback, and Promotional Material.
-* CloverPie - Promotional Material.
-* Klyte45, T.D.W., Algernon - Help with UI, Cooperative Development and Code Sharing
-* krzychu124, Triton Supreme, Luca, and Quboid - Cooperative Development and Code Sharing
-* City Rat - Icons
-* Localization - Hendrix (German), RilkeXS (Chinese Simplified), TwotoolusFly_LSh.st (Korean), OWSEEX and krugl1y (Russian), felipecollucci (Brazilian Portuguese), Karmel68 and Lisek (Polish), Citadino (Spanish), Karg and Morgan (French), yui hei lai and allegretic (Chinese Traditional), Furios and stefano.andreosi (Italian), Ti4goc (Portuguese), GeraspteGatenKaas (Dutch)
-* Testing, Feedback - Dante, starrysum, HarbourMaster Jay, Dome, Tigon Ologdring, BruceyBoy, RaftermanNZ, Elektrotek, SpaceChad, CanadianMoosePlays
+	  # Support
+	  I will respond on the code modding channels on **Cities: Skylines Modding Discord**
 
-This mod is not affiliated with any C:S1 mod with similar titles. 
+	  # Credits
+	  * 0belix - Mod Author, Original Idea and Code Contribution
+	  * yenyang - Mentor and author of the original Better Bulldozer mod which served as the foundation for this mod and the MoveIt mod where the Marquee Tool code was leveraged from, Code Contribution, and Testing
+	  * Gagaxmxm - Expanding my initial idea by suggesting using a marquee tool for selection of multiple assets as opposed to the default tool attempting to detect all assets beneath the cursor.
+	  * Localization - XXXX (German), XXXX (Chinese Simplified), XXXX (Korean), XXXX (Russian), XXXX (Polish), XXXX (Spanish), XXXX (French), XXXX (Chinese Traditional), XXXX (Italian), XXXX (Dutch)
+	  * Testing, Feedback - yenyang, XXXX
+
+	  This mod is not affiliated with any C:S1 mod with similar titles.

@@ -1,4 +1,4 @@
-﻿// <copyright file="BetterBulldozerUISystem.cs" company="0belix's Mods. MIT License">
+﻿// <copyright file="LSDLayeredSelectionDisplayUISystem.cs" company="0belix's Mods. MIT License">
 // Copyright (c) 0belix's Mods. MIT License. All rights reserved.
 // </copyright>
 
@@ -28,7 +28,7 @@ namespace LSD_Layered_Selection_Display.Systems
     using static Colossal.AssetPipeline.Diagnostic.Report;
 
     /// <summary>
-    /// UI system for Better Bulldozer extensions to the bulldoze tool.
+    /// UI system for LSD extensions to the default tool.
     /// </summary>
     public partial class LSDLayeredSelectionDisplayUISystem : ExtendedUISystemBase
     {
@@ -65,7 +65,7 @@ namespace LSD_Layered_Selection_Display.Systems
         }
 
         /// <summary>
-        /// An enum used to communicate filters for vanilla bulldozer.
+        /// An enum used to communicate filters for default tool.
         /// </summary>
         public enum VanillaFilters
         {
@@ -121,7 +121,7 @@ namespace LSD_Layered_Selection_Display.Systems
         public RaycastTarget SelectedRaycastTarget { get => (RaycastTarget)m_RaycastTarget.value; }
 
         /// <summary>
-        /// Gets a value indicating the selected vanilla bulldoze tool filters.
+        /// Gets a value indicating the selected default tool filters.
         /// </summary>
         public VanillaFilters SelectedVanillaFilters { get => m_SelectedVanillaFilters.Value; }
 
@@ -149,14 +149,11 @@ namespace LSD_Layered_Selection_Display.Systems
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
 
             // Initialize the marquee tool selection state to false.
-            // m_IsMarqueeToolSelected = CreateBinding<bool>("IsMarqueeToolSelected", false);
-
             m_IsMarqueeToolSelected = new ValueBinding<bool>(ModId, "IsMarqueeToolSelected", false);
 
             AddBinding(m_IsMarqueeToolSelected);
 
             // This handles the event when the marquee tool is selected in the UI.
-            // CreateTrigger("OnChangeMarqueeToolSelected", (bool isSelected) => OnChangeMarqueeToolSelected(isSelected));
             AddBinding(new TriggerBinding(ModId, "OnChangeMarqueeToolSelected", OnChangeMarqueeToolSelected));
         }
 
@@ -207,7 +204,6 @@ namespace LSD_Layered_Selection_Display.Systems
 
             m_IsGame.Value = false;
 
-            // m_IsMarqueeToolSelected.Update(false);
             m_IsMarqueeToolSelected.Update(false);
         }
 
@@ -227,13 +223,13 @@ namespace LSD_Layered_Selection_Display.Systems
         /// </param>
         private void OnChangeMarqueeToolSelected()
         {
-            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (before updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
+            // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (before updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
 
             // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked. isSelected: {isSelected}");
             m_IsMarqueeToolSelected.Update(!m_IsMarqueeToolSelected.value);
 
             // m_IsMarqueeToolSelected.Update(isSelected);
-            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
+            // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
         }
 
         private void ChangeVanillaFilters(VanillaFilters toggledFilter)
