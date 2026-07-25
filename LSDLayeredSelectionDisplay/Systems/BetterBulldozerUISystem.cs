@@ -210,6 +210,7 @@ namespace LSD_Layered_Selection_Display.Systems
         /// </param>
         private void OnChangeMarqueeToolSelected(bool isSelected)
         {
+            m_Log.Info($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked. isSelected: {isSelected}");
             m_IsMarqueeToolSelected.Value = isSelected;
         }
 
