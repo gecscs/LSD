@@ -17,6 +17,7 @@ const register: ModRegistrar = (moduleRegistry) => {
 
      moduleRegistry.extend("game-ui/game/components/tool-options/tool-options-panel.tsx", 'useToolOptionsVisible', ToolOptionsVisibility);
 
+    // This the panel that shows the marquee tool selected assets in a list and will allow selecting one from it.
      moduleRegistry.append("Game", MyComponent);
 
      // This is just to verify using UI console that all the component registriations was completed.

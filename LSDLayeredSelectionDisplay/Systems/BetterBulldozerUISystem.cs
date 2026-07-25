@@ -45,6 +45,8 @@ namespace LSD_Layered_Selection_Display.Systems
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
 
+        private ValueBindingHelper<bool> m_IsMarqueeToolSelected;
+
         /// <summary>
         /// An enum to handle different raycast target options.
         /// </summary>
@@ -144,6 +146,12 @@ namespace LSD_Layered_Selection_Display.Systems
 
             // These handle events activating actions triggered by clicking buttons in the UI.
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
+
+            // Initialize the marquee tool selection state to false.
+            m_IsMarqueeToolSelected = CreateBinding<bool>("IsMarqueeToolSelected ", false);
+
+            // This handles the event when the marquee tool is selected in the UI.
+            CreateTrigger("OnChangeMarqueeToolSelected", (bool isSelected) => OnChangeMarqueeToolSelected(isSelected));
         }
 
         /// <inheritdoc/>
@@ -192,6 +200,17 @@ namespace LSD_Layered_Selection_Display.Systems
             }
 
             m_IsGame.Value = false;
+        }
+
+        /// <summary>
+        /// Handles the event when the marquee tool is selected in the UI.
+        /// </summary>
+        /// <param name="isSelected">
+        /// A boolean indicating whether the marquee tool is selected.
+        /// </param>
+        private void OnChangeMarqueeToolSelected(bool isSelected)
+        {
+            m_IsMarqueeToolSelected.Value = isSelected;
         }
 
         private void ChangeVanillaFilters(VanillaFilters toggledFilter)

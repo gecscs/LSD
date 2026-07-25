@@ -13,6 +13,7 @@ import { Button } from "cs2/ui";
 const raycastTarget$ = bindValue<number>(mod.id, 'RaycastTarget');
 const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
 const selectedVanillaFilters$ = bindValue<VanillaFilters>(mod.id, "SelectedVanillaFilters");
+const isMarqueeToolActive$ = bindValue<boolean>(mod.id, "IsMarqueeToolActive", false);
 
 
 // These contain the coui paths to Unified Icon Library svg assets
@@ -78,6 +79,8 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
         const selectedVanillaFilters = useValue(selectedVanillaFilters$);
         const isGame = useValue(isGame$);
         const raycastTarget = useValue(raycastTarget$);
+
+        const isMarqueeToolActive = useValue(isMarqueeToolActive$);
         
         // Saving strings for events and translations.
         const surfacesID =              "SurfacesFilterButton";

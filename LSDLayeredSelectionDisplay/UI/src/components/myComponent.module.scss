@@ -21,6 +21,10 @@
     border-radius: 2rem;
     height: 170rem;
 }
+.scrollablePanel > div {
+    border-radius: 4rem; // slightly rounded inner wrapper
+    overflow: hidden;    // clips the UL inside it
+}
 
 ul.listedAssets {
     background-color: rgba(156, 148, 148, 0.2);

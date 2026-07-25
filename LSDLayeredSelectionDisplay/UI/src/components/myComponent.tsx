@@ -1,15 +1,24 @@
 import { useLocalization } from "cs2/l10n";
-import { Panel, Portal, Scrollable } from "cs2/ui";
+import { Panel, Portal, Scrollable,  } from "cs2/ui";
+import { bindValue, trigger, useValue } from "cs2/api";
 import locale from "../mods/lang/en-US.json";
 import styles from "./myComponent.module.scss";
+import mod from "../../mod.json";
+
+const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
+const isMarqueeToolActive$ = bindValue<boolean>(mod.id, "IsMarqueeToolActive", false);    
 
 export const MyComponent = () => {
     const { translate } = useLocalization();
     const listPanelTitle =          translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title",            locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title"]);
-    const listPanelIntro =          translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro",            locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro"]);
+    const listPanelIntro = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro"]);
+
+    const isGame = useValue(isGame$);
+    const isMarqueeToolActive = useValue(isMarqueeToolActive$);
 
    return (
         <>
+        {(isGame && isMarqueeToolActive) && (
             <Portal>
                 <Panel 
                     className={styles.mainPanel}
@@ -47,6 +56,8 @@ export const MyComponent = () => {
                   </Scrollable>
                 </Panel>
             </Portal>
+             
+        )}
         </>
     );
 }
