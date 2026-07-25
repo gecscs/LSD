@@ -18,6 +18,7 @@ namespace LSD_Layered_Selection_Display.Systems
     using Game.Rendering;
     using Game.SceneFlow;
     using Game.Tools;
+    using Game.UI;
     using Game.UI.InGame;
     using LSD_Layered_Selection_Display.Extensions;
     using LSD_Layered_Selection_Display.Utils;
@@ -45,7 +46,7 @@ namespace LSD_Layered_Selection_Display.Systems
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
 
-        private ValueBindingHelper<bool> m_IsMarqueeToolSelected;
+        private ValueBinding<bool> m_IsMarqueeToolSelected;
 
         /// <summary>
         /// An enum to handle different raycast target options.
@@ -148,10 +149,15 @@ namespace LSD_Layered_Selection_Display.Systems
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
 
             // Initialize the marquee tool selection state to false.
-            m_IsMarqueeToolSelected = CreateBinding<bool>("IsMarqueeToolSelected ", false);
+            // m_IsMarqueeToolSelected = CreateBinding<bool>("IsMarqueeToolSelected", false);
+
+            m_IsMarqueeToolSelected = new ValueBinding<bool>(ModId, "IsMarqueeToolSelected", false);
+
+            AddBinding(m_IsMarqueeToolSelected);
 
             // This handles the event when the marquee tool is selected in the UI.
-            CreateTrigger("OnChangeMarqueeToolSelected", (bool isSelected) => OnChangeMarqueeToolSelected(isSelected));
+            // CreateTrigger("OnChangeMarqueeToolSelected", (bool isSelected) => OnChangeMarqueeToolSelected(isSelected));
+            AddBinding(new TriggerBinding(ModId, "OnChangeMarqueeToolSelected", OnChangeMarqueeToolSelected));
         }
 
         /// <inheritdoc/>
@@ -200,6 +206,17 @@ namespace LSD_Layered_Selection_Display.Systems
             }
 
             m_IsGame.Value = false;
+
+            // m_IsMarqueeToolSelected.Update(false);
+            m_IsMarqueeToolSelected.Update(false);
+        }
+
+        /// <summary>
+        /// Handles the update logic for the Better Bulldozer UI system.
+        /// </summary>
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
         }
 
         /// <summary>
@@ -208,10 +225,15 @@ namespace LSD_Layered_Selection_Display.Systems
         /// <param name="isSelected">
         /// A boolean indicating whether the marquee tool is selected.
         /// </param>
-        private void OnChangeMarqueeToolSelected(bool isSelected)
+        private void OnChangeMarqueeToolSelected()
         {
-            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked. isSelected: {isSelected}");
-            m_IsMarqueeToolSelected.Value = isSelected;
+            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (before updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
+
+            // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked. isSelected: {isSelected}");
+            m_IsMarqueeToolSelected.Update(!m_IsMarqueeToolSelected.value);
+
+            // m_IsMarqueeToolSelected.Update(isSelected);
+            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
         }
 
         private void ChangeVanillaFilters(VanillaFilters toggledFilter)

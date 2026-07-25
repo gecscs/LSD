@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocalization } from "cs2/l10n";
 import {ModuleRegistryExtend} from "cs2/modding";
-import { bindValue, trigger, useValue } from "cs2/api";
+import { bindValue, trigger, useValue, call } from "cs2/api";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../../../mod.json";
 import { tool } from "cs2/bindings";
@@ -15,8 +15,7 @@ import marqueeToolActiveSrc from "../../img/icon_Marquee_Active.svg";
 const raycastTarget$ = bindValue<number>(mod.id, 'RaycastTarget');
 const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
 const selectedVanillaFilters$ = bindValue<VanillaFilters>(mod.id, "SelectedVanillaFilters");
-const isMarqueeToolActive$ = bindValue<boolean>(mod.id, "IsMarqueeToolActive", false);
-
+const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
 
 // These contain the coui paths to Unified Icon Library svg assets
 const uilStandard =                         "coui://uil/Standard/";
@@ -45,8 +44,8 @@ function changeSelectedVanillaFilter(filter: VanillaFilters) {
     trigger(mod.id, "ChangeVanillaFilter", filter);
 }
 
-function onChangeMarqueeToolSelected(isSelected: boolean) {
-    trigger(mod.id, "OnChangeMarqueeToolSelected", isSelected);
+function onChangeMarqueeToolSelected() {
+    trigger(mod.id, "OnChangeMarqueeToolSelected");
 }
 
 enum VanillaFilters 
@@ -88,9 +87,9 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
         const isGame = useValue(isGame$);
         const raycastTarget = useValue(raycastTarget$);
 
-        const isMarqueeToolActive = useValue(isMarqueeToolActive$);
+        const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
 
-        const marqueeToolIcon = isMarqueeToolActive ? marqueeToolActiveSrc : marqueeToolSrc;
+        const marqueeToolIcon = isMarqueeToolSelected ? marqueeToolActiveSrc : marqueeToolSrc;
         
         // Saving strings for events and translations.
         const surfacesID =              "SurfacesFilterButton";
@@ -138,7 +137,7 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
                         // This section is only showing while using vanilla bulldozer.
                         <>  
                             <VanillaComponentResolver.instance.Section title={toolsSectionTitle}>
-                                <VanillaComponentResolver.instance.ToolButton  onSelect={() => onChangeMarqueeToolSelected(!isMarqueeToolActive)}     tooltip={marqueeToolTooltip}          src={marqueeToolIcon}          className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}></VanillaComponentResolver.instance.ToolButton>
+                                <VanillaComponentResolver.instance.ToolButton  onSelect={() => onChangeMarqueeToolSelected()}     tooltip={marqueeToolTooltip}          src={marqueeToolIcon}          className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}></VanillaComponentResolver.instance.ToolButton>
                             </VanillaComponentResolver.instance.Section>
                             <VanillaComponentResolver.instance.Section title={filterSectionTitle}> 
                                 <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.All) == VanillaFilters.All}               tooltip={descriptionTooltip(allFiltersTitle ,allFiltersDescription)}                        src={allSrc}            onSelect={() => changeSelectedVanillaFilter(VanillaFilters.All)}        className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>

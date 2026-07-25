@@ -6,7 +6,7 @@ import styles from "./myComponent.module.scss";
 import mod from "../../mod.json";
 
 const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
-const isMarqueeToolActive$ = bindValue<boolean>(mod.id, "IsMarqueeToolActive", false);    
+const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
 
 export const MyComponent = () => {
     const { translate } = useLocalization();
@@ -14,11 +14,11 @@ export const MyComponent = () => {
     const listPanelIntro = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro"]);
 
     const isGame = useValue(isGame$);
-    const isMarqueeToolActive = useValue(isMarqueeToolActive$);
+    const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
 
    return (
         <>
-        {(isGame && isMarqueeToolActive) && (
+        {(isGame && isMarqueeToolSelected) && (
             <Portal>
                 <Panel 
                     className={styles.mainPanel}
