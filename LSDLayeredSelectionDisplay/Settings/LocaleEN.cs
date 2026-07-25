@@ -72,6 +72,8 @@ namespace LSD_Layered_Selection_Display.Settings
                 { TooltipDescriptionKey("VanillaSurfaceFilter"), "Toggling this off will prevent the Bulldoze Tool from removing surfaces." },
                 { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title", "LSD - Selected Assets" },
                 { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", "Click any asset from the list to open its info panel." },
+                { "LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools", "Tools" },
+                { "LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", "Click to use the marquee tool to select multiple objects in an area." },
             };
         }
 

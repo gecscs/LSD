@@ -8,6 +8,8 @@ import { tool } from "cs2/bindings";
 import locale from "../lang/en-US.json";
 import { getModule } from "cs2/modding";
 import { Button } from "cs2/ui";
+import marqueeToolSrc from "../../img/icon_Marquee_Off.svg";
+import marqueeToolActiveSrc from "../../img/icon_Marquee_Active.svg";
 
 // These establishes the binding with C# side. Without C# side game ui will crash.
 const raycastTarget$ = bindValue<number>(mod.id, 'RaycastTarget');
@@ -30,6 +32,8 @@ const propsSrc =            uilStandard + "BenchAndLampProps.svg";
 // Saving strings for events and translations.
 const tooltipDescriptionPrefix ="LSD_LAYERED_SELECTION_DISPLAY_DESCRIPTION.";
 const sectionTitlePrefix =      "LSD_LAYERED_SELECTION_DISPLAY.";
+const toolsSectionTitle =          "LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools";
+const marqueeToolTooltip =          "LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip";
 
 // This functions trigger an event on C# side and C# designates the method to implement.
 function handleClick(eventName: string) {
@@ -85,6 +89,8 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
         const raycastTarget = useValue(raycastTarget$);
 
         const isMarqueeToolActive = useValue(isMarqueeToolActive$);
+
+        const marqueeToolIcon = isMarqueeToolActive ? marqueeToolActiveSrc : marqueeToolSrc;
         
         // Saving strings for events and translations.
         const surfacesID =              "SurfacesFilterButton";
@@ -114,6 +120,8 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
         const propFilterTitle = translate("LSDLayeredSelectionDisplay.TOOLTIP_TITLE[PropFilter]" ,locale["LSDLayeredSelectionDisplay.TOOLTIP_TITLE[PropFilter]"]);
         const propFilterDescription = translate("LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[PropFilter]" ,locale["LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[PropFilter]"]);
         const vanillaSurfaceFilterDescription = translate("LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]", locale["LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]"]);
+        const toolsSectionTitle = translate("LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools", locale["LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools"]);
+        const marqueeToolTooltip = translate("LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", locale["LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip"]);
 
 
         // This gets the original component that we may alter and return.
@@ -127,10 +135,10 @@ export const LSDLayeredSelectionDisplayComponent: ModuleRegistryExtend = (Compon
                 */
                 <>
                     { raycastTarget == 0 && (   
-                        <>                 
-                            // This section is only showing while using vanilla bulldozer.
-                            <VanillaComponentResolver.instance.Section title={"Tools"}>
-                                <VanillaComponentResolver.instance.ToolButton  onSelect={() => onChangeMarqueeToolSelected(!isMarqueeToolActive)}     tooltip={"Click to use the marquee tool to select multiple objects in an area"}          src={surfacesSrc}          className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}></VanillaComponentResolver.instance.ToolButton>
+                        // This section is only showing while using vanilla bulldozer.
+                        <>  
+                            <VanillaComponentResolver.instance.Section title={toolsSectionTitle}>
+                                <VanillaComponentResolver.instance.ToolButton  onSelect={() => onChangeMarqueeToolSelected(!isMarqueeToolActive)}     tooltip={marqueeToolTooltip}          src={marqueeToolIcon}          className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}></VanillaComponentResolver.instance.ToolButton>
                             </VanillaComponentResolver.instance.Section>
                             <VanillaComponentResolver.instance.Section title={filterSectionTitle}> 
                                 <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.All) == VanillaFilters.All}               tooltip={descriptionTooltip(allFiltersTitle ,allFiltersDescription)}                        src={allSrc}            onSelect={() => changeSelectedVanillaFilter(VanillaFilters.All)}        className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>
