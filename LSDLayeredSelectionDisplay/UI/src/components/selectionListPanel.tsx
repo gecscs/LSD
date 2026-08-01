@@ -6,10 +6,23 @@ import styles from "./selectionListPanel.module.scss";
 import mod from "../../mod.json";
 import { Entity } from "cs2/bindings";
 import { SelectedEntities } from "../Domain/SelectedEntities";
+import { SelectedEntity } from "../Domain/SelectedEntity";
 
 const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
 const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
 const selectedEntities$ = bindValue<SelectedEntities>(mod.id, "SelectedEntities", { Entities: [] });
+
+function OnEntityHover(index: number, version: number) {
+    trigger(mod.id, "OnEntityHover", index, version);
+}
+
+function OnEntityLeave(index: number, version: number) {
+    trigger(mod.id, "OnEntityLeave", index, version);
+}    
+
+function OnEntitySelect(index: number, version: number) {
+    trigger(mod.id, "OnEntitySelect", index, version);
+}   
 
 export const SelectionListPanel = () => {
     const { translate } = useLocalization();
@@ -32,7 +45,10 @@ export const SelectionListPanel = () => {
                   <Scrollable className={styles.scrollablePanel}>
                     <ul className={styles.listedAssets}>
                         {selectedEntities.Entities.map((e) => (
-                            <li key={e.Index}>{e.Index + " : " + e.Version}</li>
+                            <li 
+                                onSelect={() => OnEntitySelect(e.Index, e.Version)}
+                                onMouseEnter={() => OnEntityHover(e.Index, e.Version)}
+                                onMouseLeave={() => OnEntityLeave(e.Index, e.Version)} key={e.Index}>{e.Index + " : " + e.Version}</li>
                         ))}
                     </ul>
                   </Scrollable>

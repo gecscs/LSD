@@ -65,7 +65,12 @@ namespace LSD_Layered_Selection_Display.Systems
         // private GetterValueBinding<List<Entity>> m_MoveItSelectedEntities;
         private JobHandle m_writeDeps;
         private JobHandle m_readDeps;
-        private ModificationBarrier1 m_ModificationBarrier1;
+        // private ModificationBarrier1 m_ModificationBarrier1;
+
+        private Entity m_HoveredEntity = Entity.Null;
+        private Entity m_PreviousHoveredEntity = Entity.Null;
+
+        private HoverState m_HoverState;
 
         /// <summary>
         /// Get data, can be used inside or outside of system
@@ -174,6 +179,8 @@ namespace LSD_Layered_Selection_Display.Systems
         /// </summary>
         public VanillaFilters SelectedVanillaFilters { get => m_SelectedVanillaFilters.Value; }
 
+        public HoverState HoverState => m_HoverState;
+
         /// <inheritdoc/>
         protected override void OnCreate()
         {
@@ -188,7 +195,9 @@ namespace LSD_Layered_Selection_Display.Systems
             m_ToolUISystem = World.GetOrCreateSystemManaged<ToolUISystem>();
             m_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_ActiveDefaultToolSystem = m_DefaultToolSystem;
-            m_ModificationBarrier1 = World.GetOrCreateSystemManaged<ModificationBarrier1>();
+
+            // m_ModificationBarrier1 = World.GetOrCreateSystemManaged<ModificationBarrier1>();
+            m_HoverState = new HoverState();
 
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
@@ -206,6 +215,10 @@ namespace LSD_Layered_Selection_Display.Systems
             // This handles the event when the marquee tool is selected in the UI.
             AddBinding(new TriggerBinding(ModId, "OnChangeMarqueeToolSelected", OnChangeMarqueeToolSelected));
 
+            CreateTrigger("OnEntitySelect", (int index, int version) => OnEntitySelect(index, version));
+            CreateTrigger("OnEntityHover", (int index, int version) => OnEntityHover(index, version));
+            CreateTrigger("OnEntityLeave", (int index, int version) => OnEntityLeave(index, version));
+
             var moveItTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID));
 
             AddBinding(m_SelectedEntitiesBinding = new ValueBinding<SelectedEntities>(ModId, "SelectedEntities", new SelectedEntities() { Entities = new List<SelectedEntity>() }));
@@ -215,12 +228,25 @@ namespace LSD_Layered_Selection_Display.Systems
             //    "SelectedEntities",
             //    () => (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(moveItTool),
             //    new CollectionWriter<Entity>()));
+
+            EntityQuery m_HighlightedQuery = GetEntityQuery(new EntityQueryDesc
+            {
+                All = new[] { ComponentType.ReadOnly<Highlighted>() },
+                None = new[]
+                {
+                    ComponentType.ReadOnly<Deleted>(),
+                    ComponentType.ReadOnly<Temp>(),
+                    ComponentType.ReadOnly<Overridden>(),
+                },
+            });
         }
 
         /// <inheritdoc/>
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
         {
             base.OnGameLoadingComplete(purpose, mode);
+
+            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} before getting Move It tool.");
 
             if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID)) is ToolBaseSystem moveItTool)
             {
@@ -238,6 +264,8 @@ namespace LSD_Layered_Selection_Display.Systems
             {
                 m_Log.Info($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} move it tool not found");
             }
+
+            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} after attempting to get Move It tool.");
 
             m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Old Tool Order:");
             foreach (ToolBaseSystem toolBaseSystem in m_ToolSystem.tools)
@@ -335,6 +363,98 @@ namespace LSD_Layered_Selection_Display.Systems
 
             // m_IsMarqueeToolSelected.Update(isSelected);
             // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
+        }
+
+        /// <summary>
+        /// Handles the event when an entity is selected in the UI.
+        /// </summary>
+        /// <param name="index"> The index of the selected entity. </param>
+        /// <param name="version"> The version of the selected entity. </param>
+        private void OnEntitySelect(int index, int version)
+        {
+            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity selected: {index}, {version}");
+
+            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity selected: {index}, {version}");
+
+            Entity entity = new Entity
+            {
+                Index = index,
+                Version = version,
+            };
+
+            if (EntityManager.Exists(entity))
+            {
+                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity exists: {index}, {version}");
+
+                m_ToolSystem.selected = entity;
+                m_ToolSystem.activeTool = m_DefaultToolSystem;
+            }
+            else
+            {
+                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity does not exist: {index}, {version}");
+            }
+        }
+
+        /// <summary>
+        /// Handles the event when an entity is hovered over in the UI.
+        /// </summary>
+        /// <param name="index"> The index of the entity being hovered over. </param>
+        /// <param name="version"> The version of the entity. </param>
+        private void OnEntityHover(int index, int version)
+        {
+            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntityHover)} Entity hovered: {index}, {version}");
+
+            Entity entity = new Entity
+            {
+                Index = index,
+                Version = version,
+            };
+
+            if (EntityManager.Exists(entity))
+            {
+                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntityHover)} Entity exists: {index}, {version}");
+                m_HoverState.HoveredEntity = entity;
+                m_HoverState.Dirty = true;
+
+                // EntityManager.AddComponent<Highlighted>(entity);
+            }
+            else
+            {
+                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntityHover)} Entity does not exist: {index}, {version}");
+            }
+        }
+
+        /// <summary>
+        /// Handles the event when an entity is no longer hovered over in the UI.
+        /// </summary>
+        /// <param name="index"> The index of the entity that is no longer being hovered over. </param>
+        /// <param name="version"> The version of the entity. </param>
+        private void OnEntityLeave(int index, int version)
+        {
+            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntityLeave)} Entity left: {index}, {version}");
+
+            Entity entity = new Entity
+            {
+                Index = index,
+                Version = version,
+            };
+
+            if (EntityManager.Exists(entity))
+            {
+                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntityLeave)} Entity exists: {index}, {version}");
+
+                if (m_HoverState.HoveredEntity == entity)
+                {
+                    m_HoverState.HoveredEntity = Entity.Null;
+                    m_HoverState.Dirty = true;
+                }
+
+                // EntityManager.RemoveComponent<Highlighted>(entity);
+            }
+            else
+            {
+                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntityLeave)} Entity does not exist: {index}, {version}");
+            }
         }
 
         private void ChangeVanillaFilters(VanillaFilters toggledFilter)

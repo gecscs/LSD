@@ -20,5 +20,18 @@ namespace LSD_Layered_Selection_Display.Domain
             writer.Write(Version);
             writer.TypeEnd();
         }
+
+        public void Read(IJsonReader reader)
+        {
+            if (reader.ReadProperty(nameof(Index)))
+            {
+                reader.Read(out Index);
+            }
+
+            if (reader.ReadProperty(nameof(Version)))
+            {
+                reader.Read(out Version);
+            }
+        }
     }
 }
