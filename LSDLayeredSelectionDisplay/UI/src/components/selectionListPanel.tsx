@@ -46,7 +46,7 @@ export const SelectionListPanel = () => {
                     <ul className={styles.listedAssets}>
                         {selectedEntities.Entities.map((e) => (
                             <li 
-                                onSelect={() => OnEntitySelect(e.Index, e.Version)}
+                                onMouseDown={() => OnEntitySelect(e.Index, e.Version)}
                                 onMouseEnter={() => OnEntityHover(e.Index, e.Version)}
                                 onMouseLeave={() => OnEntityLeave(e.Index, e.Version)} key={e.Index}>{e.Index + " : " + e.Version}</li>
                         ))}

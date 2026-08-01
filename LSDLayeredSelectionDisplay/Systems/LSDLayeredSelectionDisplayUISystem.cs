@@ -374,8 +374,6 @@ namespace LSD_Layered_Selection_Display.Systems
         {
             m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity selected: {index}, {version}");
 
-            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity selected: {index}, {version}");
-
             Entity entity = new Entity
             {
                 Index = index,
