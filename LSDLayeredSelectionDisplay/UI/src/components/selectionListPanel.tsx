@@ -4,9 +4,11 @@ import { bindValue, trigger, useValue } from "cs2/api";
 import locale from "../mods/lang/en-US.json";
 import styles from "./selectionListPanel.module.scss";
 import mod from "../../mod.json";
+import { Entity } from "cs2/bindings";
 
 const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
 const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
+const selectedEntities$ = bindValue<Number[]>(mod.id, "SelectedEntities", []);
 
 export const SelectionListPanel = () => {
     const { translate } = useLocalization();
@@ -15,6 +17,7 @@ export const SelectionListPanel = () => {
 
     const isGame = useValue(isGame$);
     const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
+    const selectedEntities = useValue(selectedEntities$);
 
    return (
         <>
@@ -27,32 +30,10 @@ export const SelectionListPanel = () => {
                   <div>{listPanelIntro}</div>
                   <Scrollable className={styles.scrollablePanel}>
                     <ul className={styles.listedAssets}>
-                        <li>Item 1</li>
-                        <li>Item 2</li>
-                        <li>Item 3</li>
-                        <li>Item 4</li>
-                        <li>Item 5</li>
-                        <li>Item 6</li>
-                        <li>Item 7</li>
-                        <li>Item 8</li>
-                        <li>Item 9</li>
-                        <li>Item 1</li>
-                        <li>Item 11</li>
-                        <li>Item 12</li>
-                        <li>Item 13</li>
-                        <li>Item 14</li>
-                        <li>Item 15</li>
-                        <li>Item 16</li>
-                        <li>Item 17</li>
-                        <li>Item 18</li>
-                        <li>Item 19</li>
-                        <li>Item 20</li>
-                        <li>Item 21</li>
-                        <li>Item 22</li>
-                        <li>Item 23</li>
-                        <li>Item 24</li>
+                        {selectedEntities.map((entity) => (
+                            <li key={entity.toString()}>Item {entity.toString()}</li>
+                        ))}
                     </ul>
-                    
                   </Scrollable>
                 </Panel>
             </Portal>
@@ -61,3 +42,4 @@ export const SelectionListPanel = () => {
         </>
     );
 }
+                        

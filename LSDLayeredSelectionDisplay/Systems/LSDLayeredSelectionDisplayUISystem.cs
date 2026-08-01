@@ -7,6 +7,7 @@ namespace LSD_Layered_Selection_Display.Systems
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using Colossal.Logging;
     using Colossal.Serialization.Entities;
     using Colossal.UI.Binding;
@@ -22,8 +23,10 @@ namespace LSD_Layered_Selection_Display.Systems
     using Game.UI.InGame;
     using LSD_Layered_Selection_Display.Extensions;
     using LSD_Layered_Selection_Display.Utils;
+    using Unity.Collections;
     using Unity.Collections.LowLevel.Unsafe;
     using Unity.Entities;
+    using Unity.Jobs;
     using UnityEngine.InputSystem;
     using static Colossal.AssetPipeline.Diagnostic.Report;
 
@@ -34,7 +37,9 @@ namespace LSD_Layered_Selection_Display.Systems
     {
         private const string ModId = "LSDLayeredSelectionDisplay";
 
+        private const string MoveItToolID = "MoveItTool";
         private ToolSystem m_ToolSystem;
+        private ToolBaseSystem m_MoveItTool;
         private ILog m_Log;
         private RenderingSystem m_RenderingSystem;
         private PrefabSystem m_PrefabSystem;
@@ -47,6 +52,47 @@ namespace LSD_Layered_Selection_Display.Systems
         private ToolUISystem m_ToolUISystem;
 
         private ValueBinding<bool> m_IsMarqueeToolSelected;
+
+        private NativeHashSet<Entity> m_MoveItSelectedEntities = new(0, Allocator.Persistent);
+        private PropertyInfo m_MoveItSelectedEntitiesPropertyInfo;
+        private GetterValueBinding<HashSet<Entity>> m_MoveItSelectedEntitiesBinding;
+
+        // private HashSet<Entity> m_MoveItSelectedEntitiesHashSet = new HashSet<Entity>();
+
+        // private GetterValueBinding<List<Entity>> m_MoveItSelectedEntities;
+        private JobHandle m_writeDeps;
+        private JobHandle m_readDeps;
+        private ModificationBarrier1 m_ModificationBarrier1;
+
+        /// <summary>
+        /// Get data, can be used inside or outside of system
+        /// </summary>
+        /// <param name="readOnly">true.</param>
+        /// <param name="deps">dependency.</param>
+        /// <returns>MoveItSelectedEntities.</returns>
+        public NativeHashSet<Entity> GetEntities(bool readOnly, out JobHandle deps)
+        {
+            deps = readOnly ? m_writeDeps : JobHandle.CombineDependencies(m_readDeps, m_writeDeps);
+            return m_MoveItSelectedEntities;
+        }
+
+        /// <summary>
+        /// Register jobhandle as read dependency.
+        /// </summary>
+        /// <param name="jobHandle">jobhandle to add.</param>
+        public void AddEntitiesReader(JobHandle jobHandle)
+        {
+            m_readDeps = JobHandle.CombineDependencies(m_readDeps, jobHandle);
+        }
+
+        /// <summary>
+        /// Registers jobhandle as write dependency.
+        /// </summary>
+        /// <param name="jobHandle">jobhandle to add.</param>
+        public void AddEntitiesWriter(JobHandle jobHandle)
+        {
+            m_writeDeps = JobHandle.CombineDependencies(m_writeDeps, jobHandle);
+        }
 
         /// <summary>
         /// An enum to handle different raycast target options.
@@ -139,6 +185,7 @@ namespace LSD_Layered_Selection_Display.Systems
             m_ToolUISystem = World.GetOrCreateSystemManaged<ToolUISystem>();
             m_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_ActiveDefaultToolSystem = m_DefaultToolSystem;
+            m_ModificationBarrier1 = World.GetOrCreateSystemManaged<ModificationBarrier1>();
 
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
@@ -155,12 +202,39 @@ namespace LSD_Layered_Selection_Display.Systems
 
             // This handles the event when the marquee tool is selected in the UI.
             AddBinding(new TriggerBinding(ModId, "OnChangeMarqueeToolSelected", OnChangeMarqueeToolSelected));
+
+            var moveItTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID));
+
+            AddBinding(m_MoveItSelectedEntitiesBinding = new GetterValueBinding<HashSet<Entity>>(
+                ModId,
+                "SelectedEntities",
+                () => (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(moveItTool),
+                new CollectionWriter<Entity>()));
         }
 
         /// <inheritdoc/>
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
         {
             base.OnGameLoadingComplete(purpose, mode);
+
+            if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID)) is ToolBaseSystem moveItTool)
+            {
+                // Found it
+                m_Log.Info($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} found Move It.");
+                PropertyInfo moveItSelectedEntities = moveItTool.GetType().GetProperty("SelectedEntities");
+                if (moveItSelectedEntities is not null)
+                {
+                    m_MoveItTool = moveItTool;
+                    m_MoveItSelectedEntitiesPropertyInfo = moveItSelectedEntities;
+                    m_Log.Info($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} saved moveItTool");
+                }
+            }
+            else
+            {
+                m_Log.Info($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} move it tool not found");
+            }
+
+
             m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Old Tool Order:");
             foreach (ToolBaseSystem toolBaseSystem in m_ToolSystem.tools)
             {
@@ -227,6 +301,30 @@ namespace LSD_Layered_Selection_Display.Systems
 
             // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked. isSelected: {isSelected}");
             m_IsMarqueeToolSelected.Update(!m_IsMarqueeToolSelected.value);
+
+            if (m_IsMarqueeToolSelected.value)
+            {
+                if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID)) is ToolBaseSystem moveItTool)
+                {
+                    PropertyInfo moveItSelectedEntities = moveItTool.GetType().GetProperty("SelectedEntities");
+                    if (moveItSelectedEntities is not null)
+                    {
+                        m_MoveItTool = moveItTool;
+
+                        // m_MoveItSelectedEntitiesPropertyInfo = moveItSelectedEntities;
+                        m_Log.Info($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} saved moveItTool");
+
+                        HashSet<Entity> selectedEntities = (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(moveItTool);
+
+                        foreach (var item in selectedEntities)
+                        {
+                            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}. Selected Entity: {item}");
+                        }
+
+                        m_MoveItSelectedEntitiesBinding.Update();
+                    }
+                }
+            }
 
             // m_IsMarqueeToolSelected.Update(isSelected);
             // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");

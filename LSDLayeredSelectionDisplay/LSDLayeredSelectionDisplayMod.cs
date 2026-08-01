@@ -112,6 +112,7 @@ namespace LSD_Layered_Selection_Display
 #endif
             Logger.Info($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnLoad)} Injecting systems.");
             updateSystem.UpdateAt<LSDLayeredSelectionDisplayUISystem>(SystemUpdatePhase.UIUpdate);
+
             Logger.Info($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnLoad)} Complete.");
         }
 
