@@ -5,10 +5,11 @@ import locale from "../mods/lang/en-US.json";
 import styles from "./selectionListPanel.module.scss";
 import mod from "../../mod.json";
 import { Entity } from "cs2/bindings";
+import { SelectedEntities } from "../Domain/SelectedEntities";
 
 const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
 const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
-const selectedEntities$ = bindValue<Number[]>(mod.id, "SelectedEntities", []);
+const selectedEntities$ = bindValue<SelectedEntities>(mod.id, "SelectedEntities", { Entities: [] });
 
 export const SelectionListPanel = () => {
     const { translate } = useLocalization();
@@ -30,8 +31,8 @@ export const SelectionListPanel = () => {
                   <div>{listPanelIntro}</div>
                   <Scrollable className={styles.scrollablePanel}>
                     <ul className={styles.listedAssets}>
-                        {selectedEntities.map((entity) => (
-                            <li key={entity.toString()}>Item {entity.toString()}</li>
+                        {selectedEntities.Entities.map((e) => (
+                            <li key={e.Index}>{e.Index + " : " + e.Version}</li>
                         ))}
                     </ul>
                   </Scrollable>

@@ -21,6 +21,7 @@ namespace LSD_Layered_Selection_Display.Systems
     using Game.Tools;
     using Game.UI;
     using Game.UI.InGame;
+    using LSD_Layered_Selection_Display.Domain;
     using LSD_Layered_Selection_Display.Extensions;
     using LSD_Layered_Selection_Display.Utils;
     using Unity.Collections;
@@ -56,6 +57,8 @@ namespace LSD_Layered_Selection_Display.Systems
         private NativeHashSet<Entity> m_MoveItSelectedEntities = new(0, Allocator.Persistent);
         private PropertyInfo m_MoveItSelectedEntitiesPropertyInfo;
         private GetterValueBinding<HashSet<Entity>> m_MoveItSelectedEntitiesBinding;
+
+        private ValueBinding<SelectedEntities> m_SelectedEntitiesBinding;
 
         // private HashSet<Entity> m_MoveItSelectedEntitiesHashSet = new HashSet<Entity>();
 
@@ -205,11 +208,13 @@ namespace LSD_Layered_Selection_Display.Systems
 
             var moveItTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID));
 
-            AddBinding(m_MoveItSelectedEntitiesBinding = new GetterValueBinding<HashSet<Entity>>(
-                ModId,
-                "SelectedEntities",
-                () => (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(moveItTool),
-                new CollectionWriter<Entity>()));
+            AddBinding(m_SelectedEntitiesBinding = new ValueBinding<SelectedEntities>(ModId, "SelectedEntities", new SelectedEntities() { Entities = new List<SelectedEntity>() }));
+
+            // AddBinding(m_MoveItSelectedEntitiesBinding = new GetterValueBinding<HashSet<Entity>>(
+            //    ModId,
+            //    "SelectedEntities",
+            //    () => (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(moveItTool),
+            //    new CollectionWriter<Entity>()));
         }
 
         /// <inheritdoc/>
@@ -233,7 +238,6 @@ namespace LSD_Layered_Selection_Display.Systems
             {
                 m_Log.Info($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} move it tool not found");
             }
-
 
             m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Old Tool Order:");
             foreach (ToolBaseSystem toolBaseSystem in m_ToolSystem.tools)
@@ -316,12 +320,15 @@ namespace LSD_Layered_Selection_Display.Systems
 
                         HashSet<Entity> selectedEntities = (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(moveItTool);
 
+                        SelectedEntities moveItSelectedEntitiesBinding = new SelectedEntities() { Entities = new List<SelectedEntity>() };
+
                         foreach (var item in selectedEntities)
                         {
+                            moveItSelectedEntitiesBinding.AddSelectedEntity(item);
                             m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}. Selected Entity: {item}");
                         }
 
-                        m_MoveItSelectedEntitiesBinding.Update();
+                        m_SelectedEntitiesBinding.Update(moveItSelectedEntitiesBinding);
                     }
                 }
             }
