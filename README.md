@@ -1,58 +1,32 @@
-﻿Easily Select things that you otherwise could not select or easily select.
+﻿Easily select things that you otherwise could not select or easily select.
+
 
 ## Dependencies
 Unified Icon Library
-I18n Everywhere (Soft dependency)
 
 ## Donations
-If you want to say thank you with a donation you can do so on Paypal.
+If you want to say thank you with a donation you can do so on Paypal or Buy me a Coffee.
 
 ## Translations
-I am looking for volunteers to help translate the mod into the official languages. For those interested please discuss the translation project in the discord link. CSL2:CODEMODS -> mods-wip -> Better Bulldozer: Translations. CrowdIn Link available there or here.
-The mod is fully or partially translated into: Chinese Simplified, German, Korean, Polish, Spanish, Chinese Traditional, French, Italian, Brazilian Portuguese and Russian.
+I am looking for volunteers to help translate the mod into the other languages. For those interested please discuss the translation project in the discord link. CSL2:CODEMODS -&gt; mods-wip -&gt; Better Bulldozer: Translations. CrowdIn Link available there or here.
+The mod is fully or partially translated into: Chinese Simplified, German, Korean, Polish, Spanish, Chinese Traditional, French, Italian, and Russian.
 
-# Detailed Descrption
-* Remove Moving Objects and Cims Tool Mode that allows you to use the bulldozer on moving objects such as vehicles or cims.
-* Icon for bypass confirmation that disables the prompt for whether you are sure you want to demolish a building.
-* Icon and filters to show and EXCLUSIVELY target invisible paths, roads, etc or static object markers with the bulldozer and remove paths, roads, etc or static object markers. See below.
-* Icon and filters to EXCLUSIVELY target surfaces or spaces with the bulldozer and remove with one click. Works both inside and outside of assets.
-* Icon to EXCLUSIVELY target Net-Lanes and Net-Lane-Geometry prefabs with the bulldozer such as interconnected fences, interconnected hedges, linear street markings. You cannot create these in-game without EDT Mod.
-* Automatically manages the "Show Markers" DevUI option while plopping, drawing, and bulldozing applicable objects and networks. 
-* Opt-in option to automatically remove manicured grass surfaces during placement or spawning.
-* Opt-in option to automatically remove fences and hedges after placement, spawning, and updating. (still visible during placement and while moving)
-* Opt-in option to automatically remove branding objects and advertisements after placement, spawning, and updating. (still visible during placement and while moving)
-* Remove Sub-Elements Tool Mode See Below.
+## Supplemental Mods
+I18n Everywhere and European Portuguese Localization (Only needed for European Portuguese Translations)
 
-## Remove Sub-Elements Tool Mode
-Removes props, trees, decals, fences, hedges, sub-buildings, extensions, and networks from assets. This tool can break connectivity within assets. Some elements are more safe to remove such as: props, trees, decals, fences, hedges, and sub-buildings. Some elements are less safe to remove such as: networks and extensions. You can prohibit removing those in the settings.
-
-Terminology:
-* Sub-Elements is an umbrella term that includes all props, trees, decals, fences, hedges, sub-buildings, extensions, and networks that are part of a building or network asset.
-* Sub-buildings are separate buildings attached to the service building’s existing lot.
-* Extensions are visible upgrades connected directly to the main building.
-* 'Permanently Removes' means that anytime the object would regenerate it will be automatically removed shortly afterwards.
-
-Selection Modes:
-* Single Item - similar but more powerful than DevUI: Simulation -> Debug Toggle + UIBindings -> ActionsSection -> Delete. Props, trees, decals, fences, and hedges can/will regenerate later. Sub-buildings, some extensions, and networks do not regenerate.
-* Exact Match - Selects all exact matches of that sub-element. (i.e. All oak trees in this park). Networks are not supported. 'Permanently Removes' props, trees, decals, fences, hedges.
-* Similar Category - Selects all sub-elements in a similar category within the building, subbuilding, extension or network and 'permanently removes' them. Categories include: trees, plants, street lights, trash bins, branding objects and advertisements, activity locations, and all hedges and fences. (i.e. all trees in this asset).
-* Reset Asset - Reset assets by selecting ones that have any sub-elements 'permanently removed' using Exact Match or Similar Category.
-
-## Safely Remove Button
-There is a safely remove button in the options menu. It is only recommeneded if you have been using Exact Match and Similar Category to remove sub-elements. Pressing this button and confirming it will reset all assets that have had sub-elements 'permanently removed'.
-
-## Invisible Paths and Markers
-Drawing invisible paths and markers is an unsupported feature of the game. You need DevUI to access the 'Add Object' menu via the home button to draw invisible paths and markers, unless another mod makes this more convenient.
-
-With the Bulldoze tool you can select an icon and filters to show and EXCLUSIVELY demolish invisible networks or invisible parking decals, various spots, points, and spawners, BUT SAVE BEFORE HAND!
-
-One configuration I built/demolished resulted in a crash to desktop because I left a segment that was too short. Deleting them in a different order worked.
+# Detailed Description
+* Filters for the vanilla default tool with no tool modes selected including: Buildings, Trees, Plants, Decals, and Props. Toggling these filters off makes it so the default tool cannot select those items.
+* Marquee Tool to gather MoveIt selected assets into a list for easy viewing and selection. The list can be refreshed by closing the list and reopening it.
+* Hovering items on the list will highlight the item in the game world for better identification.
+* Clicking on an item in the list will select the item's info panel in the game world for easy manipulation.
 
 # Support
 I will respond on the code modding channels on **Cities: Skylines Modding Discord**
 
-# Credits 
-* yenyang - Mentor and Author of the Better Bulldoze Mod which is the base for this mod. Most of the code inside it is a copy from it, sanctioned by Yenyang himself.
-* Gagaxmxm - For expanding my initial idea that had already evolved from of using the cursor to certain types of assets from being selected, to listing all the assets behind the cursor, adding the possibility of using a marquee tool to instead of the single point where the cursor is, selecting all assets within the area drawn using the marquee tool.
-
-This mod is not affiliated with any C:S1 mod with similar titles. 
+# Credits
+* 0belix - Mod Author, Original Idea and Code Contribution
+* Yenyang - Mentor and Author of the original Better Bulldozer mod which served as the foundation for this mod and the MoveIt mod where the Marquee Tool code is leveraged from, along with code pieces from ReColor and Anarchy mods that were used as references, Code Contribution, Testing and Feedback
+* Triton Supreme a.k.a. AlphaGaming - Support provided during development of the mod, Code Contribution, Testing and Feedback
+* Gagaxm a.k.a. El Gaga - Expanding my initial idea by suggesting using a marquee tool for selection of multiple assets as opposed to the default tool attempting to detect all assets beneath the cursor, Testing and Feedback
+* MayorCheeks a.k.a. b00tyCheeks - Testing and Feedback
+* Localization - XXXX (German), XXXX (Chinese Simplified), XXXX (Korean), XXXX (Russian), XXXX (Polish), XXXX (Spanish), XXXX (French), XXXX (Chinese Traditional), XXXX (Italian), XXXX (Dutch)
