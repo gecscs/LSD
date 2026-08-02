@@ -24,10 +24,18 @@ function OnEntitySelect(index: number, version: number) {
     trigger(mod.id, "OnEntitySelect", index, version);
 }   
 
+function RefreshSelection() {
+    trigger(mod.id, "RefreshSelection");
+}
+
 export const SelectionListPanel = () => {
     const { translate } = useLocalization();
     const listPanelTitle =          translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title",            locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title"]);
     const listPanelIntro = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro"]);
+    const listPanelRefreshButtonToolTip = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip"]) ?? "Test";
+    const listPanelNoItemsSelected = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected"]) ?? "No items selected";
+    const listPanelNoItemsSelectedTip = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip"]);
+    const refreshIconSrc = "coui://uil/Standard/Reset.svg"; //RefreshIconSrc;
 
     const isGame = useValue(isGame$);
     const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
@@ -41,18 +49,39 @@ export const SelectionListPanel = () => {
                     className={styles.mainPanel}
                     header={listPanelTitle}
                 >
-                  <div>{listPanelIntro}</div>
-                  <Scrollable className={styles.scrollablePanel}>
-                    <ul className={styles.listedAssets}>
-                        {selectedEntities.Entities.map((e) => (
-                            <li 
-                                onMouseDown={() => OnEntitySelect(e.Index, e.Version)}
-                                onMouseEnter={() => OnEntityHover(e.Index, e.Version)}
-                                onMouseLeave = {() => OnEntityLeave(e.Index, e.Version)}
-                                key = { e.Index } > {e.Name} </li>
-                        ))}
-                    </ul>
-                  </Scrollable>
+                    <div className={ styles.introBar }>
+                        <div className={ styles.introText }>
+                            { listPanelIntro }
+                        </div>
+
+                        <button
+                            
+                            className={ styles.refreshButton }
+                            onClick={() => RefreshSelection()}
+                            title={ listPanelRefreshButtonToolTip }
+                        >
+                            <img src={ refreshIconSrc }/>
+                         </button>
+                    </div>    
+                    {selectedEntities.Entities.length > 0 && (
+                        <Scrollable className={styles.scrollablePanel}>
+                            <ul className={styles.listedAssets}>
+                                {selectedEntities.Entities.map((e) => (
+                                    <li 
+                                        onMouseDown={() => OnEntitySelect(e.Index, e.Version)}
+                                        onMouseEnter={() => OnEntityHover(e.Index, e.Version)}
+                                        onMouseLeave={() => OnEntityLeave(e.Index, e.Version)}
+                                        key={e.Index} > {e.Name} </li>
+                                ))}
+                            </ul>
+                        </Scrollable>
+                    )}
+                    {selectedEntities.Entities.length === 0 && (
+                        <div className={styles.noItemsSelected}>
+                            <span>{ listPanelNoItemsSelected } </span>
+                            <p> { listPanelNoItemsSelectedTip } </p>
+                        </div>
+                    )}  
                 </Panel>
             </Portal>
              

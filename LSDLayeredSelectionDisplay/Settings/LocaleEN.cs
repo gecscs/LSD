@@ -72,6 +72,9 @@ namespace LSD_Layered_Selection_Display.Settings
                 { TooltipDescriptionKey("VanillaSurfaceFilter"), "Toggling this off will prevent the tool from selecting surfaces." },
                 { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title", "LSD - Selected Assets" },
                 { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", "Click any asset from the list to open its info panel." },
+                { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip", "Refresh list with current selection from Move It" },
+                { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", "No items selected" },
+                { "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip", "Use MoveIt marquee selection tool to choose assets and then click the refresh button in this panel. You will need to close MoveIt in order to see the highlighted item when hovering it on the list." },
                 { "LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools", "Tools" },
                 { "LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", "Click to use the marquee tool to select multiple objects in an area." },
             };

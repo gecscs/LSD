@@ -2,11 +2,8 @@
   "Options.SECTION[LSDLayeredSelectionDisplay.LSD_Layered_Selection_Display.LSDLayeredSelectionDisplayMod]": "Layered Selection Display",
   "Options.OPTION[LSDLayeredSelectionDisplay.LSD_Layered_Selection_Display.LSDLayeredSelectionDisplayMod.LSDLayeredSelectionDisplayModSettings.Version]": "Version",
   "Options.OPTION_DESCRIPTION[LSDLayeredSelectionDisplay.LSD_Layered_Selection_Display.LSDLayeredSelectionDisplayMod.LSDLayeredSelectionDisplayModSettings.Version]": "Version number for the Layered Selection Display mod installed.",
-  "LSD_LAYERED_SELECTION_DISPLAY.Filter": "Filter",  
+  "LSD_LAYERED_SELECTION_DISPLAY.Filter": "Filter",
   "LSD_LAYERED_SELECTION_DISPLAY_DESCRIPTION.SurfacesFilterButton": "For removing surfaces inside or outside of buildings in one click.",
-  
-  
-  
   "LSDLayeredSelectionDisplay.TOOLTIP_TITLE[SurfacesFilterButton]": "Surfaces Filter",
   "LSDLayeredSelectionDisplay.TOOLTIP_TITLE[AllFilters]": "Toggle all Filters on/off",
   "LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[AllFilters]": "Either selects all or none of the Filters depending on your current selection. Having none selected will prevent the Bulldoze Tool from working.",
@@ -23,9 +20,11 @@
   "LSDLayeredSelectionDisplay.TOOLTIP_TITLE[PropFilter]": "Any other Prop Filter",
   "LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[PropFilter]": "Toggling this off will prevent the Bulldoze Tool from removing any props that are not trees, plants, or decals.",
   "LSDLayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Toggling this off will prevent the Bulldoze Tool from removing surfaces.",
-
   "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Selected Assets",
   "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Click any asset from the list to open its info panel.",
+  "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Refresh list with current selection from Move It",
+  "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "No items selected",
+  "LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Use MoveIt marquee selection tool to choose assets and then click the refresh button in this panel. You will need to close MoveIt in order to see the highlighted item when hovering it on the list.",
   "LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Tools",
   "LSD_LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Click to use the marquee tool to select multiple objects in an area."
 }

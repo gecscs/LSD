@@ -221,6 +221,7 @@ namespace LSD_Layered_Selection_Display.Systems
             CreateTrigger("OnEntitySelect", (int index, int version) => OnEntitySelect(index, version));
             CreateTrigger("OnEntityHover", (int index, int version) => OnEntityHover(index, version));
             CreateTrigger("OnEntityLeave", (int index, int version) => OnEntityLeave(index, version));
+            CreateTrigger("RefreshSelection", () => GetUpdatedSelectedEntitiesFromMoveIt());
 
             var moveItTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID));
 
