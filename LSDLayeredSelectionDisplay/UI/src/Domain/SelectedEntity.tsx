@@ -1,4 +1,5 @@
 export interface SelectedEntity {
   Index: number;
-  Version: number;
+    Version: number;
+    Name: string;
 }

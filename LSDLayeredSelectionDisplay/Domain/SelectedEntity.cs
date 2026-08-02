@@ -10,6 +10,7 @@ namespace LSD_Layered_Selection_Display.Domain
     {
         public int Index;
         public int Version;
+        public string Name;
 
         public void Write(IJsonWriter writer)
         {
@@ -18,6 +19,8 @@ namespace LSD_Layered_Selection_Display.Domain
             writer.Write(Index);
             writer.PropertyName(nameof(Version));
             writer.Write(Version);
+            writer.PropertyName(nameof(Name));
+            writer.Write(Name);
             writer.TypeEnd();
         }
 
@@ -31,6 +34,11 @@ namespace LSD_Layered_Selection_Display.Domain
             if (reader.ReadProperty(nameof(Version)))
             {
                 reader.Read(out Version);
+            }
+
+            if (reader.ReadProperty(nameof(Name)))
+            {
+                reader.Read(out Name);
             }
         }
     }

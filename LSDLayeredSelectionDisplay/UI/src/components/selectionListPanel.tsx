@@ -48,7 +48,8 @@ export const SelectionListPanel = () => {
                             <li 
                                 onMouseDown={() => OnEntitySelect(e.Index, e.Version)}
                                 onMouseEnter={() => OnEntityHover(e.Index, e.Version)}
-                                onMouseLeave={() => OnEntityLeave(e.Index, e.Version)} key={e.Index}>{e.Index + " : " + e.Version}</li>
+                                onMouseLeave = {() => OnEntityLeave(e.Index, e.Version)}
+                                key = { e.Index } > {e.Name} </li>
                         ))}
                     </ul>
                   </Scrollable>

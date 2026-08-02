@@ -27,12 +27,13 @@ namespace LSD_Layered_Selection_Display.Domain
             writer.TypeEnd();
         }
 
-        public void AddSelectedEntity(Entity e)
+        public void AddSelectedEntity(Entity e, string name)
         {
             SelectedEntity selectedEntity = new SelectedEntity
             {
                 Index = e.Index,
-                Version = e.Version
+                Version = e.Version,
+                Name = name
             };
             Entities.Add(selectedEntity);
         }

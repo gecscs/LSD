@@ -5,10 +5,9 @@
 // #define VERBOSE
 namespace LSD_Layered_Selection_Display.Systems
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
+    using Colossal.Entities;
     using Colossal.Logging;
+    using Colossal.PSI.Common;
     using Colossal.Serialization.Entities;
     using Colossal.UI.Binding;
     using Game;
@@ -24,12 +23,16 @@ namespace LSD_Layered_Selection_Display.Systems
     using LSD_Layered_Selection_Display.Domain;
     using LSD_Layered_Selection_Display.Extensions;
     using LSD_Layered_Selection_Display.Utils;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using Unity.Collections;
     using Unity.Collections.LowLevel.Unsafe;
     using Unity.Entities;
     using Unity.Jobs;
     using UnityEngine.InputSystem;
     using static Colossal.AssetPipeline.Diagnostic.Report;
+    using static Game.Prefabs.TriggerPrefabData;
 
     /// <summary>
     /// UI system for LSD extensions to the default tool.
@@ -329,40 +332,58 @@ namespace LSD_Layered_Selection_Display.Systems
         /// </param>
         private void OnChangeMarqueeToolSelected()
         {
-            // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (before updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
-
-            // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked. isSelected: {isSelected}");
             m_IsMarqueeToolSelected.Update(!m_IsMarqueeToolSelected.value);
 
             if (m_IsMarqueeToolSelected.value)
             {
-                if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID)) is ToolBaseSystem moveItTool)
-                {
-                    PropertyInfo moveItSelectedEntities = moveItTool.GetType().GetProperty("SelectedEntities");
-                    if (moveItSelectedEntities is not null)
-                    {
-                        m_MoveItTool = moveItTool;
-
-                        // m_MoveItSelectedEntitiesPropertyInfo = moveItSelectedEntities;
-                        m_Log.Info($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} saved moveItTool");
-
-                        HashSet<Entity> selectedEntities = (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(moveItTool);
-
-                        SelectedEntities moveItSelectedEntitiesBinding = new SelectedEntities() { Entities = new List<SelectedEntity>() };
-
-                        foreach (var item in selectedEntities)
-                        {
-                            moveItSelectedEntitiesBinding.AddSelectedEntity(item);
-                            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}. Selected Entity: {item}");
-                        }
-
-                        m_SelectedEntitiesBinding.Update(moveItSelectedEntitiesBinding);
-                    }
-                }
+                GetUpdatedSelectedEntitiesFromMoveIt();
             }
+        }
 
-            // m_IsMarqueeToolSelected.Update(isSelected);
-            // m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayMod)}.{nameof(OnChangeMarqueeToolSelected)} OnChangeMarqueeToolSelected button was clicked (after updating). m_IsMarqueeToolSelected: {m_IsMarqueeToolSelected.value}");
+        /// <summary>
+        /// Updates the selected entities from the Move It tool and updates the binding for the UI.
+        /// </summary>
+        private void GetUpdatedSelectedEntitiesFromMoveIt()
+        {
+            if (m_MoveItTool is not null && m_MoveItSelectedEntitiesPropertyInfo is not null)
+            {
+                HashSet<Entity> selectedEntities = (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(m_MoveItTool);
+                SelectedEntities moveItSelectedEntitiesBinding = new SelectedEntities() { Entities = new List<SelectedEntity>() };
+
+                foreach (var item in selectedEntities)
+                {
+                    if (EntityManager.TryGetComponent(item, out PrefabRef prefabRef))
+                    {
+                        m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item: {item}");
+                        m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab: {prefabRef.m_Prefab}");
+
+                        if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
+                        {
+                            if (prefab is not NetPrefab)
+                            {
+                                moveItSelectedEntitiesBinding.AddSelectedEntity(item, prefab.name);
+                                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
+                            }
+
+                            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
+                        }
+                        else
+                        {
+                            moveItSelectedEntitiesBinding.AddSelectedEntity(item, item.Index + " : " + item.Version);
+                            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
+                        }
+                    }
+                    else
+                    {
+                        moveItSelectedEntitiesBinding.AddSelectedEntity(item, item.Index + " : " + item.Version);
+                        m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefabRef for entity: {item}");
+                    }
+
+                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entity: {item}");
+                }
+
+                m_SelectedEntitiesBinding.Update(moveItSelectedEntitiesBinding);
+            }
         }
 
         /// <summary>

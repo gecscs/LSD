@@ -139,6 +139,7 @@
 	<ItemGroup>
 		<None Include="$(ModPropsFile)" Link="Properties\Mod.props" />
 		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
+		<None Include="..\..\..\..\Downloads\icon_Refresh.svg" Link="UI\src\img\icon_Refresh.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
