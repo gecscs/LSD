@@ -1,5 +1,5 @@
 import { useLocalization } from "cs2/l10n";
-import { Panel, Portal, Scrollable,  } from "cs2/ui";
+import { Panel, Portal, Scrollable } from "cs2/ui";
 import { bindValue, trigger, useValue } from "cs2/api";
 import locale from "../mods/lang/en-US.json";
 import styles from "./selectionListPanel.module.scss";
@@ -41,6 +41,13 @@ export const SelectionListPanel = () => {
     const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
     const selectedEntities = useValue(selectedEntities$);
 
+    console.debug("SelectionListPanel: selectedEntities.Entities.length = ", selectedEntities.Entities.length);
+    console.debug("SelectionListPanel: selectedEntities.Entities = ", selectedEntities.Entities ?? "No entities available");
+
+    selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name));
+
+    console.debug("SelectionListPanel: selectedEntities.Entities after sorting = ", selectedEntities.Entities ?? "No entities available");
+
    return (
         <>
         {(isGame && isMarqueeToolSelected) && (
@@ -66,7 +73,7 @@ export const SelectionListPanel = () => {
                     {selectedEntities.Entities.length > 0 && (
                         <Scrollable className={styles.scrollablePanel}>
                             <ul className={styles.listedAssets}>
-                                {selectedEntities.Entities.map((e) => (
+                                {selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name)).map((e) => (
                                     <li 
                                         onMouseDown={() => OnEntitySelect(e.Index, e.Version)}
                                         onMouseEnter={() => OnEntityHover(e.Index, e.Version)}

@@ -2,6 +2,7 @@
 // Copyright (c) 0belix's Mods. MIT License. All rights reserved.
 // </copyright>
 
+using Colossal.Logging;
 using Colossal.UI.Binding;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -33,7 +34,7 @@ namespace LSD_Layered_Selection_Display.Domain
             {
                 Index = e.Index,
                 Version = e.Version,
-                Name = name
+                Name = name,
             };
             Entities.Add(selectedEntity);
         }

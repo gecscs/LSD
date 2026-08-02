@@ -5,6 +5,9 @@
 // #define VERBOSE
 namespace LSD_Layered_Selection_Display.Systems
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using Colossal.Entities;
     using Colossal.Logging;
     using Colossal.PSI.Common;
@@ -23,9 +26,6 @@ namespace LSD_Layered_Selection_Display.Systems
     using LSD_Layered_Selection_Display.Domain;
     using LSD_Layered_Selection_Display.Extensions;
     using LSD_Layered_Selection_Display.Utils;
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
     using Unity.Collections;
     using Unity.Collections.LowLevel.Unsafe;
     using Unity.Entities;
@@ -47,6 +47,7 @@ namespace LSD_Layered_Selection_Display.Systems
         private ILog m_Log;
         private RenderingSystem m_RenderingSystem;
         private PrefabSystem m_PrefabSystem;
+        private PrefabUISystem m_prefabUISystem;
         private DefaultToolSystem m_DefaultToolSystem;
         private ObjectToolSystem m_ObjectToolSystem;
         private ValueBinding<int> m_RaycastTarget;
@@ -198,6 +199,7 @@ namespace LSD_Layered_Selection_Display.Systems
             m_ToolUISystem = World.GetOrCreateSystemManaged<ToolUISystem>();
             m_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_ActiveDefaultToolSystem = m_DefaultToolSystem;
+            m_prefabUISystem = World.GetOrCreateSystemManaged<PrefabUISystem>();
 
             // m_ModificationBarrier1 = World.GetOrCreateSystemManaged<ModificationBarrier1>();
             m_HoverState = new HoverState();
@@ -358,20 +360,54 @@ namespace LSD_Layered_Selection_Display.Systems
                         m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item: {item}");
                         m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab: {prefabRef.m_Prefab}");
 
-                        if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
-                        {
-                            if (prefab is not NetPrefab)
-                            {
-                                moveItSelectedEntitiesBinding.AddSelectedEntity(item, prefab.name);
-                                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
-                            }
+                        m_prefabUISystem.GetTitleAndDescription(prefabRef.m_Prefab, out string titleId, out string description);
 
-                            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
+                        string localizedName = string.Empty;
+
+                        if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
+                        {
+                            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item localized name: {name}");
+                            localizedName = name;
+
+                            if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
+                            {
+                                if (prefab is not NetPrefab)
+                                {
+                                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
+                                    moveItSelectedEntitiesBinding.AddSelectedEntity(item, localizedName ?? prefab.name.Replace("_", " "));
+                                }
+                                else
+                                {
+                                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
+                                }
+                            }
+                            else
+                            {
+                                moveItSelectedEntitiesBinding.AddSelectedEntity(item, localizedName ?? item.Index + " : " + item.Version);
+                                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
+                            }
                         }
                         else
                         {
-                            moveItSelectedEntitiesBinding.AddSelectedEntity(item, item.Index + " : " + item.Version);
-                            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
+                            m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get localized name for entity: {item}");
+
+                            if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
+                            {
+                                if (prefab is not NetPrefab)
+                                {
+                                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
+                                    moveItSelectedEntitiesBinding.AddSelectedEntity(item, prefab.name.Replace("_", " ") ?? item.Index + " : " + item.Version);
+                                }
+                                else
+                                {
+                                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
+                                }
+                            }
+                            else
+                            {
+                                moveItSelectedEntitiesBinding.AddSelectedEntity(item, item.Index + " : " + item.Version);
+                                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
+                            }
                         }
                     }
                     else
@@ -382,6 +418,9 @@ namespace LSD_Layered_Selection_Display.Systems
 
                     m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entity: {item}");
                 }
+
+                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entities Count: {moveItSelectedEntitiesBinding.Entities.Count}");
+                m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updating Selected Entities Binding: {moveItSelectedEntitiesBinding.Entities}");
 
                 m_SelectedEntitiesBinding.Update(moveItSelectedEntitiesBinding);
             }
