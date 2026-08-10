@@ -1,0 +1,93 @@
+<Publish>
+  <!--Id must be set in order to update existed mod. it is not required for publishing mod for the first time-->
+  <ModId Value="75250" />
+  <!--Name of the mod to display to players-->
+  <DisplayName Value="LSD Layered Selection Display" />
+  <!--Short description of the mod-->
+  <ShortDescription Value="Easily select things that you otherwise could not select or easily select." />
+  <!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
+  <LongDescription>
+	  Easily select things that you otherwise could not select or easily select.
+
+
+	  ## Dependencies
+	  * Unified Icon Library
+	  * Move It
+
+	  ## Translations
+	  I am looking for volunteers to help translate the mod into the other languages. For those interested please discuss the translation project in the discord link. https://discord.com/channels/1357924258730213447/1532833938169397440. CrowdIn Link available there or here.
+	  The mod is fully or partially translated into: Chinese Simplified, German, Korean, Polish, Spanish, Chinese Traditional, French, Italian, and Russian.
+
+	  ## Supplemental Mods
+	  I18n Everywhere and European Portuguese Localization (Only needed for European Portuguese Translations)
+
+	  # Detailed Description
+	  * Filters for the vanilla default tool with no tool modes selected including: Buildings, Trees, Plants, Decals, and Props. Toggling these filters off makes it so the default tool cannot select those items.
+	  * Marquee Tool to gather MoveIt selected assets into a list for easy viewing and selection. The list can be refreshed by closing the list and reopening it.
+	  * Hovering items on the list will highlight the item in the game world for better identification.
+	  * Clicking on an item in the list will select the item's info panel in the game world for easy manipulation.
+
+	  # Support
+	  I will respond on the code modding channels on **Cities: Skylines Modding Discord**
+
+	  # Credits
+	  * 0belix - Mod Author, Original Idea and Code Contribution
+	  * Yenyang - Mentor and Author of the original Better Bulldozer mod which served as the foundation for this mod and the MoveIt mod where the Marquee Tool code is leveraged from, along with code pieces from ReColor and Anarchy mods that were used as references, Code Contribution, Testing and Feedback
+	  * Triton Supreme a.k.a. AlphaGaming - Support provided during development of the mod, Code Contribution, Testing and Feedback
+	  * Honu aka River-Mochi - Support and tips provided during development of the mod, and Inspiration for some pieces of code from the City WatchDog and Hover Colors mods
+	  * Gagaxm a.k.a. El Gaga - Expanding my initial idea by suggesting using a marquee tool for selection of multiple assets as opposed to the default tool attempting to detect all assets beneath the cursor, Testing and Feedback
+	  * MayorCheeks a.k.a. b00tyCheeks - Testing and Feedback
+	  * Localization - XXXX (German), XXXX (Chinese Simplified), XXXX (Korean), XXXX (Russian), XXXX (Polish), XXXX (Spanish), XXXX (French), XXXX (Chinese Traditional), XXXX (Italian), XXXX (Dutch)
+
+  </LongDescription>
+  <!--Thumbnail-->
+  <Thumbnail Value="Properties/Stable/Thumbnail.png" />
+  <!--Screenshot, can be set multiple-->
+  <!--
+	<Screenshot Value="Properties/Previews/chickenCoop.jpg" />
+	<Screenshot Value="Properties/Previews/neighborhood.png" />
+	<Screenshot Value="Properties/Previews/turboRoundabout.png" />
+	<Screenshot Value="Properties/Previews/fenceRemoval.png" />
+	<Screenshot Value="Properties/Previews/removeTrain.jpg" />
+  -->
+  <!--Tag, can be set multiple-->
+  <Tag Value="Code Mod" />
+  <!--Link to the forum post where the mod can be discussed-->
+  <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
+  <!--Version of the mod-->
+  <ModVersion Value="0.0.5" />
+  <!--Recommended version of the base game to use the mod-->
+  <GameVersion Value="1.5.*" />
+  <!--Dependency for the mod, can be set multiple-->
+  <Dependency Id="74417" DisplayName="Unified Icon Library" Version="1.0.13" />
+  <Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />
+  <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
+  <ChangeLog>
+	  # Patch V0.0.5
+	  * Tweeks to the Long Description of the mod.
+	  
+	  # Patch V0.0.4
+	  * List Panel is now draggable and the position is kept between game sessions by saving it in the mod's settings.
+	  * Cleanup of some unused code and logging statements.
+
+	  # Patch V0.0.3
+	  * List panel now contains a button to refresh the list based on the lastest Move It selection, so it no longer requires closing and reopening the list to refresh it.
+	  * Still requires a preselection made inside MoveIt to display the selected assets in the list.
+	  * Panel now shows the names of the assets prefabs if they are available, otherwise it will show the name of the asset itself.
+	  * Instructions are now presented in the list panel when no assets are selected.
+	  * The list panel remains visible and partially functional even when Move It is running, only being unable to hightlight the assets when hovered on the list. Selecting one asset from the list closes Move It and restores full functionality to the list panel.
+	  * List panel continues to be fully functional and listing the selected assets event when the info panel of one is opened, allowing the user to select another asset from the list without having to close the info panel first nor having to reopen the list panel.
+	  * Assets like roads, rails, netlanes, paths that might have been selected in Move It are skipped and not be listed in the list panel.
+	  * The panel's design has been improved to be more visually appealing (I hope), and closer to the vanilla UI style.
+
+	  # Patch V0.0.2
+	  * Fully working version of the Selected Assets List Panel
+	  * Still requires a preselection made inside MoveIt to display the selected assets in the list, and the list needs to be refreshed manually by closing the list and reopening it.</ChangeLog>
+  <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
+	<ExternalLink Type="youtube" Url="https://www.youtube.com/@Obelix-Red" />
+	<ExternalLink Type="discord" Url="https://discord.gg/HTav7ARPs2" />
+	<ExternalLink Type="github" Url="https://github.com/gecscs/LSD" />
+	<ExternalLink Type="crowdin" Url="https://crowdin.com/project/layered-selection-display" />
+  <!-- Supported values Public, Private, Unlisted -->
+  <AccessLevel Value="Public" />
+</Publish>

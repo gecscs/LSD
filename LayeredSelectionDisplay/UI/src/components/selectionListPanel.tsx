@@ -1,0 +1,113 @@
+import { useLocalization } from "cs2/l10n";
+import { Panel, Portal, Scrollable } from "cs2/ui";
+import { bindValue, trigger, useValue } from "cs2/api";
+import locale from "../mods/lang/en-US.json";
+import styles from "./selectionListPanel.module.scss";
+import mod from "../../mod.json";
+import { Entity } from "cs2/bindings";
+import { SelectedEntities } from "../Domain/SelectedEntities";
+import { SelectedEntity } from "../Domain/SelectedEntity";
+
+const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
+const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
+const selectedEntities$ = bindValue<SelectedEntities>(mod.id, "SelectedEntities", { Entities: [] });
+const panelPosition$ = bindValue(mod.id, "PanelPosition", { x: 0.5, y: 0.5 });
+
+function OnEntityHover(index: number, version: number) {
+    trigger(mod.id, "OnEntityHover", index, version);
+}
+
+function OnEntityLeave(index: number, version: number) {
+    trigger(mod.id, "OnEntityLeave", index, version);
+}    
+
+function OnEntitySelect(index: number, version: number) {
+    trigger(mod.id, "OnEntitySelect", index, version);
+}   
+
+function RefreshSelection() {
+    trigger(mod.id, "RefreshSelection");
+}
+
+export const SelectionListPanel = () => {
+    const { translate } = useLocalization();
+    const listPanelTitle =          translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.Title",            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.Title"]);
+    const listPanelIntro = translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro"]);
+    const listPanelRefreshButtonToolTip = translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip", locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip"]) ?? "Test";
+    const listPanelNoItemsSelected = translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected"]) ?? "No items selected";
+    const listPanelNoItemsSelectedTip = translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip", locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip"]);
+    const refreshIconSrc = "coui://uil/Standard/Reset.svg";
+    const isGame = useValue(isGame$);
+    const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
+    const selectedEntities = useValue(selectedEntities$);
+    const panelPosition = useValue(panelPosition$);
+
+    selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name));
+
+    return (
+        <>
+        {(isGame && isMarqueeToolSelected) && (
+            <Portal>
+           <Panel id="lsdSelectionListPanel"
+                    draggable
+                    initialPosition={panelPosition}
+                    className={styles.mainPanel}
+                    header={listPanelTitle}                    
+                    onMouseUp=
+                    {() => 
+                        {
+                            let panel = document.getElementById('lsdSelectionListPanel');
+                            if (panel) 
+                            {
+                                const rect = panel.getBoundingClientRect();
+                                const viewportWidth = document.documentElement.clientWidth;
+                                const viewportHeight = document.documentElement.clientHeight;
+                                const x = rect.left / (viewportWidth - rect.width);
+                                const y = rect.top / (viewportHeight - rect.height);
+
+                                trigger(mod.id, "SetPanelPosition", { x: x, y: y });
+                            }
+                        }   
+                    }         
+                >
+                    <div className={ styles.introBar }>
+                        <div className={ styles.introText }>
+                            { listPanelIntro }
+                        </div>
+
+                        <button
+                            
+                            className={ styles.refreshButton }
+                            onClick={() => RefreshSelection()}
+                            title={ listPanelRefreshButtonToolTip }
+                        >
+                            <img src={ refreshIconSrc }/>
+                         </button>
+                    </div>    
+                    {selectedEntities.Entities.length > 0 && (
+                        <Scrollable className={styles.scrollablePanel}>
+                            <ul className={styles.listedAssets}>
+                                {selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name)).map((e) => (
+                                    <li 
+                                        onMouseDown={() => OnEntitySelect(e.Index, e.Version)}
+                                        onMouseEnter={() => OnEntityHover(e.Index, e.Version)}
+                                        onMouseLeave={() => OnEntityLeave(e.Index, e.Version)}
+                                        key={e.Index} > {e.Name} </li>
+                                ))}
+                            </ul>
+                        </Scrollable>
+                    )}
+                    {selectedEntities.Entities.length === 0 && (
+                        <div className={styles.noItemsSelected}>
+                            <span>{ listPanelNoItemsSelected } </span>
+                            <p> { listPanelNoItemsSelectedTip } </p>
+                        </div>
+                    )}  
+                </Panel>
+            </Portal>
+             
+        )}
+        </>
+    );
+}
+                        
