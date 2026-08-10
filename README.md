@@ -2,8 +2,8 @@ Easily select things that you otherwise could not select or easily select.
 
 
 ## Dependencies
-Unified Icon Library
-Move It
+* Unified Icon Library
+* Move It
 
 ## Translations
 I am looking for volunteers to help translate the mod into the other languages. For those interested please discuss the translation project in the discord link. https://discord.com/channels/1357924258730213447/1532833938169397440. CrowdIn Link available there or here.
