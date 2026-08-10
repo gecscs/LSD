@@ -10,29 +10,22 @@ namespace LSD_Layered_Selection_Display.Systems
     using System.Reflection;
     using Colossal.Entities;
     using Colossal.Logging;
-    using Colossal.PSI.Common;
     using Colossal.Serialization.Entities;
     using Colossal.UI.Binding;
     using Game;
-    using Game.Areas;
     using Game.Common;
-    using Game.Input;
     using Game.Prefabs;
     using Game.Rendering;
     using Game.SceneFlow;
     using Game.Tools;
-    using Game.UI;
     using Game.UI.InGame;
     using LSD_Layered_Selection_Display.Domain;
     using LSD_Layered_Selection_Display.Extensions;
-    using LSD_Layered_Selection_Display.Utils;
+    using LSD_Layered_Selection_Display.Settings;
     using Unity.Collections;
-    using Unity.Collections.LowLevel.Unsafe;
     using Unity.Entities;
     using Unity.Jobs;
-    using UnityEngine.InputSystem;
-    using static Colossal.AssetPipeline.Diagnostic.Report;
-    using static Game.Prefabs.TriggerPrefabData;
+    using Unity.Mathematics;
 
     /// <summary>
     /// UI system for LSD extensions to the default tool.
@@ -52,11 +45,15 @@ namespace LSD_Layered_Selection_Display.Systems
         private ObjectToolSystem m_ObjectToolSystem;
         private ValueBinding<int> m_RaycastTarget;
         private ValueBindingHelper<bool> m_IsGame;
+        private ValueBindingHelper<bool> m_IsEditor;
         private ValueBindingHelper<VanillaFilters> m_SelectedVanillaFilters;
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
 
         private ValueBinding<bool> m_IsMarqueeToolSelected;
+
+        private LSDLayeredSelectionDisplayModSettings m_settings;
+        private ValueBinding<float2> m_PanelPosition;
 
         private NativeHashSet<Entity> m_MoveItSelectedEntities = new(0, Allocator.Persistent);
         private PropertyInfo m_MoveItSelectedEntitiesPropertyInfo;
@@ -64,12 +61,8 @@ namespace LSD_Layered_Selection_Display.Systems
 
         private ValueBinding<SelectedEntities> m_SelectedEntitiesBinding;
 
-        // private HashSet<Entity> m_MoveItSelectedEntitiesHashSet = new HashSet<Entity>();
-
-        // private GetterValueBinding<List<Entity>> m_MoveItSelectedEntities;
         private JobHandle m_writeDeps;
         private JobHandle m_readDeps;
-        // private ModificationBarrier1 m_ModificationBarrier1;
 
         private Entity m_HoveredEntity = Entity.Null;
         private Entity m_PreviousHoveredEntity = Entity.Null;
@@ -200,8 +193,7 @@ namespace LSD_Layered_Selection_Display.Systems
             m_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_ActiveDefaultToolSystem = m_DefaultToolSystem;
             m_prefabUISystem = World.GetOrCreateSystemManaged<PrefabUISystem>();
-
-            // m_ModificationBarrier1 = World.GetOrCreateSystemManaged<ModificationBarrier1>();
+            m_settings = LSDLayeredSelectionDisplayMod.Instance?.Settings;
             m_HoverState = new HoverState();
 
             // These establish binding with UI.
@@ -217,6 +209,20 @@ namespace LSD_Layered_Selection_Display.Systems
 
             AddBinding(m_IsMarqueeToolSelected);
 
+            float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
+
+            if (m_settings?.GameListPanelPosition.x is not null && m_settings?.GameListPanelPosition.y is not null)
+            {
+                float2 settingsGameListPanelPosition = new float2(x: m_settings.GameListPanelPosition.x, y: m_settings.GameListPanelPosition.y); // Default position if settings are not available
+                AddBinding(m_PanelPosition = new ValueBinding<float2>(ModId, "PanelPosition", settingsGameListPanelPosition));
+            }
+            else
+            {
+                AddBinding(m_PanelPosition = new ValueBinding<float2>(ModId, "PanelPosition", initialPanelPosition));
+            }
+
+            AddBinding(new TriggerBinding<float2>(ModId, "SetPanelPosition", SetPanelPosition));
+
             // This handles the event when the marquee tool is selected in the UI.
             AddBinding(new TriggerBinding(ModId, "OnChangeMarqueeToolSelected", OnChangeMarqueeToolSelected));
 
@@ -228,12 +234,6 @@ namespace LSD_Layered_Selection_Display.Systems
             var moveItTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID));
 
             AddBinding(m_SelectedEntitiesBinding = new ValueBinding<SelectedEntities>(ModId, "SelectedEntities", new SelectedEntities() { Entities = new List<SelectedEntity>() }));
-
-            // AddBinding(m_MoveItSelectedEntitiesBinding = new GetterValueBinding<HashSet<Entity>>(
-            //    ModId,
-            //    "SelectedEntities",
-            //    () => (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(moveItTool),
-            //    new CollectionWriter<Entity>()));
 
             EntityQuery m_HighlightedQuery = GetEntityQuery(new EntityQueryDesc
             {
@@ -286,31 +286,22 @@ namespace LSD_Layered_Selection_Display.Systems
                 m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} {toolBaseSystem.toolID}");
             }
 
-            /*
-            m_Log.Debug("Shortcuts Action Map:");
-            ProxyActionMap shortcutsMap = InputManager.instance.FindActionMap(InputManager.kShortcutsMap);
-            foreach (KeyValuePair<string, ProxyAction> keyValue in shortcutsMap.actions)
-            {
-                m_Log.Debug(keyValue.Key);
-            }
+            // ensure settings are available before any trigger using them
+            m_settings = LSDLayeredSelectionDisplayMod.Instance?.Settings;
 
-            m_Log.Debug("Tool Action Map:");
-            ProxyActionMap toolMap = InputManager.instance.FindActionMap(InputManager.kToolMap);
-            foreach (KeyValuePair<string, ProxyAction> keyValue in toolMap.actions)
-            {
-                m_Log.Debug(keyValue.Key);
-            }
-
-            m_Log.Debug("kEngagementMap Action Map:");
-            ProxyActionMap kEngagementMap = InputManager.instance.FindActionMap(InputManager.kEngagementMap);
-            foreach (KeyValuePair<string, ProxyAction> keyValue in kEngagementMap.actions)
-            {
-                m_Log.Debug(keyValue.Key);
-            }*/
+            float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
 
             if (mode == GameMode.Game)
             {
                 m_IsGame.Value = true;
+                m_PanelPosition.Update(m_settings?.GameListPanelPosition ?? initialPanelPosition);
+                return;
+            }
+
+            if (mode == GameMode.Editor)
+            {
+                m_IsEditor.Value = true;
+                m_PanelPosition.Update(m_settings?.EditorListPanelPosition ?? initialPanelPosition);
                 return;
             }
 
@@ -325,6 +316,48 @@ namespace LSD_Layered_Selection_Display.Systems
         protected override void OnUpdate()
         {
             base.OnUpdate();
+        }
+
+        /// <summary>
+        /// Sets the position of the panel in the UI and updates the mod settings accordingly.
+        /// </summary>
+        /// <param name="position"> The position to set. </param>
+        private void SetPanelPosition(float2 position)
+        {
+            if (m_PanelPosition == null)
+            {
+                m_Log?.Error($"{nameof(SetPanelPosition)}: UI binding for PanelPosition is null.");
+                return;
+            }
+
+            m_PanelPosition.Update(position);
+
+            m_ToolSystem ??= World.GetOrCreateSystemManaged<ToolSystem>();
+
+            if (m_settings == null)
+            {
+                m_Log?.Warn($"{nameof(SetPanelPosition)}: settings object is null; skipping save.");
+                return;
+            }
+
+            try
+            {
+                if (m_ToolSystem.actionMode.IsGame())
+                {
+                    m_Log.Debug($"{nameof(LSDLayeredSelectionDisplayUISystem)}.{nameof(SetPanelPosition)} Saving GameListPanelPosition to settings: {position}");
+                    m_settings.GameListPanelPosition = position;
+                    m_settings.ApplyAndSave();
+                }
+                else if (m_ToolSystem.actionMode.IsEditor())
+                {
+                    m_settings.EditorListPanelPosition = position;
+                    m_settings.ApplyAndSave();
+                }
+            }
+            catch (Exception ex)
+            {
+                m_Log?.Error(ex, $"{nameof(SetPanelPosition)}: failed to save settings");
+            }
         }
 
         /// <summary>

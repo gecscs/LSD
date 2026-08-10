@@ -95,7 +95,8 @@ namespace LSD_Layered_Selection_Display
             }
 
             Settings = new (this);
-            Settings.RegisterKeyBindings();
+
+            // Settings.RegisterKeyBindings();
             Settings.RegisterInOptionsUI();
             AssetDatabase.global.LoadSettings(nameof(LSDLayeredSelectionDisplayMod), Settings, new LSDLayeredSelectionDisplayModSettings(this));
             Logger.Info($"[{nameof(LSDLayeredSelectionDisplayMod)}] {nameof(OnLoad)} finished loading settings.");

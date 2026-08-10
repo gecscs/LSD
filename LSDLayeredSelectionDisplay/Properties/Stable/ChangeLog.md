@@ -1,4 +1,8 @@
-﻿# Patch V0.0.3
+﻿# Patch V0.0.4
+* List Panel is now draggable and the position is kept between game sessions by saving it in the mod's settings.
+* Cleanup of some unused code and logging statements.
+
+# Patch V0.0.3
 * List panel now contains a button to refresh the list based on the lastest Move It selection, so it no longer requires closing and reopening the list to refresh it.
 * Still requires a preselection made inside MoveIt to display the selected assets in the list.
 * Panel now shows the names of the assets prefabs if they are available, otherwise it will show the name of the asset itself.

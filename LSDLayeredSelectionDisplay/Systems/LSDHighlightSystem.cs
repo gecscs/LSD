@@ -1,14 +1,16 @@
-﻿using Colossal.Logging;
-using Game;
-using Game.Common;
-using Game.Prefabs;
-using Game.Rendering;
-using Game.Tools;
-using LSD_Layered_Selection_Display.Domain;
-using Unity.Entities;
+﻿
 
 namespace LSD_Layered_Selection_Display.Systems
 {
+    using Colossal.Logging;
+    using Game;
+    using Game.Common;
+    using Game.Prefabs;
+    using Game.Rendering;
+    using Game.Tools;
+    using LSD_Layered_Selection_Display.Domain;
+    using Unity.Entities;
+
     public partial class LSDHighlightSystem : GameSystemBase
     {
         private const string ModId = "LSDLayeredSelectionDisplay";

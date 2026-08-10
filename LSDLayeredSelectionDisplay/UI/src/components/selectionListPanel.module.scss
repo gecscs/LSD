@@ -6,8 +6,6 @@
     height: 300rem;
     width: 300rem;
     position: absolute;
-    left: 10rem;
-    bottom: 87rem;
     padding-bottom: 20rem;
     text-transform: none;
 }
@@ -30,10 +28,6 @@
     border-radius: 3rem; // slightly rounded inner wrapper
     overflow: hidden;    // clips the UL inside it    
     --scrollbarThumbSize: 8rem;
-    //padding-right: 10rem;
-}
-.scrollablePanel div {
-    //--scrollbarThumbSize: 8rem;
 }
 .noItemsSelected {
     font-size: 12rem;

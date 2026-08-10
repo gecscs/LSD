@@ -55,7 +55,7 @@ I am looking for volunteers to help translate the mod into the other languages. 
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.0.3" />
+  <ModVersion Value="0.0.4" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.5.*" />
   <!--Dependency for the mod, can be set multiple-->
@@ -63,6 +63,10 @@ I am looking for volunteers to help translate the mod into the other languages. 
 	<Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
+	  # Patch V0.0.4
+	  * List Panel is now draggable and the position is kept between game sessions by saving it in the mod's settings.
+	  * Cleanup of some unused code and logging statements.
+
 	  # Patch V0.0.3
 	  * List panel now contains a button to refresh the list based on the lastest Move It selection, so it no longer requires closing and reopening the list to refresh it.
 	  * Still requires a preselection made inside MoveIt to display the selected assets in the list.
@@ -72,7 +76,7 @@ I am looking for volunteers to help translate the mod into the other languages. 
 	  * List panel continues to be fully functional and listing the selected assets event when the info panel of one is opened, allowing the user to select another asset from the list without having to close the info panel first nor having to reopen the list panel.
 	  * Assets like roads, rails, netlanes, paths that might have been selected in Move It are skipped and not be listed in the list panel.
 	  * The panel's design has been improved to be more visually appealing (I hope), and closer to the vanilla UI style.
-	  
+
 	  # Patch V0.0.2
 	  * Fully working version of the Selected Assets List Panel
 	  * Still requires a preselection made inside MoveIt to display the selected assets in the list, and the list needs to be refreshed manually by closing the list and reopening it.</ChangeLog>

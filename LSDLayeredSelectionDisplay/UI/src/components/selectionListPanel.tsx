@@ -11,6 +11,7 @@ import { SelectedEntity } from "../Domain/SelectedEntity";
 const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
 const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
 const selectedEntities$ = bindValue<SelectedEntities>(mod.id, "SelectedEntities", { Entities: [] });
+const panelPosition$ = bindValue(mod.id, "PanelPosition", { x: 0.5, y: 0.5 });
 
 function OnEntityHover(index: number, version: number) {
     trigger(mod.id, "OnEntityHover", index, version);
@@ -35,26 +36,39 @@ export const SelectionListPanel = () => {
     const listPanelRefreshButtonToolTip = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip"]) ?? "Test";
     const listPanelNoItemsSelected = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected"]) ?? "No items selected";
     const listPanelNoItemsSelectedTip = translate("LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip", locale["LSD_LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip"]);
-    const refreshIconSrc = "coui://uil/Standard/Reset.svg"; //RefreshIconSrc;
-
+    const refreshIconSrc = "coui://uil/Standard/Reset.svg";
     const isGame = useValue(isGame$);
     const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
     const selectedEntities = useValue(selectedEntities$);
-
-    console.debug("SelectionListPanel: selectedEntities.Entities.length = ", selectedEntities.Entities.length);
-    console.debug("SelectionListPanel: selectedEntities.Entities = ", selectedEntities.Entities ?? "No entities available");
+    const panelPosition = useValue(panelPosition$);
 
     selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name));
 
-    console.debug("SelectionListPanel: selectedEntities.Entities after sorting = ", selectedEntities.Entities ?? "No entities available");
-
-   return (
+    return (
         <>
         {(isGame && isMarqueeToolSelected) && (
             <Portal>
-                <Panel 
+           <Panel id="lsdSelectionListPanel"
+                    draggable
+                    initialPosition={panelPosition}
                     className={styles.mainPanel}
-                    header={listPanelTitle}
+                    header={listPanelTitle}                    
+                    onMouseUp=
+                    {() => 
+                        {
+                            let panel = document.getElementById('lsdSelectionListPanel');
+                            if (panel) 
+                            {
+                                const rect = panel.getBoundingClientRect();
+                                const viewportWidth = document.documentElement.clientWidth;
+                                const viewportHeight = document.documentElement.clientHeight;
+                                const x = rect.left / (viewportWidth - rect.width);
+                                const y = rect.top / (viewportHeight - rect.height);
+
+                                trigger(mod.id, "SetPanelPosition", { x: x, y: y });
+                            }
+                        }   
+                    }         
                 >
                     <div className={ styles.introBar }>
                         <div className={ styles.introText }>
