@@ -5,7 +5,7 @@
   "LAYERED_SELECTION_DISPLAY.Filter": "Filter",
   "LAYERED_SELECTION_DISPLAY_DESCRIPTION.SurfacesFilterButton": "For selecting surfaces inside or outside of buildings in one click.",
   "LayeredSelectionDisplay.TOOLTIP_TITLE[AllFilters]": "Toggle all Filters on/off",
-  "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[AllFilters]": "Either selects all or none of the Filters depending on your current selection. Having none selected will prevent the pointer from selection any assets.",
+  "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[AllFilters]": "Either selects all or none of the Filters depending on your current selection. Having none selected will prevent the pointer from selecting any assets.",
   "LayeredSelectionDisplay.TOOLTIP_TITLE[BuildingFilter]": "Building Filter",
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[BuildingFilter]": "Toggling this off will prevent the tool from selecting Building assets.",
   "LayeredSelectionDisplay.TOOLTIP_TITLE[VanillaNetworksFilter]": "Network Filter",

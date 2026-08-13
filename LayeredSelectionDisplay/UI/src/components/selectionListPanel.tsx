@@ -87,12 +87,16 @@ export const SelectionListPanel = () => {
                     {selectedEntities.Entities.length > 0 && (
                         <Scrollable className={styles.scrollablePanel}>
                             <ul className={styles.listedAssets}>
-                                {selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name)).map((e) => (
+                                {selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name)).map((e, i) => (
                                     <li 
                                         onMouseDown={() => OnEntitySelect(e.Index, e.Version)}
-                                        onMouseEnter={() => OnEntityHover(e.Index, e.Version)}
-                                        onMouseLeave={() => OnEntityLeave(e.Index, e.Version)}
-                                        key={e.Index} > {e.Name} </li>
+                                        onMouseEnter={() => OnEntityHover(e.Index, e.Version)} 
+                                        onMouseLeave={() => OnEntityLeave(e.Index, e.Version)} 
+                                        key={e.Index} 
+                                    > 
+                                        <span className={styles.entityIndex}>{i + 1}</span> 
+                                        <span className={styles.entityName}>{e.Name}</span> 
+                                    </li>
                                 ))}
                             </ul>
                         </Scrollable>

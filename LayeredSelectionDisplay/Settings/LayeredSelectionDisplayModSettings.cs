@@ -4,19 +4,9 @@
 
 namespace LayeredSelectionDisplay.Settings
 {
-    using System.Collections.Generic;
-    using Colossal;
     using Colossal.IO.AssetDatabase;
-    using Game;
-    using Game.Input;
     using Game.Modding;
     using Game.Settings;
-    using Game.Tools;
-    using Game.UI;
-    using Game.UI.Widgets;
-    using LayeredSelectionDisplay.Systems;
-    using Newtonsoft.Json.Linq;
-    using Unity.Entities;
     using Unity.Mathematics;
 
     /// <summary>

@@ -61,8 +61,7 @@ enum VanillaFilters
     All = 128,
 }
 
-const descriptionToolTipStyle = getModule("game-ui/common/tooltip/description-tooltip/description-tooltip.module.scss", "classes");
-    
+const descriptionToolTipStyle = getModule("game-ui/common/tooltip/description-tooltip/description-tooltip.module.scss", "classes");    
 
 // This is working, but it's possible a better solution is possible.
 function descriptionTooltip(tooltipTitle: string | null, tooltipDescription: string | null) : JSX.Element {
@@ -85,9 +84,7 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend = (C
         const selectedVanillaFilters = useValue(selectedVanillaFilters$);
         const isGame = useValue(isGame$);
         const raycastTarget = useValue(raycastTarget$);
-
         const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
-
         const marqueeToolIcon = isMarqueeToolSelected ? marqueeToolActiveSrc : marqueeToolSrc;
         
         // Saving strings for events and translations.
@@ -96,12 +93,9 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend = (C
         // translation handling. Translates using locale keys that are defined in C# or fallback string here.
         const { translate } = useLocalization();
         const filterSectionTitle =          translate(sectionTitlePrefix + "Filter",                        locale["LAYERED_SELECTION_DISPLAY.Filter"]);
-        const surfacesFilterTooltip =       translate(tooltipDescriptionPrefix + surfacesID,                locale["LAYERED_SELECTION_DISPLAY_DESCRIPTION.SurfacesFilterButton"]);
-        
-        const toolModeTitle =               translate("Toolbar.TOOL_MODE_TITLE", "Tool Mode");
-        
+        const surfacesFilterTooltip =       translate(tooltipDescriptionPrefix + surfacesID,                locale["LAYERED_SELECTION_DISPLAY_DESCRIPTION.SurfacesFilterButton"]);        
+        const toolModeTitle =               translate("Toolbar.TOOL_MODE_TITLE", "Tool Mode");        
         const surfacesSrc =                     uilStandard + "ShovelSurface.svg";
-
         const surfacesFilterTitle =         translate("LayeredSelectionDisplay.TOOLTIP_TITLE[SurfacesFilterButton]" );
         const allFiltersTitle = translate("LayeredSelectionDisplay.TOOLTIP_TITLE[AllFilters]" ,locale["LayeredSelectionDisplay.TOOLTIP_TITLE[AllFilters]"]);
         const allFiltersDescription = translate("LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[AllFilters]" ,locale["LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[AllFilters]"]);

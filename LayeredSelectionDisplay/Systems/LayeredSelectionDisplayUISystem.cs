@@ -33,7 +33,6 @@ namespace LayeredSelectionDisplay.Systems
     public partial class LayeredSelectionDisplayUISystem : ExtendedUISystemBase
     {
         private const string ModId = "LayeredSelectionDisplay";
-
         private const string MoveItToolID = "MoveItTool";
         private ToolSystem m_ToolSystem;
         private ToolBaseSystem m_MoveItTool;
@@ -49,24 +48,17 @@ namespace LayeredSelectionDisplay.Systems
         private ValueBindingHelper<VanillaFilters> m_SelectedVanillaFilters;
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
-
         private ValueBinding<bool> m_IsMarqueeToolSelected;
-
         private LayeredSelectionDisplayModSettings m_settings;
         private ValueBinding<float2> m_PanelPosition;
-
         private NativeHashSet<Entity> m_MoveItSelectedEntities = new(0, Allocator.Persistent);
         private PropertyInfo m_MoveItSelectedEntitiesPropertyInfo;
         private GetterValueBinding<HashSet<Entity>> m_MoveItSelectedEntitiesBinding;
-
         private ValueBinding<SelectedEntities> m_SelectedEntitiesBinding;
-
         private JobHandle m_writeDeps;
         private JobHandle m_readDeps;
-
         private Entity m_HoveredEntity = Entity.Null;
         private Entity m_PreviousHoveredEntity = Entity.Null;
-
         private HoverState m_HoverState;
 
         /// <summary>
@@ -176,6 +168,9 @@ namespace LayeredSelectionDisplay.Systems
         /// </summary>
         public VanillaFilters SelectedVanillaFilters { get => m_SelectedVanillaFilters.Value; }
 
+        /// <summary>
+        /// Gets a value indicating whether the marquee tool is selected.
+        /// </summary>
         public HoverState HoverState => m_HoverState;
 
         /// <inheritdoc/>
@@ -272,8 +267,8 @@ namespace LayeredSelectionDisplay.Systems
             }
 
             m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} after attempting to get Move It tool.");
-
             m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Old Tool Order:");
+
             foreach (ToolBaseSystem toolBaseSystem in m_ToolSystem.tools)
             {
                 m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} {toolBaseSystem.toolID}");
@@ -306,7 +301,6 @@ namespace LayeredSelectionDisplay.Systems
             }
 
             m_IsGame.Value = false;
-
             m_IsMarqueeToolSelected.Update(false);
         }
 
@@ -331,7 +325,6 @@ namespace LayeredSelectionDisplay.Systems
             }
 
             m_PanelPosition.Update(position);
-
             m_ToolSystem ??= World.GetOrCreateSystemManaged<ToolSystem>();
 
             if (m_settings == null)
@@ -417,7 +410,7 @@ namespace LayeredSelectionDisplay.Systems
                             else
                             {
                                 moveItSelectedEntitiesBinding.AddSelectedEntity(item, localizedName ?? item.Index + " : " + item.Version);
-                                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
+                                m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
                             }
                         }
                         else
@@ -439,14 +432,14 @@ namespace LayeredSelectionDisplay.Systems
                             else
                             {
                                 moveItSelectedEntitiesBinding.AddSelectedEntity(item, item.Index + " : " + item.Version);
-                                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
+                                m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
                             }
                         }
                     }
                     else
                     {
                         moveItSelectedEntitiesBinding.AddSelectedEntity(item, item.Index + " : " + item.Version);
-                        m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefabRef for entity: {item}");
+                        m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefabRef for entity: {item}");
                     }
 
                     m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entity: {item}");
@@ -507,8 +500,6 @@ namespace LayeredSelectionDisplay.Systems
                 m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityHover)} Entity exists: {index}, {version}");
                 m_HoverState.HoveredEntity = entity;
                 m_HoverState.Dirty = true;
-
-                // EntityManager.AddComponent<Highlighted>(entity);
             }
             else
             {
@@ -540,8 +531,6 @@ namespace LayeredSelectionDisplay.Systems
                     m_HoverState.HoveredEntity = Entity.Null;
                     m_HoverState.Dirty = true;
                 }
-
-                // EntityManager.RemoveComponent<Highlighted>(entity);
             }
             else
             {

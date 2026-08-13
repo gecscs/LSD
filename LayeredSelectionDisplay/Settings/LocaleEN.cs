@@ -6,8 +6,6 @@ namespace LayeredSelectionDisplay.Settings
 {
     using System.Collections.Generic;
     using Colossal;
-    using Colossal.PSI.Common;
-    using Game.Settings;
 
     /// <summary>
     /// Localization for <see cref="LayeredSelectionDisplayMod"/> mod in English.
@@ -56,7 +54,7 @@ namespace LayeredSelectionDisplay.Settings
                 { "LAYERED_SELECTION_DISPLAY.Filter", "Filter" },
                 { "LAYERED_SELECTION_DISPLAY_DESCRIPTION.SurfacesFilterButton", "For selecting surfaces inside or outside of buildings in one click." },
                 { TooltipTitleKey("AllFilters"), "Toggle all Filters on/off" },
-                { TooltipDescriptionKey("AllFilters"), "Either selects all or none of the Filters depending on your current selection. Having none selected will prevent the pointer from selection any assets." },
+                { TooltipDescriptionKey("AllFilters"), "Either selects all or none of the Filters depending on your current selection. Having none selected will prevent the pointer from selecting any assets." },
                 { TooltipTitleKey("BuildingFilter"), "Building Filter" },
                 { TooltipDescriptionKey("BuildingFilter"), "Toggling this off will prevent the tool from selecting Building assets." },
                 { TooltipTitleKey("VanillaNetworksFilter"), "Network Filter" },
@@ -85,6 +83,11 @@ namespace LayeredSelectionDisplay.Settings
         {
         }
 
+        /// <summary>
+        /// Gets the ToolTip Description Key.
+        /// </summary>
+        /// <param name="key">The Tooltip Key.</param>
+        /// <returns>Returns the key.</returns>
         private string TooltipDescriptionKey(string key)
         {
             return $"LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[{key}]";

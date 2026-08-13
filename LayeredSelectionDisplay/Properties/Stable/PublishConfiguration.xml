@@ -43,13 +43,7 @@
   <!--Thumbnail-->
   <Thumbnail Value="Properties/Stable/Thumbnail.png" />
   <!--Screenshot, can be set multiple-->
-  <!--
-	<Screenshot Value="Properties/Previews/chickenCoop.jpg" />
-	<Screenshot Value="Properties/Previews/neighborhood.png" />
-	<Screenshot Value="Properties/Previews/turboRoundabout.png" />
-	<Screenshot Value="Properties/Previews/fenceRemoval.png" />
-	<Screenshot Value="Properties/Previews/removeTrain.jpg" />
-  -->
+  <Screenshot Value="Properties/Stable/Thumbnail.png" />
   <!--Tag, can be set multiple-->
   <Tag Value="Code Mod" />
   <!--Link to the forum post where the mod can be discussed-->

@@ -1,25 +1,26 @@
-﻿
+﻿// <copyright file="LayeredSelectionDisplayHighlightSystem.cs" company="0belix's Mods. MIT License">
+// Copyright (c) 0belix's Mods. MIT License. All rights reserved.
+// </copyright>
 
+// #define VERBOSE
 namespace LayeredSelectionDisplay.Systems
 {
     using Colossal.Logging;
     using Game;
     using Game.Common;
-    using Game.Prefabs;
-    using Game.Rendering;
     using Game.Tools;
     using LayeredSelectionDisplay.Domain;
     using Unity.Entities;
 
+    /// <summary>
+    /// System that handles the highlighting of entities based on UI inputs.
+    /// </summary>
     public partial class LayeredSelectionDisplayHighlightSystem : GameSystemBase
     {
         private const string ModId = "LayeredSelectionDisplay";
         private ILog m_Log;
-
         private ToolOutputBarrier m_ToolOutputBarrier;
-
         private HoverState m_HoverState;
-
         private Entity m_PreviousHovered = Entity.Null;
 
         /// <summary>
@@ -44,22 +45,16 @@ namespace LayeredSelectionDisplay.Systems
         /// </summary>
         protected override void OnUpdate()
         {
-            // base.OnUpdate();
             if (!m_HoverState.Dirty)
             {
-                // m_Log.Debug($"{nameof(LSDHighlightSystem)}.{nameof(OnUpdate)} - No changes to highlight");
                 return;
             }
 
-            // m_Log.Debug($"{nameof(LSDHighlightSystem)}.{nameof(OnUpdate)} - Starting highlight update");
-
             m_HoverState.Dirty = false;
 
-            EntityCommandBuffer ecb =
-                m_ToolOutputBarrier.CreateCommandBuffer();
+            EntityCommandBuffer ecb = m_ToolOutputBarrier.CreateCommandBuffer();
 
             // Remove previous highlight
-            // m_Log.Debug($"{nameof(LSDHighlightSystem)}.{nameof(OnUpdate)} - Removing previous highlight");
             if (m_PreviousHovered != Entity.Null &&
                 EntityManager.Exists(m_PreviousHovered))
             {
@@ -72,7 +67,6 @@ namespace LayeredSelectionDisplay.Systems
             }
 
             // Add new highlight
-            // m_Log.Debug($"{nameof(LSDHighlightSystem)}.{nameof(OnUpdate)} - Adding new highlight");
             Entity current = m_HoverState.HoveredEntity;
 
             if (current != Entity.Null &&
