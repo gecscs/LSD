@@ -1,4 +1,11 @@
-﻿# Patch V0.0.5
+﻿# Patch V0.0.6
+* French and Spanish translations.
+* More code cleanup.
+* Added Thumbnail.
+* Detached Git from BB fork tree.
+* Further Tweeks to the Long Description of the mod.
+
+# Patch V0.0.5
 * Tweeks to the Long Description of the mod.
 
 # Patch V0.0.4

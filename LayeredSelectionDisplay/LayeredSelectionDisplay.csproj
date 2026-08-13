@@ -10,7 +10,7 @@
 		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
 		<PublishConfigurationPath>Properties\$(Configuration)\PublishConfiguration.xml</PublishConfigurationPath>
 		<AssemblyName>LayeredSelectionDisplay</AssemblyName>
-		<AssemblyVersion>0.0.5</AssemblyVersion>
+		<AssemblyVersion>0.0.6</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<RootNamespace>LayeredSelectionDisplay</RootNamespace>
@@ -21,6 +21,7 @@
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
 		<NeutralLanguage>en</NeutralLanguage>
+		<PackageIcon>Thumbnail.png</PackageIcon>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="images\**" />
@@ -235,6 +236,10 @@
 	<ItemGroup>
 	  <None Update="LICENSE.txt">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Properties\Previews\Thumbnail.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
 	  </None>
 	</ItemGroup>
 </Project>

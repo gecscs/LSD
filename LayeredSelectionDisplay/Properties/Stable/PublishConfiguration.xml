@@ -32,12 +32,12 @@
 
 	  # Credits
 	  * 0belix - Mod Author, Original Idea and Code Contribution
-	  * Yenyang - Mentor and Author of the original Better Bulldozer mod which served as the foundation for this mod and the MoveIt mod where the Marquee Tool code is leveraged from, along with code pieces from ReColor and Anarchy mods that were used as references, Code Contribution, Testing and Feedback
+	  * Yenyang - Mentor and Author of the original Better Bulldozer mod which served as the foundation for this mod and the MoveIt mod where the Marquee Tool code is leveraged from, along with code pieces from ReColor, TopoToggle and Anarchy mods that were used as references, Code Contribution, Testing and Feedback
 	  * Triton Supreme a.k.a. AlphaGaming - Support provided during development of the mod, Code Contribution, Testing and Feedback
 	  * Honu aka River-Mochi - Support and tips provided during development of the mod, and Inspiration for some pieces of code from the City WatchDog and Hover Colors mods
 	  * Gagaxm a.k.a. El Gaga - Expanding my initial idea by suggesting using a marquee tool for selection of multiple assets as opposed to the default tool attempting to detect all assets beneath the cursor, Testing and Feedback
 	  * MayorCheeks a.k.a. b00tyCheeks - Testing and Feedback
-	  * Localization - XXXX (German), XXXX (Chinese Simplified), XXXX (Korean), XXXX (Russian), XXXX (Polish), RocketDragon08 (Spanish), XXXX (French), XXXX (Chinese Traditional), XXXX (Italian), XXXX (Dutch)
+	  * Localization - XXXX (German), XXXX (Chinese Simplified), XXXX (Korean), XXXX (Russian), XXXX (Polish), RocketDragon08 (Spanish), 0belix (French), XXXX (Chinese Traditional), XXXX (Italian), XXXX (Dutch)
 
   </LongDescription>
   <!--Thumbnail-->
@@ -49,7 +49,7 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.0.5" />
+  <ModVersion Value="0.0.6" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.5.*" />
   <!--Dependency for the mod, can be set multiple-->
@@ -57,9 +57,16 @@
   <Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
+	  # Patch V0.0.6
+	  * French and Spanish translations.
+	  * More code cleanup.
+	  * Added Thumbnail.
+	  * Detached Git from BB fork tree.
+	  * Further Tweeks to the Long Description of the mod.
+	  
 	  # Patch V0.0.5
 	  * Tweeks to the Long Description of the mod.
-	  
+
 	  # Patch V0.0.4
 	  * List Panel is now draggable and the position is kept between game sessions by saving it in the mod's settings.
 	  * Cleanup of some unused code and logging statements.

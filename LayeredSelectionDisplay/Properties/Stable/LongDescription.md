@@ -23,9 +23,9 @@ I will respond on the code modding channels on **Cities: Skylines Modding Discor
 
 # Credits
 * 0belix - Mod Author, Original Idea and Code Contribution
-* Yenyang - Mentor and Author of the original Better Bulldozer mod which served as the foundation for this mod and the MoveIt mod where the Marquee Tool code is leveraged from, along with code pieces from ReColor and Anarchy mods that were used as references, Code Contribution, Testing and Feedback
+* Yenyang - Mentor and Author of the original Better Bulldozer mod which served as the foundation for this mod and the MoveIt mod where the Marquee Tool code is leveraged from, along with code pieces from ReColor, TopoToggle and Anarchy mods that were used as references, Code Contribution, Testing and Feedback
 * Triton Supreme a.k.a. AlphaGaming - Support provided during development of the mod, Code Contribution, Testing and Feedback
 * Honu aka River-Mochi - Support and tips provided during development of the mod, and Inspiration for some pieces of code from the City WatchDog and Hover Colors mods
 * Gagaxm a.k.a. El Gaga - Expanding my initial idea by suggesting using a marquee tool for selection of multiple assets as opposed to the default tool attempting to detect all assets beneath the cursor, Testing and Feedback
 * MayorCheeks a.k.a. b00tyCheeks - Testing and Feedback
-* Localization - XXXX (German), XXXX (Chinese Simplified), XXXX (Korean), XXXX (Russian), XXXX (Polish), RocketDragon08 (Spanish), XXXX (French), XXXX (Chinese Traditional), XXXX (Italian), XXXX (Dutch)
+* Localization - XXXX (German), XXXX (Chinese Simplified), XXXX (Korean), XXXX (Russian), XXXX (Polish), RocketDragon08 (Spanish), 0belix (French), XXXX (Chinese Traditional), XXXX (Italian), XXXX (Dutch)
