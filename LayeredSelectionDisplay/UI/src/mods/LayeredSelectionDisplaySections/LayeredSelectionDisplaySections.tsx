@@ -44,8 +44,8 @@ function changeSelectedVanillaFilter(filter: VanillaFilters) {
     trigger(mod.id, "ChangeVanillaFilter", filter);
 }
 
-function onChangeMarqueeToolSelected() {
-    trigger(mod.id, "OnChangeMarqueeToolSelected");
+function onChangeListPanelVisibility() {
+    trigger(mod.id, "OnChangeListPanelVisibility");
 }
 
 enum VanillaFilters 
@@ -129,7 +129,7 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend = (C
                         // This section is only showing while using vanilla bulldozer.
                         <>  
                             <VanillaComponentResolver.instance.Section title={toolsSectionTitle}>
-                                <VanillaComponentResolver.instance.ToolButton  onSelect={() => onChangeMarqueeToolSelected()}     tooltip={marqueeToolTooltip}          src={marqueeToolIcon}          className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}></VanillaComponentResolver.instance.ToolButton>
+                                <VanillaComponentResolver.instance.ToolButton  onSelect={() => onChangeListPanelVisibility()}     tooltip={marqueeToolTooltip}          src={marqueeToolIcon}          className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}></VanillaComponentResolver.instance.ToolButton>
                             </VanillaComponentResolver.instance.Section>
                             <VanillaComponentResolver.instance.Section title={filterSectionTitle}> 
                                 <VanillaComponentResolver.instance.ToolButton  selected={(selectedVanillaFilters & VanillaFilters.All) == VanillaFilters.All}               tooltip={descriptionTooltip(allFiltersTitle ,allFiltersDescription)}                        src={allSrc}            onSelect={() => changeSelectedVanillaFilter(VanillaFilters.All)}        className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}     ></VanillaComponentResolver.instance.ToolButton>

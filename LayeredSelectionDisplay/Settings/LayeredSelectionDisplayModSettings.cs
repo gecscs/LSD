@@ -42,6 +42,12 @@ namespace LayeredSelectionDisplay.Settings
         [SettingsUIHidden]
         public float2 EditorListPanelPosition { get; set; }
 
+        /// <summary>
+        /// Sets if the List Panel is expanded or not.
+        /// </summary>
+        [SettingsUIHidden]
+        public bool ExpandedListPanel { get; set; } = false;
+
         /// <inheritdoc/>
         public override void SetDefaults()
         {

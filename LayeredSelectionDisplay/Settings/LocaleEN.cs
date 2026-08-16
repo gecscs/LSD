@@ -71,7 +71,7 @@ namespace LayeredSelectionDisplay.Settings
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title", "LSD - Selected Assets" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", "Click any asset from the list to open its info panel." },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip", "Refresh list with current selection from Move It" },
-                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", "No items selected" },
+                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", "No items selected. Use Move It marquee selection tool to choose assets and then click the refresh button at the top of this panel. You will need to close Move It in order to see the highlighted item when hovering it on the list." },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip", "Use MoveIt marquee selection tool to choose assets and then click the refresh button in this panel. You will need to close MoveIt in order to see the highlighted item when hovering it on the list." },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools", "Tools" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", "Click to open the List Panel and import selected assets from Move It." },

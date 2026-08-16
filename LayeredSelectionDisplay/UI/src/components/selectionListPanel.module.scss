@@ -1,132 +1,526 @@
+/* ─────────────────────────────────────────────
+   Main Panel
+   ───────────────────────────────────────────── */
+
 .mainPanel {
-    background-color: rgba(99, 87, 87, 0.1);
-    font-size: 12rem;
-    border-radius: 2rem;
-    height: 300rem;
-    width: 300rem;
     position: absolute;
-    padding-bottom: 20rem;
+    width: 350rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background: rgba(14, 17, 24, 0.12);
+    backdrop-filter: blur(14rem) saturate(1.4);
+    -webkit-backdrop-filter: blur(14rem) saturate(1.4);
+    border: 1rem solid rgba(255, 255, 255, 0.1);
+    border-radius: 6rem;
+    box-shadow: 0 16rem 48rem rgba(0, 0, 0, 0.55), 0 0 0 0.5rem rgba(255, 255, 255, 0.06) inset;
+    overflow: hidden;
+    font-size: 12rem;
     text-transform: none;
 }
-    .mainPanel div {
-        text-transform: none !important;
+
+
+/* ─────────────────────────────────────────────
+   Panel Header
+
+   This is passed directly to Panel.header.
+   Therefore it remains inside the actual
+   draggable Panel header.
+   ───────────────────────────────────────────── */
+
+.panelHeader {
+    width: 100%;
+    min-width: 0;
+    min-height: 38rem;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 8rem 0 11rem;
+    background: transparent;
+    border: 0;
+    text-transform: none;
+    /*
+     * Important:
+     * the Panel itself owns the drag behaviour.
+     * Nothing here should create a second draggable surface.
+     */
+    pointer-events: auto;
+}
+
+
+/* ─────────────────────────────────────────────
+   Drag Grip
+
+   Six small points:
+
+       • •
+       • •
+       • •
+   ───────────────────────────────────────────── */
+
+.dragGrip {
+    flex: 0 0 auto;
+    width: 8rem;
+    height: 14rem;
+    display: grid;
+    grid-template-columns: repeat(2, 3rem);
+    grid-template-rows: repeat(3, 3rem);
+    gap: 2rem;
+    margin-right: 8rem;
+    opacity: 0.42;
+    pointer-events: none;
+
+    span {
+        width: 3rem;
+        height: 3rem;
+        display: block;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.7);
+        box-sizing: border-box;
     }
-.titleBar {
-    text-transform: none;
-    font-size: 15rem;
 }
-.scrollablePanel{
-    background-color: rgba(120, 87, 87, 0.2);  
+
+
+/* ─────────────────────────────────────────────
+   Title
+   ───────────────────────────────────────────── */
+
+.title {
+    flex: 1 1 auto;
+    min-width: 0;
+    /*
+     * Smaller letter-spacing than before.
+     * Negative value actually compresses the title.
+     */
     font-size: 12rem;
-    padding: 10rem;
-    border-radius: 3rem;
-    height: 170rem;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.86);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+    /*
+     * Prevent the game UI from injecting its own
+     * spacing/transform behaviour.
+     */
+    text-shadow: none;
 }
-.scrollablePanel > div {
-    border-radius: 3rem; // slightly rounded inner wrapper
-    overflow: hidden;    // clips the UL inside it    
-    --scrollbarThumbSize: 8rem;
+
+
+/* ─────────────────────────────────────────────
+   Header Buttons
+   ───────────────────────────────────────────── */
+
+.headerButtons {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    /*
+     * Normal distance between marquee and refresh.
+     */
+    gap: 4rem;
+    margin-left: 7rem;
+    pointer-events: auto;
 }
-.noItemsSelected {
-    font-size: 12rem;
-    color: rgba(255,255,255,.75);
-    padding: 20rem 10rem;
-    width: 100%;
-    margin-bottom:15rem;
+
+.headerButton {
+    flex: 0 0 auto;
+    width: 27rem;
+    height: 27rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5rem;
+    padding: 0;
+    border: 1rem solid rgba(255, 255, 255, 0.09);
+    border-radius: 5rem;
+    background: rgba(255, 255, 255, 0.08);
+    /*
+     * Explicit !important is intentional here.
+     * CS2's global button styles otherwise override this.
+     */
+    color: rgba(255, 255, 255, 0.70) !important;
+    cursor: pointer;
+    pointer-events: auto;
+    overflow: visible;
+    box-shadow: none;
+    transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+    appearance: none;
+
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.13);
+        border-color: rgba(255, 255, 255, 0.18);
+        color: rgba(255, 255, 255, 0.92) !important;
+    }
+
+
+    &:active {
+        background: rgba(255, 255, 255, 0.17);
+    }
+    /*
+     * The close button intentionally sits farther away.
+     */
+    &.danger {
+        margin-left: 13rem;
+    }
+
+
+        &.danger:hover {
+            background: rgba(220, 50, 50, 0.18);
+            border-color: rgba(255, 90, 90, 0.45);
+            color: rgba(255, 130, 130, 0.95) !important;
+        }
 }
-.noItemsSelected span {
+
+
+.headerIcon,
+.closeIcon {
     display: block;
-    color: rgba(255,255,255,.5);
-    font-size: 15rem;
-    font-style: italic;
-    padding-left: 2rem;
-    margin-bottom: 3rem;
+    flex: 0 0 auto;
+    overflow: visible;
+    color: rgba(255, 255, 255, 0.70) !important;
+    /*
+     * Explicitly prevent CS2's SVG styling from
+     * turning the icons black.
+     */
+    fill: none !important;
+    stroke: currentColor !important;
+    pointer-events: none;
 }
-ul.listedAssets {
-    background-color: rgba(156, 148, 148, 0.2);
-    font-size: 10rem;
-    list-style: none;
-    color: white;
-    margin: 0;
-    padding: 0 6rem;
+
+
+.headerButton:hover .headerIcon,
+.headerButton:hover .closeIcon {
+    color: rgba(255, 255, 255, 0.92) !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   Body
+   ───────────────────────────────────────────── */
+
+.body {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-transform: none;
+    background-color: none;
+}
+
+
+/*
+ * Keeps the actual content separate from the
+ * absolute bottom toggle.
+ */
+.bodyContent {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
     width: 100%;
-    border-radius: 3rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-transform: none;
+}
+
+
+/* ─────────────────────────────────────────────
+   Selection Count
+   ───────────────────────────────────────────── */
+
+.selectionCount {
+    flex-shrink: 0;
+    padding: 8rem 12rem;
+    border-bottom: 1rem solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.02);
+    font-size: 11rem;
+    color: rgba(255, 255, 255, 0.38);
+
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+
+    span {
+        color: rgba(100, 185, 255, 0.85);
+        font-family: var(--font-mono);
+        font-weight: 500;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Scrollable
+   ───────────────────────────────────────────── */
+
+.scrollablePanel {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.scrollablePanel > div {
+    box-sizing: border-box;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+/* ─────────────────────────────────────────────
+   List
+   ───────────────────────────────────────────── */
+
+ul.listedAssets {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 2rem 0;
+    list-style: none;
+    background: transparent;
+    font-size: 12rem;
+    color: white;
+
 
     li {
         display: flex;
-        align-items: baseline;
+        align-items: flex-start;
         width: 100%;
+        min-height: 30rem;
         box-sizing: border-box;
-        padding: 6rem 10rem;
+        border-left: 2rem solid transparent;
+        border-bottom: 1rem solid rgba(255, 255, 255, 0.04);
+        background: transparent;
         cursor: pointer;
-        border-radius: 3rem;
+        transition: background 0.12s, border-color 0.12s;
 
-        &:nth-child(odd) {
-            color: #fff;
-            background-color: rgba(156, 148, 148, 0.1);
-        }
 
         &:nth-child(even) {
-            color: #ebe9e9;
-            background-color: rgba(156, 148, 148, 0.2);
+            background: rgba(255, 255, 255, 0.028);
         }
 
+
         &:hover {
-            background-color: rgba(255, 255, 255, 0.18);
-            color: #111;
+            background: rgba(100, 185, 255, 0.09);
+            border-left-color: rgba(100, 185, 255, 0.55);
+
+
+            .entityIndex {
+                color: rgba(100, 185, 255, 0.45);
+            }
+
+
+            .entityName {
+                color: rgba(255, 255, 255, 0.92);
+            }
         }
     }
 }
 
+
+/* ─────────────────────────────────────────────
+   Entity Index
+   ───────────────────────────────────────────── */
+
 .entityIndex {
-    flex: 0 0 3em;
-    min-width: 3em;
+    flex-shrink: 0;
+    width: 44rem;
+    box-sizing: border-box;
+    padding-top: 7rem;
+    padding-right: 9rem;
+    padding-left: 6rem;
     text-align: right;
-    padding-right: 8rem;
-    font-size: 0.9em;
-    line-height: 1.35em;
-    color: rgba(255, 255, 255, 0.35);
-    font-weight: bold;
+    font-size: 10rem;
+    font-family: var(--font-mono);
+    color: rgba(255, 255, 255, 0.18);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    user-select: none;
+    transition: color 0.12s;
 }
 
+
+/* ─────────────────────────────────────────────
+   Separator
+   ───────────────────────────────────────────── */
+
+.separator {
+    flex-shrink: 0;
+    width: 1rem;
+    align-self: stretch;
+    margin-right: 8rem;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+
+/* ─────────────────────────────────────────────
+   Entity Name
+   ───────────────────────────────────────────── */
+
 .entityName {
-    flex: 1 1 auto;
-    min-width: 0;
-}
-.introBar {
-    display: flex;
-    padding: 6rem 10rem 15rem 20rem;
-    border-bottom-color: rgba(94, 89, 89, 0.5);
-    border-bottom-style: solid;
-    border-bottom-width: 3px;
-}
-.introText {
     flex: 1;
+    min-width: 0;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
     font-size: 12rem;
-    padding-right: 10rem;
-    color: rgba(255,255,255,1);
-    line-height: 1.35;
-    display: inline;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.62);
+    word-break: break-word;
+    transition: color 0.12s;
 }
-.refreshButton {
-    width: 32rem;
-    height: 32rem;
-    display: inline;
+
+
+/* ─────────────────────────────────────────────
+   Remove Button
+   ───────────────────────────────────────────── */
+
+.removeButton {
+    flex-shrink: 0;
+    align-self: flex-start;
+    width: 22rem;
+    height: 22rem;
+    margin-top: 4rem;
+    margin-right: 20rem;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 0;
+    border: 1rem solid transparent;
+    border-radius: 4rem;
     background: transparent;
-    border: none;
-    border-radius: 3rem;
-    opacity: .65;
+    color: rgba(255, 255, 255, 0.12);
     cursor: pointer;
+    font-size: 15rem;
+    line-height: 1;
+    pointer-events: auto;
+    transition: background 0.13s, border-color 0.13s, color 0.13s;
+
+
+    &:hover {
+        border-color: rgba(255, 90, 90, 0.55);
+        background: rgba(200, 40, 40, 0.22);
+        color: rgba(255, 110, 110, 1);
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Empty State
+   ───────────────────────────────────────────── */
+
+.emptyState {
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24rem 24rem;
+    text-align: center;
+    gap: 12rem;
+}
+
+.emptyIcon {
+    width: 30rem;
+    height: 30rem;
     flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1rem dashed rgba(255, 255, 255, 0.20);
+    border-radius: 6rem;
+    color: rgba(255, 255, 255, 0.30);
+    background: rgba(255, 255, 255, 0.015);
 }
-.refreshButton:hover {
-    opacity: 1;
+
+
+    .emptyIcon svg {
+        display: block;
+        color: rgba(255, 255, 255, 0.30);
+        stroke: currentColor;
+    }
+
+
+.emptyState p {
+    width: 100%;
+    max-width: 270rem;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 12rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.38);
+    text-align: center;
 }
-.refreshButton img {
-    width: 28rem;
-    height: 28rem;
-    opacity: .9;
+
+
+/* ─────────────────────────────────────────────
+   Bottom Expand / Collapse Toggle
+   ───────────────────────────────────────────── */
+
+.footer {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    height: 24rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-top: 1rem solid rgba(255, 255, 255, 0.06);
+    background: rgba(10, 13, 19, 0.72);
+    cursor: pointer;
+    pointer-events: auto;
+    transition: background 0.14s, border-color 0.14s;
+
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-top-color: rgba(255, 255, 255, 0.12);
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Expand / Collapse Arrow
+   ───────────────────────────────────────────── */
+
+.footerToggle {
+    width: 7rem;
+    height: 7rem;
+    display: block;
+    box-sizing: border-box;
+    border-right: 1.5rem solid rgba(255, 255, 255, 0.35);
+    border-bottom: 1.5rem solid rgba(255, 255, 255, 0.35);
+    transform: rotate(45deg);
+    transition: transform 0.16s, border-color 0.16s;
+}
+
+
+/*
+ * Expanded state:
+ *
+ * collapsed = arrow points down
+ * expanded  = arrow points up
+ */
+.footer.expanded .footerToggle {
+    transform: rotate(225deg);
+    border-color: rgba(255, 255, 255, 0.48);
 }

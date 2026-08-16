@@ -1,17 +1,40 @@
+﻿import { useState } from "react";
 import { useLocalization } from "cs2/l10n";
-import { Panel, Portal, Scrollable } from "cs2/ui";
+import { Panel, Portal, Scrollable, Tooltip } from "cs2/ui";
 import { bindValue, trigger, useValue } from "cs2/api";
+
 import locale from "../mods/lang/en-US.json";
 import styles from "./selectionListPanel.module.scss";
 import mod from "../../mod.json";
-import { Entity } from "cs2/bindings";
+
 import { SelectedEntities } from "../Domain/SelectedEntities";
 import { SelectedEntity } from "../Domain/SelectedEntity";
 
-const isGame$ = bindValue<boolean>(mod.id, 'IsGame');
-const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
-const selectedEntities$ = bindValue<SelectedEntities>(mod.id, "SelectedEntities", { Entities: [] });
-const panelPosition$ = bindValue(mod.id, "PanelPosition", { x: 0.5, y: 0.5 });
+
+const isGame$ = bindValue<boolean>(
+    mod.id,
+    "IsGame"
+);
+
+const isMarqueeToolSelected$ = bindValue<boolean>(
+    mod.id,
+    "IsMarqueeToolSelected"
+);
+
+const selectedEntities$ = bindValue<SelectedEntities>(
+    mod.id,
+    "SelectedEntities",
+    { Entities: [] }
+);
+
+const panelPosition$ = bindValue(
+    mod.id,
+    "PanelPosition",
+    { x: 0.5, y: 0.5 }
+);
+
+const expandedListPanel$ = bindValue(mod.id, "ExpandedListPanel", false);
+
 
 function OnEntityHover(index: number, version: number) {
     trigger(mod.id, "OnEntityHover", index, version);
@@ -19,99 +42,473 @@ function OnEntityHover(index: number, version: number) {
 
 function OnEntityLeave(index: number, version: number) {
     trigger(mod.id, "OnEntityLeave", index, version);
-}    
+}
 
 function OnEntitySelect(index: number, version: number) {
     trigger(mod.id, "OnEntitySelect", index, version);
-}   
+}
 
 function RefreshSelection() {
     trigger(mod.id, "RefreshSelection");
 }
 
+function CloseSelectionListPanel() {
+    trigger(mod.id, "OnChangeListPanelVisibility");
+}
+
+function SelectMarqueeTool() {
+    trigger(mod.id, "SelectMarqueeTool");
+}
+
+function TogglePanelSize() {
+    trigger(mod.id, "OnTogglePanelSize")
+}
+
+function SavePanelPosition() {
+    const panel = document.getElementById("lsdSelectionListPanel");
+
+    if (!panel) {
+        return;
+    }
+
+    const rect = panel.getBoundingClientRect();
+
+    const viewportWidth =
+        document.documentElement.clientWidth;
+
+    const viewportHeight =
+        document.documentElement.clientHeight;
+
+    const x =
+        rect.left /
+        (viewportWidth - rect.width);
+
+    const y =
+        rect.top /
+        (viewportHeight - rect.height);
+
+    trigger(
+        mod.id,
+        "SetPanelPosition",
+        { x, y }
+    );
+}
+
+
 export const SelectionListPanel = () => {
     const { translate } = useLocalization();
-    const listPanelTitle =          translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.Title",            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.Title"]);
-    const listPanelIntro = translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro"]);
-    const listPanelRefreshButtonToolTip = translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip", locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip"]) ?? "Test";
-    const listPanelNoItemsSelected = translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected"]) ?? "No items selected";
-    const listPanelNoItemsSelectedTip = translate("LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip", locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip"]);
-    const refreshIconSrc = "coui://uil/Standard/Reset.svg";
-    const isGame = useValue(isGame$);
-    const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
-    const selectedEntities = useValue(selectedEntities$);
-    const panelPosition = useValue(panelPosition$);
 
-    selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name));
+    const listPanelTitle = translate(
+        "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title",
+        locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.Title"]
+    );
+
+    const listPanelRefreshButtonToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip"]
+        ) ?? "Refresh";
+
+    const listPanelNoItemsSelected =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected"]
+        ) ?? "No items selected";
+
+    const listPanelNoItemsSelectedTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip"]
+        );
+
+    const isGame = useValue(isGame$);
+    const isMarqueeToolSelected =
+        useValue(isMarqueeToolSelected$);
+
+    const selectedEntities =
+        useValue(selectedEntities$);
+
+    const panelPosition =
+        useValue(panelPosition$);
+
+    const expandedListPanel = useValue(expandedListPanel$);
+
+    /*
+     * Entities are hidden only from this UI list.
+     * They are not removed from the actual Move It of future custom selection.
+     */
+    const [removedEntityIndexes, setRemovedEntityIndexes] =
+        useState<number[]>([]);
+
+    /*
+     * Keep the panel height in the TSX so that an expand/colapse functionality can later be added
+     */
+    const panelHeight = expandedListPanel ? 640 : 320;
+
+    const visibleEntities =
+        [...selectedEntities.Entities]
+            .filter(
+                (entity: SelectedEntity) =>
+                    !removedEntityIndexes.includes(entity.Index)
+            )
+            .sort(
+                (a: SelectedEntity, b: SelectedEntity) =>
+                    a.Name.localeCompare(b.Name)
+            );
+
+    function HandleRefresh() {
+        setRemovedEntityIndexes([]);
+        RefreshSelection();
+    }
+
+    function HandleRemoveEntity(index: number) {
+        setRemovedEntityIndexes(
+            previous =>
+                previous.includes(index)
+                    ? previous
+                    : [...previous, index]
+        );
+    }
+
+    const panelHeader = (
+        <div className={styles.panelHeader}>
+
+            <div
+                className={styles.dragGrip}
+                aria-hidden="true"
+            >
+                <span />
+                <span />
+                <span />
+            </div>
+
+
+            <span className={styles.title}>
+                {listPanelTitle}
+            </span>
+
+
+            <div className={styles.headerButtons}>
+
+                {/* Marquee */}
+                <button
+                    className={styles.headerButton}
+                    title="Marquee Tool (not yet implemented)"
+                    onMouseDown={event =>
+                        event.stopPropagation()
+                    }
+                    onClick={SelectMarqueeTool}
+                >
+                    <svg
+                        className={
+                            styles.headerIcon
+                        }
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <rect
+                            x="1.5"
+                            y="1.5"
+                            width="11"
+                            height="11"
+                            rx="1"
+                            stroke="currentColor"
+                            strokeWidth="1.3"
+                            strokeDasharray="3 2"
+                        />
+
+                        <path
+                            d="M10 10l5.5 5.5"
+                            stroke="currentColor"
+                            strokeWidth="1.3"
+                            strokeLinecap="round"
+                        />
+
+                        <path
+                            d="M13 13l2.8.5-.5-2.8"
+                            stroke="currentColor"
+                            strokeWidth="1.3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
+
+
+                {/* Refresh */}
+                <button
+                    className={styles.headerButton}
+                    title={listPanelRefreshButtonToolTip}
+                    onMouseDown={event =>
+                        event.stopPropagation()
+                    }
+                    onClick={HandleRefresh}
+                >
+                    <svg
+                        className={
+                            styles.headerIcon
+                        }
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M14.5 9a5.5 5.5 0 1 1-1.6-3.9"
+                            stroke="currentColor"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                        />
+
+                        <polyline
+                            points="12.5,2.5 12.5,5.5 9.5,5.5"
+                            stroke="currentColor"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            fill="none"
+                        />
+                    </svg>
+                </button>
+
+
+                {/* Close */}
+                <button
+                    className={`${styles.headerButton} ${styles.danger}`}
+                    title="Close Panel"
+                    onMouseDown={event =>
+                        event.stopPropagation()
+                    }
+                    onClick={CloseSelectionListPanel}
+                >
+                    <svg
+                        className={
+                            styles.closeIcon
+                        }
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M2 2l8 8M10 2l-8 8"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                        />
+                    </svg>
+                </button>
+
+            </div>
+        </div>
+    );
+
+    const panelFooter = (
+
+        <div
+            className={`${styles.footer} ${
+                expandedListPanel ? styles.expanded : ""
+            }`}
+            onMouseDown={event => event.stopPropagation()}
+            onClick={() => TogglePanelSize()}
+        >
+            <span className={styles.footerToggle} />
+        </div>
+
+        // <div className={styles.footer}
+        //     onClick={() => TogglePanelSize()}
+        //     > 
+        // </div>
+
+    );
 
     return (
         <>
-        {(isGame && isMarqueeToolSelected) && (
-            <Portal>
-           <Panel id="lsdSelectionListPanel"
-                    draggable
-                    initialPosition={panelPosition}
-                    className={styles.mainPanel}
-                    header={listPanelTitle}                    
-                    onMouseUp=
-                    {() => 
-                        {
-                            let panel = document.getElementById('lsdSelectionListPanel');
-                            if (panel) 
-                            {
-                                const rect = panel.getBoundingClientRect();
-                                const viewportWidth = document.documentElement.clientWidth;
-                                const viewportHeight = document.documentElement.clientHeight;
-                                const x = rect.left / (viewportWidth - rect.width);
-                                const y = rect.top / (viewportHeight - rect.height);
+            {isGame &&
+                isMarqueeToolSelected && (
+                    <Portal>
 
-                                trigger(mod.id, "SetPanelPosition", { x: x, y: y });
-                            }
-                        }   
-                    }         
-                >
-                    <div className={ styles.introBar }>
-                        <div className={ styles.introText }>
-                            { listPanelIntro }
-                        </div>
-
-                        <button
-                            
-                            className={ styles.refreshButton }
-                            onClick={() => RefreshSelection()}
-                            title={ listPanelRefreshButtonToolTip }
+                        <Panel
+                            id="lsdSelectionListPanel"
+                            draggable
+                            initialPosition={panelPosition}
+                            className={styles.mainPanel}
+                            style={{
+                                height: `${panelHeight}rem`
+                            }}
+                            header={panelHeader}
+                            footer={panelFooter}
+                            onMouseUp={SavePanelPosition}
                         >
-                            <img src={ refreshIconSrc }/>
-                         </button>
-                    </div>    
-                    {selectedEntities.Entities.length > 0 && (
-                        <Scrollable className={styles.scrollablePanel}>
-                            <ul className={styles.listedAssets}>
-                                {selectedEntities.Entities.sort((a: SelectedEntity, b: SelectedEntity) => a.Name.localeCompare(b.Name)).map((e, i) => (
-                                    <li 
-                                        onMouseDown={() => OnEntitySelect(e.Index, e.Version)}
-                                        onMouseEnter={() => OnEntityHover(e.Index, e.Version)} 
-                                        onMouseLeave={() => OnEntityLeave(e.Index, e.Version)} 
-                                        key={e.Index} 
-                                    > 
-                                        <span className={styles.entityIndex}>{i + 1}</span> 
-                                        <span className={styles.entityName}>{e.Name}</span> 
-                                    </li>
-                                ))}
-                            </ul>
-                        </Scrollable>
-                    )}
-                    {selectedEntities.Entities.length === 0 && (
-                        <div className={styles.noItemsSelected}>
-                            <span>{ listPanelNoItemsSelected } </span>
-                            <p> { listPanelNoItemsSelectedTip } </p>
-                        </div>
-                    )}  
-                </Panel>
-            </Portal>
-             
-        )}
+
+                            <div className={styles.body}>
+
+                                {visibleEntities.length === 0 ? (
+
+                                    <div className={styles.emptyState}>
+
+                                        <div className={styles.emptyIcon}>
+                                            <svg
+                                                width="20"
+                                                height="20"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                                aria-hidden="true"
+                                            >
+
+                                                <rect
+                                                    x="3"
+                                                    y="3"
+                                                    width="14"
+                                                    height="14"
+                                                    rx="2"
+                                                    stroke="currentColor"
+                                                    strokeWidth="1.2"
+                                                    strokeDasharray="3 2"
+                                                />
+
+                                                <path
+                                                    d="M7 10h6M10 7v6"
+                                                    stroke="currentColor"
+                                                    strokeWidth="1.1"
+                                                    strokeLinecap="round"
+                                                />
+
+                                            </svg>
+                                        </div>
+
+                                        <p>
+                                            {listPanelNoItemsSelected}
+                                        </p>
+
+                                    </div>
+
+                                ) : (
+
+                                    <>
+
+                                        <div
+                                            className={
+                                                styles.selectionCount
+                                            }
+                                        >
+                                            <p>
+                                                <span>
+                                                    {visibleEntities.length}
+                                                </span>
+                                                {" "} elements in selection
+                                            </p>
+                                        </div>
+
+
+                                        <Scrollable
+                                            className={
+                                                styles.scrollablePanel
+                                            }
+                                        >
+
+                                            <ul
+                                                className={
+                                                    styles.listedAssets
+                                                }
+                                            >
+
+                                                {visibleEntities.map(
+                                                    (entity, index) => (
+
+                                                        <li
+                                                            key={entity.Index}
+                                                            onMouseDown={() =>
+                                                                OnEntitySelect(
+                                                                    entity.Index,
+                                                                    entity.Version
+                                                                )
+                                                            }
+                                                            onMouseEnter={() =>
+                                                                OnEntityHover(
+                                                                    entity.Index,
+                                                                    entity.Version
+                                                                )
+                                                            }
+                                                            onMouseLeave={() =>
+                                                                OnEntityLeave(
+                                                                    entity.Index,
+                                                                    entity.Version
+                                                                )
+                                                            }
+                                                        >
+
+                                                            <span
+                                                                className={
+                                                                    styles.entityIndex
+                                                                }
+                                                            >
+                                                                {String(
+                                                                    index + 1
+                                                                ).padStart(
+                                                                    3,
+                                                                    "0"
+                                                                )}
+                                                            </span>
+
+
+                                                            <span
+                                                                className={
+                                                                    styles.separator
+                                                                }
+                                                            />
+
+
+                                                            <span
+                                                                className={
+                                                                    styles.entityName
+                                                                }
+                                                            >
+                                                                {entity.Name}
+                                                            </span>
+
+
+                                                            <button
+                                                                className={
+                                                                    styles.removeButton
+                                                                }
+                                                                title="Remove"
+                                                                onMouseDown={event =>
+                                                                    event.stopPropagation()
+                                                                }
+                                                                onClick={event => {
+                                                                    event.stopPropagation();
+
+                                                                    HandleRemoveEntity(
+                                                                        entity.Index
+                                                                    );
+                                                                }}
+                                                            >
+                                                                −
+                                                            </button>
+
+                                                        </li>
+                                                    )
+                                                )}
+
+                                            </ul>
+
+                                        </Scrollable>
+
+                                    </>
+                                )}
+
+                            </div>                            
+
+                        </Panel>
+
+                    </Portal>
+                )}
         </>
     );
-}
-                        
+};

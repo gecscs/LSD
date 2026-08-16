@@ -5,9 +5,6 @@
 // #define VERBOSE
 namespace LayeredSelectionDisplay.Systems
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
     using Colossal.Entities;
     using Colossal.Logging;
     using Colossal.Serialization.Entities;
@@ -16,12 +13,16 @@ namespace LayeredSelectionDisplay.Systems
     using Game.Common;
     using Game.Prefabs;
     using Game.Rendering;
+    using Game.Routes;
     using Game.SceneFlow;
     using Game.Tools;
     using Game.UI.InGame;
     using LayeredSelectionDisplay.Domain;
     using LayeredSelectionDisplay.Extensions;
     using LayeredSelectionDisplay.Settings;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using Unity.Collections;
     using Unity.Entities;
     using Unity.Jobs;
@@ -51,6 +52,7 @@ namespace LayeredSelectionDisplay.Systems
         private ValueBinding<bool> m_IsMarqueeToolSelected;
         private LayeredSelectionDisplayModSettings m_settings;
         private ValueBinding<float2> m_PanelPosition;
+        private ValueBinding<bool> m_ExpandedListPanel;
         private NativeHashSet<Entity> m_MoveItSelectedEntities = new(0, Allocator.Persistent);
         private PropertyInfo m_MoveItSelectedEntitiesPropertyInfo;
         private GetterValueBinding<HashSet<Entity>> m_MoveItSelectedEntitiesBinding;
@@ -219,7 +221,11 @@ namespace LayeredSelectionDisplay.Systems
             AddBinding(new TriggerBinding<float2>(ModId, "SetPanelPosition", SetPanelPosition));
 
             // This handles the event when the marquee tool is selected in the UI.
-            AddBinding(new TriggerBinding(ModId, "OnChangeMarqueeToolSelected", OnChangeMarqueeToolSelected));
+            AddBinding(new TriggerBinding(ModId, "OnChangeListPanelVisibility", OnChangeListPanelVisibility));
+
+            AddBinding(m_ExpandedListPanel = new ValueBinding<bool>(ModId, "ExpandedListPanel", m_settings?.ExpandedListPanel ?? false));
+
+            AddBinding(new TriggerBinding(ModId, "OnTogglePanelSize", OnTogglePanelSize));
 
             CreateTrigger("OnEntitySelect", (int index, int version) => OnEntitySelect(index, version));
             CreateTrigger("OnEntityHover", (int index, int version) => OnEntityHover(index, version));
@@ -359,7 +365,7 @@ namespace LayeredSelectionDisplay.Systems
         /// <param name="isSelected">
         /// A boolean indicating whether the marquee tool is selected.
         /// </param>
-        private void OnChangeMarqueeToolSelected()
+        private void OnChangeListPanelVisibility()
         {
             m_IsMarqueeToolSelected.Update(!m_IsMarqueeToolSelected.value);
 
@@ -367,6 +373,39 @@ namespace LayeredSelectionDisplay.Systems
             {
                 GetUpdatedSelectedEntitiesFromMoveIt();
             }
+        }
+
+        /// <summary>
+        /// Toggles the size of the List Panel in the UI.
+        /// </summary>
+        private void OnTogglePanelSize()
+        {
+            m_ExpandedListPanel.Update(!m_ExpandedListPanel.value);
+
+            if (m_settings == null)
+            {
+                m_Log?.Warn($"{nameof(SetPanelPosition)}: settings object is null; skipping save.");
+                return;
+            }
+
+            try
+            {
+                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnTogglePanelSize)} Saving ExpandedListPanel to settings: {m_ExpandedListPanel.value}");
+                    m_settings.ExpandedListPanel = m_ExpandedListPanel.value;
+                    m_settings.ApplyAndSave();
+            }
+            catch (Exception ex)
+            {
+                m_Log?.Error(ex, $"{nameof(OnTogglePanelSize)}: failed to save settings");
+            }
+        }
+
+        /// <summary>
+        /// Future implementation for the usage of a custom marquee tool yet to be developed
+        /// </summary>
+        private void SelectMarqueeTool()
+        {
+            // TO BE IMPLEMENTED
         }
 
         /// <summary>
