@@ -1,4 +1,13 @@
-﻿# Patch V0.0.6
+﻿# Patch V0.0.7
+* Complete revamp of the List Panel.
+* New close panel button.
+* New Select With Marquee button (not yet functional).
+* Reload from Move It button moved to the top bar along with the 2 new buttons.
+* Each listed item now includes a Remove button that removes the item from the list, but keeps the original list in memory so it can be reloaded back from Move it, provided it has not changed there.
+* Bottom bar is now clickable to expand/collapse the list panel.
+* Expanded state of panel is also kept on hidden settings and is restored along with position when the panel is reopened in the same or in a new playing session.
+
+# Patch V0.0.6
 * French and Spanish translations.
 * More code cleanup.
 * Added Thumbnail.

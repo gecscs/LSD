@@ -49,7 +49,7 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.0.6" />
+  <ModVersion Value="0.0.7" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.5.*" />
   <!--Dependency for the mod, can be set multiple-->
@@ -57,13 +57,22 @@
   <Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
-	  # Patch V0.0.6
+	  # Patch V0.0.7
+	  * Complete revamp of the List Panel.
+	  * New close panel button.
+	  * New Select With Marquee button (not yet functional).
+	  * Reload from Move It button moved to the top bar along with the 2 new buttons.
+	  * Each listed item now includes a Remove button that removes the item from the list, but keeps the original list in memory so it can be reloaded back from Move it, provided it has not changed there.
+	  * Bottom bar is now clickable to expand/collapse the list panel.
+	  * Expanded state of panel is also kept on hidden settings and is restored along with position when the panel is reopened in the same or in a new playing session.
+	  
+	  # Patch V0.0.7
 	  * French and Spanish translations.
 	  * More code cleanup.
 	  * Added Thumbnail.
 	  * Detached Git from BB fork tree.
 	  * Further Tweeks to the Long Description of the mod.
-	  
+
 	  # Patch V0.0.5
 	  * Tweeks to the Long Description of the mod.
 

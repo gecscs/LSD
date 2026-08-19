@@ -10,7 +10,7 @@
 		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
 		<PublishConfigurationPath>Properties\$(Configuration)\PublishConfiguration.xml</PublishConfigurationPath>
 		<AssemblyName>LayeredSelectionDisplay</AssemblyName>
-		<AssemblyVersion>0.0.6</AssemblyVersion>
+		<AssemblyVersion>0.0.7</AssemblyVersion>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<RootNamespace>LayeredSelectionDisplay</RootNamespace>

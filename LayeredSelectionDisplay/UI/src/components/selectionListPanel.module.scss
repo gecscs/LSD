@@ -96,7 +96,8 @@
     font-weight: 650;
     letter-spacing: -0.025em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.86);
+    color: var(--textColor);
+    ///color: rgba(255, 255, 255, 0.86);
     font-family: var(--font-mono);
     white-space: nowrap;
     overflow: hidden;

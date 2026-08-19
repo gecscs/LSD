@@ -109,6 +109,18 @@ export const SelectionListPanel = () => {
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip"]
         ) ?? "Refresh";
 
+    const listPanelMarqueeSelectionToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip"]
+        ) ?? "Refresh";    
+
+    const removeFromListToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip"]
+        ) ?? "Refresh";
+
     const listPanelNoItemsSelected =
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected",
@@ -193,7 +205,7 @@ export const SelectionListPanel = () => {
                 {/* Marquee */}
                 <button
                     className={styles.headerButton}
-                    title="Marquee Tool (not yet implemented)"
+                    title={listPanelMarqueeSelectionToolTip}
                     onMouseDown={event =>
                         event.stopPropagation()
                     }
@@ -477,7 +489,7 @@ export const SelectionListPanel = () => {
                                                                 className={
                                                                     styles.removeButton
                                                                 }
-                                                                title="Remove"
+                                                                title={removeFromListToolTip}
                                                                 onMouseDown={event =>
                                                                     event.stopPropagation()
                                                                 }
