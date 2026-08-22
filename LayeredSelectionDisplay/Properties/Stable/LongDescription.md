@@ -136,7 +136,7 @@
 
 	  - **0belix** — Mod author, original concept, original code and code contributions.
 	  - **Yenyang** — Mentor; author of the original Better Bulldozer and Move It mods. Provided the foundation for LSD's code, Marquee Tool implementation, code contributions, testing and feedback.
-	  - **Triton Supreme / AlphaGaming** — Support, code contributions, testing and feedback.
+	  - **Triton Supreme / AlphaGaming** — Support, code contributions, inspiration from Extra Detailing Tools, testing and feedback.
 	  - **Honu / River-Mochi** — Support, advice, testing, feedback, and inspiration from City WatchDog and Hover Colors.
 	  - **Gagaxm / El Gaga** — Expanded the original concept by suggesting the use of a marquee-based selection system for handling multiple overlapping assets. Testing and feedback.
 	  - **MayorCheeks / b00tyCheeks** — Testing and feedback.
