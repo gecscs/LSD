@@ -24,6 +24,11 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Rafraîchir la liste avec la sélection actuelle de Move It",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Aucun élément sélectionné",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Utilisez l'outil de sélection Move It pour choisir les éléments, puis cliquez sur le bouton Actualiser dans ce panneau. Vous devrez fermer Move It afin de voir l'élément en surbrillance lorsque vous le survolez dans la liste.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Outil Marque-page (non implémenté)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Supprimer l'élément de la liste",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Fermer le Panneau",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Agrandir le Panneau",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Réduire le Panneau",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Outils",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Cliquez pour ouvrir le panneau de liste et importer les éléments sélectionnés à partir de Move It."
 }
