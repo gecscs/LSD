@@ -70,7 +70,7 @@
 
 	  1. Activate LSD's Marquee Tool.
 	  2. Use Move It to marquee-select the area containing the assets you want to work with.
-	  3. Clock the Reload button on the List Panel.
+	  3. Click the Reload button on the List Panel.
 	  4. LSD imports the selected assets into its selection list.
 	  5. Hover over an item in the list to highlight that asset in the game world.
 	  6. Click the asset you want to work with.
@@ -161,6 +161,7 @@
 	  - Anarchy
 	  - City WatchDog
 	  - Hover Colors
+	  - Extra Detailing Tools
 
 	  ---
 
