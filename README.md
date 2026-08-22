@@ -1,31 +1,189 @@
-Easily select things that you otherwise could not select or easily select.
+# LSD — Layered Selection Display
 
+**Easily select assets that would otherwise be difficult or impossible to reach.**
 
-## Dependencies
-* Unified Icon Library
-* Move It
+Are you a detailer? Have you ever tried to select a prop buried underneath layers of plants, decals, trees, or other assets, only to spend more time moving the clutter out of the way than actually working on the asset?
 
-## Translations
-I am looking for volunteers to help translate the mod into the other languages. For those interested please discuss the translation project in the discord link. https://discord.com/channels/1357924258730213447/1532833938169397440. CrowdIn Link available there or here.
-The mod is fully or partially translated into: Chinese Simplified, German, Korean, Polish, Spanish, Chinese Traditional, French, Italian, and Russian.
+**LSD** gives you more control over asset selection in *Cities: Skylines II*, allowing you to filter asset types from the vanilla selection tool and use a dedicated **Marquee Tool** to find and select assets hidden beneath layers of clutter.
 
-## Supplemental Mods
-I18n Everywhere and European Portuguese Localization (Only needed for European Portuguese Translations)
+No more moving half your scene just to reach one prop.
 
-# Detailed Description
-* Filters for the vanilla default tool with no tool modes selected including: Buildings, Trees, Plants, Decals, and Props. Toggling these filters off makes it so the default tool cannot select those items.
-* Marquee Tool to gather MoveIt selected assets into a list for easy viewing and selection. The list can be refreshed by closing the list and reopening it.
-* Hovering items on the list will highlight the item in the game world for better identification.
-* Clicking on an item in the list will select the item's info panel in the game world for easy manipulation.
+---
 
-# Support
-I will respond on the code modding channels on **Cities: Skylines Modding Discord**
+## ✨ Features
 
-# Credits
-* 0belix - Mod Author, Original Idea and Code Contribution
-* Yenyang - Mentor and Author of the original Better Bulldozer mod which served as the foundation for this mod and the MoveIt mod where the Marquee Tool code is leveraged from, along with code pieces from ReColor, TopoToggle and Anarchy mods that were used as references, Code Contribution, Testing and Feedback
-* Triton Supreme a.k.a. AlphaGaming - Support and tips provided during development of the mod, Code Contribution, Testing and Feedback
-* Honu aka River-Mochi - Support and tips provided during development of the mod, and Inspiration for some pieces of code from the City WatchDog and Hover Colors mods
-* Gagaxm a.k.a. El Gaga - Expanding my initial idea by suggesting using a marquee tool for selection of multiple assets as opposed to the default tool attempting to detect all assets beneath the cursor, Testing and Feedback
-* MayorCheeks a.k.a. b00tyCheeks - Testing and Feedback
-* Localization - XXXX (German), XXXX (Chinese Simplified), XXXX (Korean), XXXX (Russian), XXXX (Polish), RocketDragon08 (Spanish), 0belix (French), XXXX (Chinese Traditional), XXXX (Italian), XXXX (Dutch)
+### 🎯 Filter the Vanilla Selection Tool
+
+LSD adds filters to the vanilla selection tool when no other tool modes are active.
+
+You can choose which asset types the vanilla tool is allowed to select:
+
+- Buildings
+- Trees
+- Plants
+- Decals
+- Props
+
+Disable the types you don't want to select, and the vanilla tool will simply ignore them.
+
+This makes it much easier to reach assets hidden underneath unwanted clutter without having to move or temporarily delete anything.
+
+---
+
+### 🔲 Marquee Tool
+
+When the vanilla selection filters aren't enough — especially in heavily detailed areas with lots of overlapping plants, decals, and props — LSD provides a **Marquee Tool** powered by Move It's selection system.
+
+Use the Marquee Tool to select an area and collect all relevant Move It assets into a dedicated list.
+
+From there you can:
+
+- Browse all selected assets in one place.
+- Hover over an item to highlight the corresponding asset in the game world.
+- Quickly identify the asset you are looking for, even when it is buried under other assets.
+- Click an item to select it and open its Info Panel.
+- Continue working with multiple assets from the same list.
+
+The selection list persists until you reload it, allowing you to manipulate multiple assets without having to repeat the marquee selection.
+
+---
+
+## 🛠️ How to Use
+
+### Vanilla Selection Tool
+
+1. Open LSD's selection filters.
+2. Disable the asset types you don't want the vanilla selection tool to select.
+3. Use the vanilla selection tool normally.
+4. The disabled asset types will be ignored when selecting assets.
+
+### Marquee Tool
+
+1. Activate LSD's Marquee Tool.
+2. Use Move It to marquee-select the area containing the assets you want to work with.
+3. Click the Reload button on the List Panel.
+4. LSD imports the selected assets into its selection list.
+5. Hover over an item in the list to highlight that asset in the game world.
+6. Click the asset you want to work with.
+7. Its Info Panel will open, allowing you to manipulate the asset normally.
+8. Curate the assets list by removing undesired ones from it. 
+
+The list remains available until you reload it, so you can continue selecting and manipulating assets from the same group.
+
+---
+
+## 📦 Dependencies
+
+LSD requires the following mods:
+
+- **Move It**
+- **Unified Icon Library**
+
+---
+
+## 🌍 Translations
+
+LSD is fully or partially translated into:
+
+- Chinese — Simplified
+- Chinese — Traditional
+- Dutch
+- French
+- German
+- Italian
+- Korean
+- Polish
+- Portuguese — European
+- Portuguese — Brazilian
+- Russian
+- Spanish
+
+Translations are community-supported and may vary in completeness.
+
+### Want to help translate LSD?
+
+Translation volunteers are welcome!
+
+Join the [Cities: Skylines Modding Discord](https://discord.com/channels/1357924258730213447/1532833938169397440) to discuss the translation project and get access to the Crowdin project.
+
+---
+
+## 🧩 Supplemental Mods
+
+These mods are **not required by LSD itself**, but may be needed for specific localization setups:
+
+- **I18n Everywhere**
+- **European Portuguese Localization** — only required for the European Portuguese translation.
+
+---
+
+## 💬 Support & Feedback
+
+For bug reports, questions, suggestions, and modding-related issues, please use the appropriate modding channels on the **Cities: Skylines Modding Discord**.
+
+When reporting a problem, please provide:
+
+- LSD version
+- *Cities: Skylines II* game version
+- Relevant mod list
+- Error logs or screenshots when applicable
+
+---
+
+## 👥 Credits
+
+### Mod Development
+
+- **0belix** — Mod author, original concept, original code and code contributions.
+- **Yenyang** — Mentor; author of the original Better Bulldozer and Move It mods. Provided the foundation for LSD's code, Marquee Tool implementation, code contributions, testing and feedback.
+- **Triton Supreme / AlphaGaming** — Support, code contributions, inspiration from Extra Detailing Tools, testing and feedback.
+- **Honu / River-Mochi** — Support, advice, testing, feedback, and inspiration from City WatchDog and Hover Colors.
+- **Gagaxm / El Gaga** — Expanded the original concept by suggesting the use of a marquee-based selection system for handling multiple overlapping assets. Testing and feedback.
+- **MayorCheeks / b00tyCheeks** — Testing and feedback.
+
+### Code & Mod References
+
+LSD was developed with inspiration, references, or code contributions derived from:
+
+- Better Bulldozer
+- Move It
+- ReColor
+- TopoToggle
+- Anarchy
+- City WatchDog
+- Hover Colors
+- Extra Detailing Tools
+
+---
+
+## 🌐 Localization Credits
+
+Localization contributions include:
+
+- **German** — GPT-assisted
+- **Chinese (Simplified)** — GPT-assisted
+- **Korean** — GPT-assisted
+- **Russian** — GPT-assisted
+- **Polish** — GPT-assisted
+- **Spanish** — RocketDragon08 + GPT-assisted
+- **French** — 0belix
+- **Chinese (Traditional)** — GPT-assisted
+- **Italian** — GPT-assisted
+- **Dutch** — GPT-assisted
+- **Portuguese (European)** — 0belix
+- **Portuguese (Brazilian)** — 0belix
+
+---
+
+## ❤️ Why LSD?
+
+*Cities: Skylines II* makes it possible to create incredibly detailed scenes, but the more detail you add, the harder it can become to select individual assets.
+
+Plants cover props.
+Decals cover buildings.
+Props cover props.
+And suddenly the one asset you actually need is buried somewhere underneath everything else.
+
+LSD is designed to make that problem much less frustrating.
+
+**Filter the clutter. Find the asset. Select it. Keep detailing.**
