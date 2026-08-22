@@ -26,6 +26,9 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Use MoveIt marquee selection tool to choose assets and then click the refresh button in this panel. You will need to close MoveIt in order to see the highlighted item when hovering it on the list.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Marquee Tool (not yet implemented)",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Remove asset from list",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Close Panel",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Expand Panel",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Collapse Panel",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Tools",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Click to open the List Panel and import selected assets from Move It."
 }

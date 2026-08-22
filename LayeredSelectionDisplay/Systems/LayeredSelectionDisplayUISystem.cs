@@ -5,6 +5,9 @@
 // #define VERBOSE
 namespace LayeredSelectionDisplay.Systems
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using Colossal.Entities;
     using Colossal.Logging;
     using Colossal.Serialization.Entities;
@@ -20,9 +23,6 @@ namespace LayeredSelectionDisplay.Systems
     using LayeredSelectionDisplay.Domain;
     using LayeredSelectionDisplay.Extensions;
     using LayeredSelectionDisplay.Settings;
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
     using Unity.Collections;
     using Unity.Entities;
     using Unity.Jobs;
@@ -35,8 +35,14 @@ namespace LayeredSelectionDisplay.Systems
     {
         private const string ModId = "LayeredSelectionDisplay";
         private const string MoveItToolID = "MoveItTool";
+        private const string EDTToolId = "TransformGizmoTool";
+        private const string TransformGizmoToolId = "TransformGizmoTool";
+        private ValueBinding<bool> m_EdtExists;
+        private ValueBinding<bool> m_TransformGizmoToolExists;
         private ToolSystem m_ToolSystem;
         private ToolBaseSystem m_MoveItTool;
+        private ToolBaseSystem m_EdtTool;
+        private ToolBaseSystem m_TransformGizmoTool;
         private ILog m_Log;
         private RenderingSystem m_RenderingSystem;
         private PrefabSystem m_PrefabSystem;
@@ -193,6 +199,9 @@ namespace LayeredSelectionDisplay.Systems
             m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
             m_HoverState = new HoverState();
 
+            m_EdtTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(EDTToolId));
+            m_TransformGizmoTool = World.GetExistingSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId));
+
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
             m_IsGame = CreateBinding("IsGame", false);
@@ -253,23 +262,46 @@ namespace LayeredSelectionDisplay.Systems
         {
             base.OnGameLoadingComplete(purpose, mode);
 
-            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} before getting Move It tool.");
+            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} before getting Move It tool.");
 
             if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID)) is ToolBaseSystem moveItTool)
             {
                 // Found it
-                m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} found Move It.");
+                // m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} found Move It.");
                 PropertyInfo moveItSelectedEntities = moveItTool.GetType().GetProperty("SelectedEntities");
                 if (moveItSelectedEntities is not null)
                 {
                     m_MoveItTool = moveItTool;
                     m_MoveItSelectedEntitiesPropertyInfo = moveItSelectedEntities;
-                    m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} saved moveItTool");
+                    // m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} saved moveItTool");
                 }
             }
             else
             {
                 m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} move it tool not found");
+            }
+
+            if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(EDTToolId)) is ToolBaseSystem m_EdtTool)
+            {
+                m_EdtExists = new ValueBinding<bool>(ModId, "EdtExists", true);
+               // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} EdtExists true.");
+            }
+            else
+            {
+                m_EdtExists = new ValueBinding<bool>(ModId, "EdtExists", false);
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} EdtExists false.");
+            }
+
+            if (World.GetExistingSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId)) is ToolBaseSystem m_TransformGizmoTool)
+            {
+                m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", true);
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} TransformGizmoToolExists true.");
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} m_TransformGizmoTool.toolID: " + m_TransformGizmoTool.toolID);
+            }
+            else
+            {
+                m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", false);
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} TransformGizmoToolExists false.");
             }
 
             m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} after attempting to get Move It tool.");
@@ -369,7 +401,7 @@ namespace LayeredSelectionDisplay.Systems
         {
             m_IsMarqueeToolSelected.Update(!m_IsMarqueeToolSelected.value);
 
-            if (m_IsMarqueeToolSelected.value)
+            if (m_IsMarqueeToolSelected.value && m_SelectedEntitiesBinding.value.Entities.Count < 1)
             {
                 GetUpdatedSelectedEntitiesFromMoveIt();
             }
@@ -390,9 +422,9 @@ namespace LayeredSelectionDisplay.Systems
 
             try
             {
-                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnTogglePanelSize)} Saving ExpandedListPanel to settings: {m_ExpandedListPanel.value}");
-                    m_settings.ExpandedListPanel = m_ExpandedListPanel.value;
-                    m_settings.ApplyAndSave();
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnTogglePanelSize)} Saving ExpandedListPanel to settings: {m_ExpandedListPanel.value}");
+                m_settings.ExpandedListPanel = m_ExpandedListPanel.value;
+                m_settings.ApplyAndSave();
             }
             catch (Exception ex)
             {
@@ -422,8 +454,8 @@ namespace LayeredSelectionDisplay.Systems
                 {
                     if (EntityManager.TryGetComponent(item, out PrefabRef prefabRef))
                     {
-                        m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item: {item}");
-                        m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab: {prefabRef.m_Prefab}");
+                        // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item: {item}");
+                        // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab: {prefabRef.m_Prefab}");
 
                         m_prefabUISystem.GetTitleAndDescription(prefabRef.m_Prefab, out string titleId, out string description);
 
@@ -431,19 +463,19 @@ namespace LayeredSelectionDisplay.Systems
 
                         if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
                         {
-                            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item localized name: {name}");
+                            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item localized name: {name}");
                             localizedName = name;
 
                             if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
                             {
                                 if (prefab is not NetPrefab)
                                 {
-                                    m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
+                                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
                                     moveItSelectedEntitiesBinding.AddSelectedEntity(item, localizedName ?? prefab.name.Replace("_", " "));
                                 }
                                 else
                                 {
-                                    m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
+                                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
                                 }
                             }
                             else
@@ -454,18 +486,18 @@ namespace LayeredSelectionDisplay.Systems
                         }
                         else
                         {
-                            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get localized name for entity: {item}");
+                            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get localized name for entity: {item}");
 
                             if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
                             {
                                 if (prefab is not NetPrefab)
                                 {
-                                    m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
+                                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
                                     moveItSelectedEntitiesBinding.AddSelectedEntity(item, prefab.name.Replace("_", " ") ?? item.Index + " : " + item.Version);
                                 }
                                 else
                                 {
-                                    m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
+                                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
                                 }
                             }
                             else
@@ -481,11 +513,11 @@ namespace LayeredSelectionDisplay.Systems
                         m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefabRef for entity: {item}");
                     }
 
-                    m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entity: {item}");
+                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entity: {item}");
                 }
 
-                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entities Count: {moveItSelectedEntitiesBinding.Entities.Count}");
-                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updating Selected Entities Binding: {moveItSelectedEntitiesBinding.Entities}");
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entities Count: {moveItSelectedEntitiesBinding.Entities.Count}");
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updating Selected Entities Binding: {moveItSelectedEntitiesBinding.Entities}");
 
                 m_SelectedEntitiesBinding.Update(moveItSelectedEntitiesBinding);
             }
@@ -498,7 +530,7 @@ namespace LayeredSelectionDisplay.Systems
         /// <param name="version"> The version of the selected entity. </param>
         private void OnEntitySelect(int index, int version)
         {
-            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity selected: {index}, {version}");
+            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity selected: {index}, {version}");
 
             Entity entity = new Entity
             {
@@ -508,10 +540,24 @@ namespace LayeredSelectionDisplay.Systems
 
             if (EntityManager.Exists(entity))
             {
-                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity exists: {index}, {version}");
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity exists: {index}, {version}");
 
                 m_ToolSystem.selected = entity;
                 m_ToolSystem.activeTool = m_DefaultToolSystem;
+
+                //m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} m_TransformGizmoToolExists.value: " + m_TransformGizmoToolExists.value.ToString());
+
+                //if (!m_TransformGizmoToolExists.value)
+                //{
+                //    m_ToolSystem.activeTool = m_DefaultToolSystem;
+                //}
+                //else
+                //{
+                //    m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} m_TransformGizmoTool.toolID: " + m_TransformGizmoTool.toolID);
+                //    m_ToolSystem.activeTool = m_DefaultToolSystem;
+                //    m_ToolSystem.activeTool = m_TransformGizmoTool;
+                //    m_ToolSystem.Enabled = true;
+                //}
             }
             else
             {
@@ -526,7 +572,7 @@ namespace LayeredSelectionDisplay.Systems
         /// <param name="version"> The version of the entity. </param>
         private void OnEntityHover(int index, int version)
         {
-            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityHover)} Entity hovered: {index}, {version}");
+            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityHover)} Entity hovered: {index}, {version}");
 
             Entity entity = new Entity
             {
@@ -536,7 +582,7 @@ namespace LayeredSelectionDisplay.Systems
 
             if (EntityManager.Exists(entity))
             {
-                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityHover)} Entity exists: {index}, {version}");
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityHover)} Entity exists: {index}, {version}");
                 m_HoverState.HoveredEntity = entity;
                 m_HoverState.Dirty = true;
             }
@@ -553,7 +599,7 @@ namespace LayeredSelectionDisplay.Systems
         /// <param name="version"> The version of the entity. </param>
         private void OnEntityLeave(int index, int version)
         {
-            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityLeave)} Entity left: {index}, {version}");
+            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityLeave)} Entity left: {index}, {version}");
 
             Entity entity = new Entity
             {
@@ -563,7 +609,7 @@ namespace LayeredSelectionDisplay.Systems
 
             if (EntityManager.Exists(entity))
             {
-                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityLeave)} Entity exists: {index}, {version}");
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityLeave)} Entity exists: {index}, {version}");
 
                 if (m_HoverState.HoveredEntity == entity)
                 {

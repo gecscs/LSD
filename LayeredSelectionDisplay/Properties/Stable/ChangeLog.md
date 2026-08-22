@@ -1,4 +1,8 @@
-﻿# Patch V0.0.7
+﻿# Patch v.0.0.8
+* Buttons now have tooltips.
+* Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.
+
+# Patch V0.0.7
 * Complete revamp of the List Panel.
 * New close panel button.
 * New Select With Marquee button (not yet functional).

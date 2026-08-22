@@ -1,6 +1,6 @@
 ﻿import { useState } from "react";
 import { useLocalization } from "cs2/l10n";
-import { Panel, Portal, Scrollable, Tooltip } from "cs2/ui";
+import { Panel, Portal, Scrollable, Button, Tooltip } from "cs2/ui";
 import { bindValue, trigger, useValue } from "cs2/api";
 
 import locale from "../mods/lang/en-US.json";
@@ -35,6 +35,9 @@ const panelPosition$ = bindValue(
 
 const expandedListPanel$ = bindValue(mod.id, "ExpandedListPanel", false);
 
+const edtToolExists$ = bindValue<boolean>(mod.id, "EdtExists");
+const transformGizmoToolExists$ = bindValue<boolean>(mod.id, "TransformGizmoToolExists");
+
 
 function OnEntityHover(index: number, version: number) {
     trigger(mod.id, "OnEntityHover", index, version);
@@ -45,7 +48,15 @@ function OnEntityLeave(index: number, version: number) {
 }
 
 function OnEntitySelect(index: number, version: number) {
+
     trigger(mod.id, "OnEntitySelect", index, version);
+
+    const edtToolExists = useValue(edtToolExists$);
+    const transformGizmoToolExists = useValue(transformGizmoToolExists$);
+
+    // if (edtToolExists && transformGizmoToolExists) {
+    //     trigger("EDT", "TransformGizmoTool.SelectTransformGizmosTool");
+    // }
 }
 
 function RefreshSelection() {
@@ -133,6 +144,24 @@ export const SelectionListPanel = () => {
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip"]
         );
 
+    const listPanelCloseButtonToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip"]
+        ) ?? "Close Panel";
+
+    const listPanelExpandButtonToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip"]
+        ) ?? "Expand";
+
+    const listPanelCollapseButtonToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip"]
+        ) ?? "Collapse";
+
     const isGame = useValue(isGame$);
     const isMarqueeToolSelected =
         useValue(isMarqueeToolSelected$);
@@ -145,17 +174,14 @@ export const SelectionListPanel = () => {
 
     const expandedListPanel = useValue(expandedListPanel$);
 
+    const panelHeight = expandedListPanel ? 640 : 320;
+
     /*
      * Entities are hidden only from this UI list.
      * They are not removed from the actual Move It of future custom selection.
      */
     const [removedEntityIndexes, setRemovedEntityIndexes] =
-        useState<number[]>([]);
-
-    /*
-     * Keep the panel height in the TSX so that an expand/colapse functionality can later be added
-     */
-    const panelHeight = expandedListPanel ? 640 : 320;
+        useState<number[]>([]);  
 
     const visibleEntities =
         [...selectedEntities.Entities]
@@ -194,148 +220,146 @@ export const SelectionListPanel = () => {
                 <span />
             </div>
 
-
             <span className={styles.title}>
                 {listPanelTitle}
             </span>
 
-
             <div className={styles.headerButtons}>
 
-                {/* Marquee */}
-                <button
-                    className={styles.headerButton}
-                    title={listPanelMarqueeSelectionToolTip}
-                    onMouseDown={event =>
-                        event.stopPropagation()
-                    }
-                    onClick={SelectMarqueeTool}
-                >
-                    <svg
-                        className={
-                            styles.headerIcon
+                {/* Marquee */}                
+                <Tooltip tooltip={listPanelMarqueeSelectionToolTip} >
+                    <button
+                        className={styles.headerButton}
+                        title={listPanelMarqueeSelectionToolTip}
+                        onMouseDown={event =>
+                            event.stopPropagation()
                         }
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        aria-hidden="true"
+                        onClick={SelectMarqueeTool}
                     >
-                        <rect
-                            x="1.5"
-                            y="1.5"
-                            width="11"
-                            height="11"
-                            rx="1"
-                            stroke="currentColor"
-                            strokeWidth="1.3"
-                            strokeDasharray="3 2"
-                        />
+                        <svg
+                            className={
+                                styles.headerIcon
+                            }
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <rect
+                                x="1.5"
+                                y="1.5"
+                                width="11"
+                                height="11"
+                                rx="1"
+                                stroke="currentColor"
+                                strokeWidth="1.3"
+                                strokeDasharray="3 2"
+                            />
 
-                        <path
-                            d="M10 10l5.5 5.5"
-                            stroke="currentColor"
-                            strokeWidth="1.3"
-                            strokeLinecap="round"
-                        />
+                            <path
+                                d="M10 10l5.5 5.5"
+                                stroke="currentColor"
+                                strokeWidth="1.3"
+                                strokeLinecap="round"
+                            />
 
-                        <path
-                            d="M13 13l2.8.5-.5-2.8"
-                            stroke="currentColor"
-                            strokeWidth="1.3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
-                </button>
-
+                            <path
+                                d="M13 13l2.8.5-.5-2.8"
+                                stroke="currentColor"
+                                strokeWidth="1.3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </button>
+                </Tooltip>
 
                 {/* Refresh */}
-                <button
-                    className={styles.headerButton}
-                    title={listPanelRefreshButtonToolTip}
-                    onMouseDown={event =>
-                        event.stopPropagation()
-                    }
-                    onClick={HandleRefresh}
-                >
-                    <svg
-                        className={
-                            styles.headerIcon
+                <Tooltip tooltip={listPanelRefreshButtonToolTip} >
+                    <button
+                        className={styles.headerButton}
+                        title={listPanelRefreshButtonToolTip}
+                        onMouseDown={event =>
+                            event.stopPropagation()
                         }
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        aria-hidden="true"
+                        onClick={HandleRefresh}
                     >
-                        <path
-                            d="M14.5 9a5.5 5.5 0 1 1-1.6-3.9"
-                            stroke="currentColor"
-                            strokeWidth="1.4"
-                            strokeLinecap="round"
-                        />
-
-                        <polyline
-                            points="12.5,2.5 12.5,5.5 9.5,5.5"
-                            stroke="currentColor"
-                            strokeWidth="1.4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
+                        <svg
+                            className={
+                                styles.headerIcon
+                            }
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
                             fill="none"
-                        />
-                    </svg>
-                </button>
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M14.5 9a5.5 5.5 0 1 1-1.6-3.9"
+                                stroke="currentColor"
+                                strokeWidth="1.4"
+                                strokeLinecap="round"
+                            />
 
+                            <polyline
+                                points="12.5,2.5 12.5,5.5 9.5,5.5"
+                                stroke="currentColor"
+                                strokeWidth="1.4"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                fill="none"
+                            />
+                        </svg>
+                    </button>
+                </Tooltip>
 
                 {/* Close */}
-                <button
-                    className={`${styles.headerButton} ${styles.danger}`}
-                    title="Close Panel"
-                    onMouseDown={event =>
-                        event.stopPropagation()
-                    }
-                    onClick={CloseSelectionListPanel}
-                >
-                    <svg
-                        className={
-                            styles.closeIcon
+                <Tooltip tooltip={listPanelCloseButtonToolTip} >
+                    <button
+                        className={`${styles.headerButton} ${styles.danger}`}
+                        title="Close Panel"
+                        onMouseDown={event =>
+                            event.stopPropagation()
                         }
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        aria-hidden="true"
+                        onClick={CloseSelectionListPanel}
                     >
-                        <path
-                            d="M2 2l8 8M10 2l-8 8"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                        />
-                    </svg>
-                </button>
-
+                        <svg
+                            className={
+                                styles.closeIcon
+                            }
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M2 2l8 8M10 2l-8 8"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                            />
+                        </svg>
+                    </button>
+                </Tooltip>
             </div>
         </div>
     );
 
     const panelFooter = (
 
-        <div
-            className={`${styles.footer} ${
-                expandedListPanel ? styles.expanded : ""
-            }`}
-            onMouseDown={event => event.stopPropagation()}
-            onClick={() => TogglePanelSize()}
-        >
-            <span className={styles.footerToggle} />
-        </div>
-
-        // <div className={styles.footer}
-        //     onClick={() => TogglePanelSize()}
-        //     > 
-        // </div>
+        <Tooltip tooltip={expandedListPanel ? listPanelCollapseButtonToolTip : listPanelExpandButtonToolTip} >
+            <div
+                className={`${styles.footer} ${
+                    expandedListPanel ? styles.expanded : ""
+                }`}
+                onMouseDown={event => event.stopPropagation()}
+                onClick={() => TogglePanelSize()}
+            >
+                <span className={styles.footerToggle} />
+            </div>
+        </Tooltip>
 
     );
 
@@ -484,25 +508,26 @@ export const SelectionListPanel = () => {
                                                                 {entity.Name}
                                                             </span>
 
+                                                            <Tooltip tooltip={removeFromListToolTip} >
+                                                                <button
+                                                                    className={
+                                                                        styles.removeButton
+                                                                    }
+                                                                    title={removeFromListToolTip}
+                                                                    onMouseDown={event =>
+                                                                        event.stopPropagation()
+                                                                    }
+                                                                    onClick={event => {
+                                                                        event.stopPropagation();
 
-                                                            <button
-                                                                className={
-                                                                    styles.removeButton
-                                                                }
-                                                                title={removeFromListToolTip}
-                                                                onMouseDown={event =>
-                                                                    event.stopPropagation()
-                                                                }
-                                                                onClick={event => {
-                                                                    event.stopPropagation();
-
-                                                                    HandleRemoveEntity(
-                                                                        entity.Index
-                                                                    );
-                                                                }}
-                                                            >
-                                                                −
-                                                            </button>
+                                                                        HandleRemoveEntity(
+                                                                            entity.Index
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    −
+                                                                </button>
+                                                            </Tooltip>
 
                                                         </li>
                                                     )

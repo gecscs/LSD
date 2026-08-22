@@ -49,7 +49,7 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.0.7" />
+  <ModVersion Value="0.0.8" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.5.*" />
   <!--Dependency for the mod, can be set multiple-->
@@ -57,6 +57,11 @@
   <Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
+	  # Patch v.0.0.8
+	  * Buttons now have tooltips.
+	  * Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.
+
+
 	  # Patch V0.0.7
 	  * Complete revamp of the List Panel.
 	  * New close panel button.
@@ -65,7 +70,7 @@
 	  * Each listed item now includes a Remove button that removes the item from the list, but keeps the original list in memory so it can be reloaded back from Move it, provided it has not changed there.
 	  * Bottom bar is now clickable to expand/collapse the list panel.
 	  * Expanded state of panel is also kept on hidden settings and is restored along with position when the panel is reopened in the same or in a new playing session.
-	  
+
 	  # Patch V0.0.7
 	  * French and Spanish translations.
 	  * More code cleanup.
