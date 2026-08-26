@@ -9,6 +9,7 @@ import mod from "../../mod.json";
 
 import { SelectedEntities } from "../Domain/SelectedEntities";
 import { SelectedEntity } from "../Domain/SelectedEntity";
+import classNames from "classnames";
 
 
 const isGame$ = bindValue<boolean>(
@@ -174,7 +175,7 @@ export const SelectionListPanel = () => {
 
     const expandedListPanel = useValue(expandedListPanel$);
 
-    const panelHeight = expandedListPanel ? 640 : 320;
+    const panelHeight = expandedListPanel ? 640 : 340;
 
     /*
      * Entities are hidden only from this UI list.
@@ -209,8 +210,16 @@ export const SelectionListPanel = () => {
     }
 
     const panelHeader = (
-        <div className={styles.panelHeader}>
+        <div className={`${ styles.panelHeader} header_SUX header_H_U header_Bpo child-opacity-transition_nkS`}>
 
+            <div
+                className={styles.dragGrip}
+                aria-hidden="true"
+            >
+                <span />
+                <span />
+                <span />
+            </div>
             <div
                 className={styles.dragGrip}
                 aria-hidden="true"
@@ -235,6 +244,7 @@ export const SelectionListPanel = () => {
                             event.stopPropagation()
                         }
                         onClick={SelectMarqueeTool}
+                        style={{ display: 'none' }}
                     >
                         <svg
                             className={
@@ -285,6 +295,7 @@ export const SelectionListPanel = () => {
                         }
                         onClick={HandleRefresh}
                     >
+                                
                         <svg
                             className={
                                 styles.headerIcon
@@ -317,14 +328,15 @@ export const SelectionListPanel = () => {
                 {/* Close */}
                 <Tooltip tooltip={listPanelCloseButtonToolTip} >
                     <button
-                        className={`${styles.headerButton} ${styles.danger}`}
+                        className="button_bvQ button_bvQ close-button_wKK"
                         title="Close Panel"
                         onMouseDown={event =>
                             event.stopPropagation()
                         }
                         onClick={CloseSelectionListPanel}
                     >
-                        <svg
+                        <div className="tinted-icon_iKo icon_PhD" style={{ maskImage: `url(Media/Glyphs/Close.svg)` }}> </div>
+                        {/* <svg
                             className={
                                 styles.closeIcon
                             }
@@ -340,7 +352,7 @@ export const SelectionListPanel = () => {
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
                             />
-                        </svg>
+                        </svg> */}
                     </button>
                 </Tooltip>
             </div>
@@ -353,7 +365,7 @@ export const SelectionListPanel = () => {
             <div
                 className={`${styles.footer} ${
                     expandedListPanel ? styles.expanded : ""
-                }`}
+                } footer_IlY footer_Pa9 footer_pD5 child-opacity-transition_nkS`}
                 onMouseDown={event => event.stopPropagation()}
                 onClick={() => TogglePanelSize()}
             >
@@ -373,7 +385,7 @@ export const SelectionListPanel = () => {
                             id="lsdSelectionListPanel"
                             draggable
                             initialPosition={panelPosition}
-                            className={styles.mainPanel}
+                            className={`${styles.mainPanel} content_AD7 child-opacity-transition_nkS`}
                             style={{
                                 height: `${panelHeight}rem`
                             }}
@@ -429,9 +441,7 @@ export const SelectionListPanel = () => {
                                     <>
 
                                         <div
-                                            className={
-                                                styles.selectionCount
-                                            }
+                                            className={styles.selectionCount}
                                         >
                                             <p>
                                                 <span>
@@ -443,16 +453,10 @@ export const SelectionListPanel = () => {
 
 
                                         <Scrollable
-                                            className={
-                                                styles.scrollablePanel
-                                            }
+                                            className={styles.scrollablePanel}
                                         >
 
-                                            <ul
-                                                className={
-                                                    styles.listedAssets
-                                                }
-                                            >
+                                            <ul className={styles.listedAssets}>
 
                                                 {visibleEntities.map(
                                                     (entity, index) => (
@@ -492,18 +496,12 @@ export const SelectionListPanel = () => {
                                                                 )}
                                                             </span>
 
-
                                                             <span
-                                                                className={
-                                                                    styles.separator
-                                                                }
+                                                                className={ styles.separator}
                                                             />
 
-
                                                             <span
-                                                                className={
-                                                                    styles.entityName
-                                                                }
+                                                                className={styles.entityName}
                                                             >
                                                                 {entity.Name}
                                                             </span>

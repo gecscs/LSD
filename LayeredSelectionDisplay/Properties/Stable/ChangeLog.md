@@ -1,7 +1,11 @@
-﻿# Patch v.0.0.8
+﻿# Patch v0.0.9
+* List Panel design retouched to be closer to the vanilla panels.
+* Marquee Selector Button is now hidden until it gets its proper functionality.
+
+# Patch v0.0.8
 * Buttons now have tooltips.
 * Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.
-* All languages added (many translated via GPT)
+* All languages added (many translated via GPT).
 
 # Patch V0.0.7
 * Complete revamp of the List Panel.
