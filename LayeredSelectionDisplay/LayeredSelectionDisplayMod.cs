@@ -19,6 +19,8 @@ namespace LayeredSelectionDisplay
     using HarmonyLib;
     using LayeredSelectionDisplay.Settings;
     using LayeredSelectionDisplay.Systems;
+    using UnityEngine;
+    using UnityObject = UnityEngine.Object;
 #if DEBUG && EXPORT_EN_US
     using Newtonsoft.Json;
     using Colossal;
@@ -35,6 +37,7 @@ namespace LayeredSelectionDisplay
         /// </summary>
         public static readonly string Id = "LayeredSelectionDisplay";
         private Harmony m_Harmony;
+        private GameObject m_MarqueeRendererGO;
 
         /// <summary>
         /// Gets the static reference to the mod instance.
@@ -114,6 +117,19 @@ namespace LayeredSelectionDisplay
             Logger.Info($"{nameof(LayeredSelectionDisplayMod)}.{nameof(OnLoad)} Injecting systems.");
             updateSystem.UpdateAt<LayeredSelectionDisplayUISystem>(SystemUpdatePhase.UIUpdate);
             updateSystem.UpdateAt<LayeredSelectionDisplayHighlightSystem>(SystemUpdatePhase.ToolUpdate);
+            updateSystem.UpdateAt<LSDMarqueeSelectionSystem>(SystemUpdatePhase.ToolUpdate);
+
+            try
+            {
+                m_MarqueeRendererGO = new GameObject("LSD_MarqueeRenderer");
+                UnityObject.DontDestroyOnLoad(m_MarqueeRendererGO);
+                m_MarqueeRendererGO.AddComponent<LayeredSelectionDisplay.Rendering.MarqueeRenderer>();
+                Logger.Info("MarqueeRenderer created.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to create MarqueeRenderer GameObject.");
+            }
 
             Logger.Info($"{nameof(LayeredSelectionDisplayMod)}.{nameof(OnLoad)} Complete.");
         }
@@ -128,6 +144,20 @@ namespace LayeredSelectionDisplay
                 Settings.UnregisterInOptionsUI();
                 Settings = null;
             }
+
+            try
+            {
+                if (m_MarqueeRendererGO != null)
+                {
+                    UnityObject.Destroy(m_MarqueeRendererGO);
+                    m_MarqueeRendererGO = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error destroying MarqueeRenderer GameObject.");
+            }
+
         }
 
         private void LoadNonEnglishLocalizations()

@@ -36,6 +36,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="Colossal.Collections">
+		  <HintPath>$(ManagedPath)\Colossal.Collections.dll</HintPath>
+		  <Private>False</Private>
+		</Reference>
+		<Reference Include="Colossal.Core">
+		  <HintPath>$(ManagedPath)\Colossal.Core.dll</HintPath>
+		  <Private>False</Private>
+		</Reference>
 		<Reference Include="cohtml.Net">
 		  <HintPath>$(ManagedPath)\cohtml.Net.dll</HintPath>
 		  <Private>False</Private>
@@ -75,9 +83,9 @@
 		<Reference Include="Game">
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="Colossal.Core">
+<!--		<Reference Include="Colossal.Core">
 			<Private>False</Private>
-		</Reference>
+		</Reference>-->
 		<Reference Include="Colossal.Logging">
 			<Private>False</Private>
 		</Reference>
@@ -111,12 +119,15 @@
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Unity.Collections">
+		    <HintPath>$(ManagedPath)\Unity.Collections.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Unity.Entities">
+		    <HintPath>$(ManagedPath)\Unity.Entities.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Unity.Mathematics">
+			<HintPath>$(ManagedPath)\Unity.Mathematics.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="UnityEngine.IMGUIModule">

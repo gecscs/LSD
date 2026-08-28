@@ -2,13 +2,13 @@
 // Copyright (c) 0belix's Mods. MIT License. All rights reserved.
 // </copyright>
 
-using Colossal.Logging;
-using Colossal.UI.Binding;
-using System.Collections.Generic;
-using Unity.Entities;
-
 namespace LayeredSelectionDisplay.Domain
 {
+    using System.Collections.Generic;
+    using Colossal.Logging;
+    using Colossal.UI.Binding;
+    using Unity.Entities;
+
     public struct SelectedEntities : IJsonWritable
     {
         public List<SelectedEntity> Entities;

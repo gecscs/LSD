@@ -43,6 +43,7 @@ namespace LayeredSelectionDisplay.Systems
         private ToolBaseSystem m_MoveItTool;
         private ToolBaseSystem m_EdtTool;
         private ToolBaseSystem m_TransformGizmoTool;
+        private LSDMarqueeSelectionSystem m_MarqueeSelectionSystem;
         private ILog m_Log;
         private RenderingSystem m_RenderingSystem;
         private PrefabSystem m_PrefabSystem;
@@ -188,6 +189,7 @@ namespace LayeredSelectionDisplay.Systems
             m_Log = LayeredSelectionDisplayMod.Instance.Logger;
             m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnCreate)}");
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
+            m_MarqueeSelectionSystem = World.GetOrCreateSystemManaged<LSDMarqueeSelectionSystem>();
             m_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_RenderingSystem = World.GetOrCreateSystemManaged<RenderingSystem>();
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
@@ -231,6 +233,8 @@ namespace LayeredSelectionDisplay.Systems
 
             // This handles the event when the marquee tool is selected in the UI.
             AddBinding(new TriggerBinding(ModId, "OnChangeListPanelVisibility", OnChangeListPanelVisibility));
+
+            AddBinding(new TriggerBinding(ModId, "SelectMarqueeTool", SelectMarqueeTool));
 
             AddBinding(m_ExpandedListPanel = new ValueBinding<bool>(ModId, "ExpandedListPanel", m_settings?.ExpandedListPanel ?? false));
 
@@ -399,12 +403,33 @@ namespace LayeredSelectionDisplay.Systems
         /// </param>
         private void OnChangeListPanelVisibility()
         {
-            m_IsMarqueeToolSelected.Update(!m_IsMarqueeToolSelected.value);
+            m_IsMarqueeToolSelected.Update(
+                !m_IsMarqueeToolSelected.value);
 
-            if (m_IsMarqueeToolSelected.value && m_SelectedEntitiesBinding.value.Entities.Count < 1)
+            if (!m_IsMarqueeToolSelected.value)
             {
-                GetUpdatedSelectedEntitiesFromMoveIt();
+                m_MarqueeSelectionSystem.CancelSelection();
             }
+        }
+
+        public void SetMarqueeEntities(IEnumerable<Entity> entities)
+        {
+            SelectedEntities binding =
+                new SelectedEntities
+                {
+                    Entities =
+                        new List<SelectedEntity>(),
+                };
+
+            foreach (Entity entity in entities)
+            {
+                AddEntityToSelectedEntities(
+                    binding,
+                    entity);
+            }
+
+            m_SelectedEntitiesBinding.Update(
+                binding);
         }
 
         /// <summary>
@@ -432,12 +457,63 @@ namespace LayeredSelectionDisplay.Systems
             }
         }
 
+        private void AddEntityToSelectedEntities(SelectedEntities binding, Entity item)
+        {
+            if (EntityManager.TryGetComponent(item, out PrefabRef prefabRef))
+            {
+                m_prefabUISystem.GetTitleAndDescription(prefabRef.m_Prefab, out string titleId, out string description);
+
+                string localizedName = string.Empty;
+
+                if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
+                {
+                    localizedName = name;
+
+                    if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
+                    {
+                        if (prefab is not NetPrefab)
+                        {
+                            binding.AddSelectedEntity(item, localizedName ?? prefab.name.Replace("_", " "));
+                        }
+
+                        return;
+                    }
+                }
+                else
+                {
+                    if (m_PrefabSystem.TryGetPrefab(
+                            prefabRef.m_Prefab,
+                            out PrefabBase prefab) ||
+                        prefab is not null)
+                    {
+                        if (prefab is not NetPrefab)
+                        {
+                            binding.AddSelectedEntity(
+                                item,
+                                prefab.name.Replace(
+                                    "_",
+                                    " "));
+                        }
+
+                        return;
+                    }
+                }
+            }
+
+            binding.AddSelectedEntity(
+                item,
+                item.Index + " : " + item.Version);
+        }
+
         /// <summary>
         /// Future implementation for the usage of a custom marquee tool yet to be developed
         /// </summary>
         private void SelectMarqueeTool()
         {
-            // TO BE IMPLEMENTED
+            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} Start LSD Marquee Selection");
+            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} m_MoveItSelectedEntities (before): {m_MoveItSelectedEntities.Count}");
+            m_MarqueeSelectionSystem.StartSelection();
+            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} m_MoveItSelectedEntities (after): {m_MoveItSelectedEntities.Count}");
         }
 
         /// <summary>
@@ -445,82 +521,25 @@ namespace LayeredSelectionDisplay.Systems
         /// </summary>
         private void GetUpdatedSelectedEntitiesFromMoveIt()
         {
-            if (m_MoveItTool is not null && m_MoveItSelectedEntitiesPropertyInfo is not null)
+            if (m_MoveItTool is null || m_MoveItSelectedEntitiesPropertyInfo is null)
             {
-                HashSet<Entity> selectedEntities = (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(m_MoveItTool);
-                SelectedEntities moveItSelectedEntitiesBinding = new SelectedEntities() { Entities = new List<SelectedEntity>() };
-
-                foreach (var item in selectedEntities)
-                {
-                    if (EntityManager.TryGetComponent(item, out PrefabRef prefabRef))
-                    {
-                        // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item: {item}");
-                        // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab: {prefabRef.m_Prefab}");
-
-                        m_prefabUISystem.GetTitleAndDescription(prefabRef.m_Prefab, out string titleId, out string description);
-
-                        string localizedName = string.Empty;
-
-                        if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
-                        {
-                            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} item localized name: {name}");
-                            localizedName = name;
-
-                            if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
-                            {
-                                if (prefab is not NetPrefab)
-                                {
-                                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
-                                    moveItSelectedEntitiesBinding.AddSelectedEntity(item, localizedName ?? prefab.name.Replace("_", " "));
-                                }
-                                else
-                                {
-                                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
-                                }
-                            }
-                            else
-                            {
-                                moveItSelectedEntitiesBinding.AddSelectedEntity(item, localizedName ?? item.Index + " : " + item.Version);
-                                m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
-                            }
-                        }
-                        else
-                        {
-                            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get localized name for entity: {item}");
-
-                            if (m_PrefabSystem.TryGetPrefab(prefabRef.m_Prefab, out PrefabBase prefab) || prefab is not null)
-                            {
-                                if (prefab is not NetPrefab)
-                                {
-                                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Prefab name: {prefab.name}");
-                                    moveItSelectedEntitiesBinding.AddSelectedEntity(item, prefab.name.Replace("_", " ") ?? item.Index + " : " + item.Version);
-                                }
-                                else
-                                {
-                                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Entity was not added because it was of type NetPrefab: {item}");
-                                }
-                            }
-                            else
-                            {
-                                moveItSelectedEntitiesBinding.AddSelectedEntity(item, item.Index + " : " + item.Version);
-                                m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefab for entity: {item}");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        moveItSelectedEntitiesBinding.AddSelectedEntity(item, item.Index + " : " + item.Version);
-                        m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Failed to get prefabRef for entity: {item}");
-                    }
-
-                    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entity: {item}");
-                }
-
-                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updated Selected Entities Count: {moveItSelectedEntitiesBinding.Entities.Count}");
-                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(GetUpdatedSelectedEntitiesFromMoveIt)} Updating Selected Entities Binding: {moveItSelectedEntitiesBinding.Entities}");
-
-                m_SelectedEntitiesBinding.Update(moveItSelectedEntitiesBinding);
+                return;
             }
+
+            HashSet<Entity> selectedEntities = (HashSet<Entity>)m_MoveItSelectedEntitiesPropertyInfo.GetValue(m_MoveItTool);
+
+            SelectedEntities binding = new SelectedEntities
+                {
+                    Entities = new List<SelectedEntity>(),
+                };
+
+            foreach (Entity entity in selectedEntities)
+            {
+                AddEntityToSelectedEntities(binding, entity);
+            }
+
+            m_SelectedEntitiesBinding.Update(
+                binding);
         }
 
         /// <summary>

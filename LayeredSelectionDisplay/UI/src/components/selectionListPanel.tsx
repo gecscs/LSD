@@ -244,7 +244,6 @@ export const SelectionListPanel = () => {
                             event.stopPropagation()
                         }
                         onClick={SelectMarqueeTool}
-                        style={{ display: 'none' }}
                     >
                         <svg
                             className={
