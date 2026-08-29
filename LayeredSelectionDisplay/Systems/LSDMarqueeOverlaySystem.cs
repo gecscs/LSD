@@ -1,40 +1,35 @@
-using Colossal.Logging;
-using Colossal.Mathematics;
-using Game;
-using Game.Rendering;
-using LayeredSelectionDisplay.Selection;
-using Unity.Entities;
-using Unity.Jobs;
-using Unity.Mathematics;
-using UnityEngine;
-
 namespace LayeredSelectionDisplay.Systems
 {
+    using Colossal.Mathematics;
+    using Game;
+    using Game.Rendering;
+    using LayeredSelectionDisplay.Selection;
+    using System;
+    using Unity.Entities;
+    using Unity.Jobs;
+    using Unity.Mathematics;
+    using UnityEngine;
+
     [UpdateAfter(typeof(LSDMarqueeSelectionSystem))]
-    /// <summary>
-    /// Draws the active marquee rectangle using the game's HDRP overlay system.
-    /// </summary>
     public partial class LSDMarqueeOverlaySystem : GameSystemBase
     {
         private OverlayRenderSystem m_OverlayRenderSystem;
+
         private LSDMarqueeSelectionSystem m_SelectionSystem;
-        private ILog m_Log;
+
+        private bool m_LoggedBufferSynchronization;
 
         protected override void OnCreate()
         {
             base.OnCreate();
 
-            m_Log =
-                LayeredSelectionDisplayMod.Instance?.Logger;
-
             m_OverlayRenderSystem =
-                World.GetOrCreateSystemManaged<OverlayRenderSystem>();
+                World.GetOrCreateSystemManaged<
+                    OverlayRenderSystem>();
 
             m_SelectionSystem =
-                World.GetOrCreateSystemManaged<LSDMarqueeSelectionSystem>();
-
-            m_Log?.Info(
-                $"{nameof(LSDMarqueeOverlaySystem)}.{nameof(OnCreate)}");
+                World.GetOrCreateSystemManaged<
+                    LSDMarqueeSelectionSystem>();
         }
 
         protected override void OnUpdate()
@@ -52,34 +47,88 @@ namespace LayeredSelectionDisplay.Systems
                 return;
             }
 
-            OverlayRenderSystem.Buffer buffer =
-                m_OverlayRenderSystem.GetBuffer(out _);
+            try
+            {
+                /*
+                 * IMPORTANT:
+                 *
+                 * OverlayRenderSystem.GetBuffer() returns a JobHandle
+                 * representing work which is currently using the shared
+                 * overlay buffer.
+                 *
+                 * We MUST wait for that work before writing to the buffer.
+                 *
+                 * Your previous implementation discarded this handle:
+                 *
+                 *     GetBuffer(out _)
+                 *
+                 * which can cause synchronization stalls/races with the
+                 * game's own overlay rendering.
+                 */
+                OverlayRenderSystem.Buffer buffer =
+                    m_OverlayRenderSystem.GetBuffer(
+                        out JobHandle bufferJobHandle);
 
-            Color color = Color.magenta;
+                bufferJobHandle.Complete();
 
+                DrawMarquee(
+                    buffer,
+                    quad,
+                    height);
+            }
+            catch (Exception ex)
+            {
+                LayeredSelectionDisplayMod.Instance?
+                    .Logger?
+                    .Error(
+                        ex,
+                        $"{nameof(LSDMarqueeOverlaySystem)} rendering failed.");
+            }
+        }
+
+        private static void DrawMarquee(
+            OverlayRenderSystem.Buffer buffer,
+            Quad2 quad,
+            float height)
+        {
             const float lineWidth = 1f;
 
+            Color color =
+                Color.magenta;
+
             buffer.DrawLine(
                 color,
-                CreateLine(quad.a, quad.b, height),
+                CreateLine(
+                    quad.a,
+                    quad.b,
+                    height),
                 lineWidth,
                 cameraFacing: true);
 
             buffer.DrawLine(
                 color,
-                CreateLine(quad.b, quad.c, height),
+                CreateLine(
+                    quad.b,
+                    quad.c,
+                    height),
                 lineWidth,
                 cameraFacing: true);
 
             buffer.DrawLine(
                 color,
-                CreateLine(quad.c, quad.d, height),
+                CreateLine(
+                    quad.c,
+                    quad.d,
+                    height),
                 lineWidth,
                 cameraFacing: true);
 
             buffer.DrawLine(
                 color,
-                CreateLine(quad.d, quad.a, height),
+                CreateLine(
+                    quad.d,
+                    quad.a,
+                    height),
                 lineWidth,
                 cameraFacing: true);
         }
@@ -99,7 +148,7 @@ namespace LayeredSelectionDisplay.Systems
                 b = new float3(
                     end.x,
                     height,
-                    end.y),
+                    end.y)
             };
         }
     }

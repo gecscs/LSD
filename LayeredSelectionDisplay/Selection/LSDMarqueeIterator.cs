@@ -1,19 +1,26 @@
 ﻿namespace LayeredSelectionDisplay.Selection
 {
     using System;
-    using System.Collections.Generic;
+
     using Colossal.Collections;
-    using Colossal.Entities;
     using Colossal.Mathematics;
+
     using Game.Areas;
     using Game.Common;
+
     using Unity.Collections;
     using Unity.Entities;
-    using Unity.Mathematics;
 
-    internal struct LSDMarqueeIterator : IDisposable,
-    INativeQuadTreeIterator<Entity, Game.Common.QuadTreeBoundsXZ>, IUnsafeQuadTreeIterator<Entity, Game.Common.QuadTreeBoundsXZ>,
-    INativeQuadTreeIterator<AreaSearchItem, Game.Common.QuadTreeBoundsXZ>, IUnsafeQuadTreeIterator<AreaSearchItem, Game.Common.QuadTreeBoundsXZ>
+    /// <summary>
+    /// Collects entities whose QuadTree bounds intersect
+    /// the marquee selection quad.
+    /// </summary>
+    internal struct LSDMarqueeIterator :
+        IDisposable,
+        INativeQuadTreeIterator<Entity, QuadTreeBoundsXZ>,
+        IUnsafeQuadTreeIterator<Entity, QuadTreeBoundsXZ>,
+        INativeQuadTreeIterator<AreaSearchItem, QuadTreeBoundsXZ>,
+        IUnsafeQuadTreeIterator<AreaSearchItem, QuadTreeBoundsXZ>
     {
         public NativeList<Entity> Entities;
 
@@ -23,27 +30,28 @@
 
         public bool Intersect(QuadTreeBoundsXZ bounds)
         {
-            // Return true when the query bounds intersect both our outer bounds and the selection quad.
-            if (!MathUtils.Intersect(OuterBounds, bounds.m_Bounds.xz))
+            Bounds2 bounds2 = bounds.m_Bounds.xz;
+
+            if (!MathUtils.Intersect(OuterBounds, bounds2))
             {
                 return false;
             }
 
-            return MathUtils.Intersect(bounds.m_Bounds.xz, SelectionQuad);
+            return MathUtils.Intersect(bounds2, SelectionQuad);
         }
 
         public void Iterate(
             QuadTreeBoundsXZ bounds,
             Entity entity)
         {
-            if (!MathUtils.Intersect(
-                    OuterBounds,
-                    bounds.m_Bounds.xz))
+            Bounds2 bounds2 = bounds.m_Bounds.xz;
+
+            if (!MathUtils.Intersect(OuterBounds, bounds2))
             {
                 return;
             }
 
-            if (!MathUtils.Intersect(bounds.m_Bounds.xz, SelectionQuad))
+            if (!MathUtils.Intersect(bounds2, SelectionQuad))
             {
                 return;
             }
@@ -51,31 +59,28 @@
             Entities.Add(entity);
         }
 
-        // Implement the interface member for AreaSearchItem
         public void Iterate(
             QuadTreeBoundsXZ bounds,
             AreaSearchItem item)
         {
-            if (!MathUtils.Intersect(
-                    OuterBounds,
-                    bounds.m_Bounds.xz))
+            Bounds2 bounds2 = bounds.m_Bounds.xz;
+
+            if (!MathUtils.Intersect(OuterBounds, bounds2))
             {
                 return;
             }
 
-            if (!MathUtils.Intersect(bounds.m_Bounds.xz, SelectionQuad))
+            if (!MathUtils.Intersect(bounds2, SelectionQuad))
             {
                 return;
             }
 
-            // AreaSearchItem contains an Entity in m_Area; add that to the Entities list
             Entities.Add(item.m_Area);
         }
 
         public void Dispose()
         {
-            // If this struct owns the NativeList, dispose it here:
-            // Entities.Dispose();
+            // The owner of the NativeList is responsible for disposing it.
         }
     }
 }

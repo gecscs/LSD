@@ -3,30 +3,31 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Colossal.Logging;
     using Colossal.Mathematics;
+
     using Game;
     using Game.Common;
     using Game.Input;
     using Game.Objects;
     using Game.Tools;
+
     using LayeredSelectionDisplay.Extensions;
     using LayeredSelectionDisplay.Selection;
+
     using Unity.Collections;
     using Unity.Entities;
     using Unity.Jobs;
     using Unity.Mathematics;
+
     using UnityEngine;
     using UnityEngine.InputSystem;
 
     [UpdateAfter(typeof(ToolRaycastSystem))]
-    /// <summary>
-    /// Handles LSD's independent marquee selection.
-    /// </summary>
     public partial class LSDMarqueeSelectionSystem : GameSystemBase
     {
         private ToolSystem m_ToolSystem;
-        private ILog m_Log;
 
         private ToolRaycastSystem m_ToolRaycastSystem;
 
@@ -34,66 +35,100 @@
 
         private LayeredSelectionDisplayUISystem m_UISystem;
 
+        private ILog m_Log;
+
+        private Camera m_Camera;
+
         private bool m_Active;
 
         private bool m_Dragging;
 
         private LSDMarquee m_Marquee;
 
-        // Pending / last valid world position handling
         private bool m_PendingStart;
-        private float2 m_PendingScreenPos;
+
         private bool m_HasLastValidWorldPos;
+
         private float3 m_LastValidWorldPos;
+
+        public bool IsDragging => m_Dragging;
 
         public void StartSelection()
         {
-            m_Log.Debug($"{nameof(LSDMarqueeSelectionSystem)}.{nameof(StartSelection)} called");
+            m_Log?.Debug(
+                $"{nameof(LSDMarqueeSelectionSystem)}.{nameof(StartSelection)}");
+
             m_Active = true;
             m_Dragging = false;
             m_Marquee = null;
+
             m_PendingStart = false;
             m_HasLastValidWorldPos = false;
+
+            RefreshCamera();
         }
 
         public void CancelSelection()
         {
-            m_Log.Debug($"{nameof(LSDMarqueeSelectionSystem)}.{nameof(CancelSelection)} called");
+            m_Log?.Debug(
+                $"{nameof(LSDMarqueeSelectionSystem)}.{nameof(CancelSelection)}");
+
             m_Active = false;
             m_Dragging = false;
+
             m_Marquee = null;
+
             m_PendingStart = false;
             m_HasLastValidWorldPos = false;
         }
 
-        public bool TryGetCurrentQuad(out Colossal.Mathematics.Quad2 quad)
+        public bool TryGetCurrentQuad(
+            out Quad2 quad)
         {
-            if (m_Marquee is null)
+            if (m_Marquee == null)
             {
                 quad = default;
                 return false;
             }
 
             quad = m_Marquee.Quad;
+
             return true;
         }
-
-        public bool IsDragging => m_Dragging;
 
         public bool TryGetMarquee(
             out Quad2 quad,
             out float height)
         {
             if (!m_Dragging ||
-                m_Marquee is null)
+                m_Marquee == null)
             {
                 quad = default;
                 height = 0f;
+
                 return false;
             }
 
             quad = m_Marquee.Quad;
-            height = m_Marquee.StartPosition.y + 0.5f;
+
+            height =
+                m_Marquee.StartPosition.y +
+                0.5f;
+
+            return true;
+        }
+
+        public bool TryGetMarqueeStartY(
+            out float y)
+        {
+            if (m_Marquee == null)
+            {
+                y = 0f;
+                return false;
+            }
+
+            y = m_Marquee.StartPosition.y;
+
             return true;
         }
 
@@ -101,7 +136,8 @@
         {
             base.OnCreate();
 
-            m_Log = LayeredSelectionDisplayMod.Instance?.Logger;
+            m_Log =
+                LayeredSelectionDisplayMod.Instance?.Logger;
 
             m_ToolSystem =
                 World.GetOrCreateSystemManaged<ToolSystem>();
@@ -114,6 +150,8 @@
 
             m_UISystem =
                 World.GetOrCreateSystemManaged<LayeredSelectionDisplayUISystem>();
+
+            RefreshCamera();
         }
 
         protected override void OnUpdate()
@@ -123,7 +161,8 @@
                 return;
             }
 
-            if (!m_ToolSystem.actionMode.IsGame())
+            if (m_ToolSystem == null ||
+                !m_ToolSystem.actionMode.IsGame())
             {
                 CancelSelection();
                 return;
@@ -136,74 +175,70 @@
                 return;
             }
 
-            bool isPressed = mouse.leftButton.isPressed;
-
-            // ------------------------------------------------------------
-            // NOT CURRENTLY DRAGGING
-            // ------------------------------------------------------------
+            bool isPressed =
+                mouse.leftButton.isPressed;
 
             if (!m_Dragging)
             {
-                // We are waiting for the raycast to resolve the initial
-                // mouse-down position.
-                if (m_PendingStart)
+                UpdateWaitingForStart(
+                    mouse,
+                    isPressed);
+
+                return;
+            }
+
+            UpdateDragging(
+                isPressed);
+        }
+
+        private void UpdateWaitingForStart(
+            Mouse mouse,
+            bool isPressed)
+        {
+            if (m_PendingStart)
+            {
+                if (!isPressed)
                 {
-                    // If the user released before we could resolve the
-                    // starting position, cancel the pending start.
-                    if (!isPressed)
-                    {
-                        m_PendingStart = false;
-                        return;
-                    }
-
-                    if (TryGetRaycastHitPosition(out float3 resolvedPosition))
-                    {
-                        StartMarquee(resolvedPosition);
-                    }
-
+                    m_PendingStart = false;
                     return;
                 }
 
-                // Detect a new mouse press.
-                if (mouse.leftButton.wasPressedThisFrame)
+                if (TryGetRaycastHitPosition(
+                        out float3 resolvedPosition))
                 {
-                    if (TryGetRaycastHitPosition(out float3 hitPosition))
-                    {
-                        StartMarquee(hitPosition);
-                    }
-                    else
-                    {
-                        m_PendingStart = true;
-
-                        var mp = InputManager.instance.mousePosition;
-
-                        m_PendingScreenPos =
-                            new float2(mp.x, mp.y);
-                    }
-
-                    return;
+                    StartMarquee(resolvedPosition);
                 }
 
                 return;
             }
 
-            // ------------------------------------------------------------
-            // CURRENTLY DRAGGING
-            // ------------------------------------------------------------
+            if (!mouse.leftButton.wasPressedThisFrame)
+            {
+                return;
+            }
 
-            // IMPORTANT:
-            // Once dragging has started, we don't care about
-            // wasPressedThisFrame / wasReleasedThisFrame anymore.
-            //
-            // We remain latched into the drag state until the button
-            // is actually no longer pressed.
+            if (TryGetRaycastHitPosition(
+                    out float3 hitPosition))
+            {
+                StartMarquee(hitPosition);
+            }
+            else
+            {
+                m_PendingStart = true;
+            }
+        }
 
+        private void UpdateDragging(
+            bool isPressed)
+        {
             if (isPressed)
             {
                 if (TryGetRaycastHitPosition(
                         out float3 hitPosition))
                 {
-                    m_LastValidWorldPos = hitPosition;
+                    m_LastValidWorldPos =
+                        hitPosition;
+
                     m_HasLastValidWorldPos = true;
                 }
 
@@ -218,10 +253,6 @@
                 return;
             }
 
-            // ------------------------------------------------------------
-            // BUTTON IS NO LONGER PRESSED
-            // ------------------------------------------------------------
-
             if (m_HasLastValidWorldPos)
             {
                 UpdateMarquee(
@@ -231,23 +262,67 @@
             FinishDrag();
         }
 
-        private void StartDrag()
+        private void StartMarquee(
+            float3 position)
         {
-            // This method kept for compatibility; actual start logic handled in OnUpdate
-            // m_Log?.Debug($"{nameof(StartDrag)} called. Mouse: {Mouse.current != null}");
+            RefreshCamera();
+
+            m_Marquee =
+                new LSDMarquee(position);
+
+            m_Dragging = true;
+
+            m_PendingStart = false;
+
+            m_HasLastValidWorldPos = true;
+
+            m_LastValidWorldPos =
+                position;
         }
 
-        private void UpdateDrag()
+        private void UpdateMarquee(
+            float3 position)
         {
-            // handled inline in OnUpdate
+            if (m_Marquee == null)
+            {
+                return;
+            }
+
+            RefreshCamera();
+
+            if (m_Camera == null)
+            {
+                return;
+            }
+
+            float cameraYaw =
+                m_Camera.transform.eulerAngles.y *
+                Mathf.Deg2Rad;
+
+            m_Marquee.Update(
+                position,
+                cameraYaw);
+        }
+
+        private void RefreshCamera()
+        {
+            if (m_Camera != null)
+            {
+                return;
+            }
+
+            m_Camera =
+                Camera.main ??
+                Camera.current;
         }
 
         private void FinishDrag()
         {
-            m_Log.Debug($"{nameof(LSDMarqueeSelectionSystem)}.{nameof(FinishDrag)} called");
+            m_Log?.Debug(
+                $"{nameof(LSDMarqueeSelectionSystem)}.{nameof(FinishDrag)}");
+
             if (m_Marquee == null)
             {
-                m_Log.Debug($"{nameof(LSDMarqueeSelectionSystem)}.{nameof(FinishDrag)} marquee is null");
                 CancelSelection();
                 return;
             }
@@ -256,30 +331,50 @@
                 new NativeList<Entity>(
                     Allocator.Temp);
 
-            // m_Log.Debug($"{nameof(LSDMarqueeSelectionSystem)}.{nameof(FinishDrag)} candidates: {candidates}");
-
             try
             {
-                // Expand bounds slightly to avoid missing narrow selections due to numerical edge cases.
-                float cameraHeight = 0f;
-                var cam = UnityEngine.Camera.main ?? UnityEngine.Camera.current;
-                if (cam != null) cameraHeight = cam.transform.position.y;
-                float expandMeters = math.max(0.5f, cameraHeight * 0.01f); // 1% of camera height, min 0.5m
+                Quad2 quad =
+                    m_Marquee.Quad;
 
-                // Compute bounds from Quad directly to avoid depending on Bounds2 internals
-                Quad2 q = m_Marquee.Quad;
-                float2 min = math.min(math.min(q.a, q.b), math.min(q.c, q.d));
-                float2 max = math.max(math.max(q.a, q.b), math.max(q.c, q.d));
-                float2 expandedMin = min - new float2(expandMeters);
-                float2 expandedMax = max + new float2(expandMeters);
-                Bounds2 expandedBounds = new Bounds2(expandedMin, expandedMax);
+                Bounds2 bounds =
+                    m_Marquee.Bounds;
+
+                float cameraHeight = 0f;
+
+                Camera camera =
+                    Camera.main ??
+                    Camera.current;
+
+                if (camera != null)
+                {
+                    cameraHeight =
+                        camera.transform.position.y;
+                }
+
+                float expandMeters =
+                    math.max(
+                        0.5f,
+                        cameraHeight * 0.01f);
+
+                float2 expandedMin =
+                    bounds.min -
+                    new float2(expandMeters);
+
+                float2 expandedMax =
+                    bounds.max +
+                    new float2(expandMeters);
+
+                Bounds2 expandedBounds =
+                    new Bounds2(
+                        expandedMin,
+                        expandedMax);
 
                 SearchObjects(
                     candidates,
                     expandedBounds,
-                    m_Marquee.Quad);
+                    quad);
 
-                var entities =
+                List<Entity> entities =
                     new List<Entity>(
                         candidates.Length);
 
@@ -295,8 +390,6 @@
                         continue;
                     }
 
-                    // m_Log.Debug($"{nameof(LSDMarqueeSelectionSystem)}.{nameof(FinishDrag)} entity found: {entity.ToString()}");
-
                     if (!EntityManager.MatchesLSDFilter(
                             entity,
                             m_UISystem.SelectedVanillaFilters))
@@ -309,10 +402,9 @@
 
                 if (entities.Count == 0)
                 {
-                    m_Log?.Debug($"{nameof(FinishDrag)} no entities found. ExpandedBounds={expandedBounds} Quad={m_Marquee.Quad}");
+                    m_Log?.Debug(
+                        $"{nameof(FinishDrag)} no entities found.");
                 }
-
-                // m_Log.Debug($"{nameof(LSDMarqueeSelectionSystem)}.{nameof(FinishDrag)} entities found: {entities}");
 
                 m_UISystem.SetMarqueeEntities(
                     entities);
@@ -337,169 +429,154 @@
                     true,
                     out dependencies);
 
-            // The tree must be ready before it is traversed.
             dependencies.Complete();
 
-            var iterator =
+            LSDMarqueeIterator iterator =
                 new LSDMarqueeIterator
                 {
                     Entities = entities,
                     OuterBounds = bounds,
-                    SelectionQuad = quad,
+                    SelectionQuad = quad
                 };
 
-            staticTree.Iterate(ref iterator);
+            staticTree.Iterate(
+                ref iterator);
         }
 
-        private void StartMarquee(float3 position)
-        {
-            m_Marquee = new LSDMarquee(position);
-
-            m_Dragging = true;
-            m_PendingStart = false;
-
-            m_HasLastValidWorldPos = true;
-            m_LastValidWorldPos = position;
-        }
-
-        private void UpdateMarquee(float3 position)
-        {
-            if (m_Marquee == null)
-            {
-                return;
-            }
-
-            Camera camera = Camera.main;
-
-            if (camera == null)
-            {
-                return;
-            }
-
-            float cameraYaw =
-                camera.transform.eulerAngles.y *
-                Mathf.Deg2Rad;
-
-            m_Marquee.Update(
-                position,
-                cameraYaw);
-        }
-
-        private bool TryGetMouseWorldPosition(out Unity.Mathematics.float3 worldPosition)
+        private bool TryGetRaycastHitPosition(
+            out float3 worldPosition)
         {
             worldPosition = default;
 
-            var mouse = UnityEngine.InputSystem.Mouse.current;
-            if (mouse is null)
-            {
-                m_Log?.Debug("TryGetMouseWorldPosition: Mouse.current is null");
-                return false;
-            }
-
-            var mp = mouse.position.ReadValue();
-            Camera cam = UnityEngine.Camera.main;
-
-            if (cam == null)
-            {
-                cam = UnityEngine.Camera.current;
-                if (cam == null)
-                {
-                    m_Log?.Warn("TryGetMouseWorldPosition: no Camera available");
-                    return false;
-                }
-            }
-
-            // Use game input coords as fallback
-            var ray = cam.ScreenPointToRay(new UnityEngine.Vector3(mp.x, mp.y, 0f));
-            var plane = new UnityEngine.Plane(UnityEngine.Vector3.up, UnityEngine.Vector3.zero);
-            if (plane.Raycast(ray, out float enter))
-            {
-                var p = ray.GetPoint(enter);
-                worldPosition = new Unity.Mathematics.float3(p.x, p.y, p.z);
-                return true;
-            }
-
-            m_Log?.Debug("TryGetMouseWorldPosition: raycast/plane failed");
-            return false;
-        }
-
-        // Fast direct extraction of game's authoritative raycast hit position (m_Hit.m_Position)
-        private bool TryGetRaycastHitPosition(out float3 worldPosition)
-        {
-            worldPosition = default;
             try
             {
-                if (m_ToolRaycastSystem != null && m_ToolRaycastSystem.GetRaycastResult(out var rayResult))
+                if (m_ToolRaycastSystem == null)
                 {
-                    if (TryConvertToFloat3(rayResult.m_Hit.m_Position, out worldPosition))
-                    {
-                        return true;
-                    }
+                    return false;
                 }
+
+                if (!m_ToolRaycastSystem.GetRaycastResult(
+                        out var rayResult))
+                {
+                    return false;
+                }
+
+                return TryConvertToFloat3(
+                    rayResult.m_Hit.m_Position,
+                    out worldPosition);
             }
             catch (Exception ex)
             {
-                m_Log?.Warn(ex, "TryGetRaycastHitPosition failed");
-            }
+                m_Log?.Warn(
+                    ex,
+                    "TryGetRaycastHitPosition failed.");
 
-            return false;
+                return false;
+            }
         }
 
-        private static bool TryConvertToFloat3(object val, out Unity.Mathematics.float3 f)
+        private static bool TryConvertToFloat3(
+            object value,
+            out float3 result)
         {
-            f = default;
-            if (val == null) return false;
-            if (val is UnityEngine.Vector3 v)
+            result = default;
+
+            if (value == null)
             {
-                f = new Unity.Mathematics.float3(v.x, v.y, v.z);
-                return true;
-            }
-
-            if (val is Unity.Mathematics.float3 ff)
-            {
-                f = ff;
-                return true;
-            }
-
-            var t = val.GetType();
-            var fx = t.GetField("x", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            var fy = t.GetField("y", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            var fz = t.GetField("z", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            try
-            {
-                if (fx != null && fy != null && fz != null)
-                {
-                    object ox = fx.GetValue(val);
-                    object oy = fy.GetValue(val);
-                    object oz = fz.GetValue(val);
-                    if (ox is float x && oy is float y && oz is float z)
-                    {
-                        f = new Unity.Mathematics.float3(x, y, z);
-                        return true;
-                    }
-
-                    if (ox is double dx && oy is double dy && oz is double dz)
-                    {
-                        f = new Unity.Mathematics.float3((float)dx, (float)dy, (float)dz);
-                        return true;
-                    }
-                }
-            }
-            catch { }
-
-            return false;
-        }
-
-        public bool TryGetMarqueeStartY(out float y)
-        {
-            if (m_Marquee is null)
-            {
-                y = 0f;
                 return false;
             }
 
-            y = m_Marquee.StartPosition.y;
-            return true;
+            if (value is Vector3 vector)
+            {
+                result =
+                    new float3(
+                        vector.x,
+                        vector.y,
+                        vector.z);
+
+                return true;
+            }
+
+            if (value is float3 mathVector)
+            {
+                result = mathVector;
+                return true;
+            }
+
+            Type type =
+                value.GetType();
+
+            FieldInfo fx =
+                type.GetField(
+                    "x",
+                    BindingFlags.Instance |
+                    BindingFlags.Public |
+                    BindingFlags.NonPublic);
+
+            FieldInfo fy =
+                type.GetField(
+                    "y",
+                    BindingFlags.Instance |
+                    BindingFlags.Public |
+                    BindingFlags.NonPublic);
+
+            FieldInfo fz =
+                type.GetField(
+                    "z",
+                    BindingFlags.Instance |
+                    BindingFlags.Public |
+                    BindingFlags.NonPublic);
+
+            try
+            {
+                if (fx == null ||
+                    fy == null ||
+                    fz == null)
+                {
+                    return false;
+                }
+
+                object ox =
+                    fx.GetValue(value);
+
+                object oy =
+                    fy.GetValue(value);
+
+                object oz =
+                    fz.GetValue(value);
+
+                if (ox is float x &&
+                    oy is float y &&
+                    oz is float z)
+                {
+                    result =
+                        new float3(
+                            x,
+                            y,
+                            z);
+
+                    return true;
+                }
+
+                if (ox is double dx &&
+                    oy is double dy &&
+                    oz is double dz)
+                {
+                    result =
+                        new float3(
+                            (float)dx,
+                            (float)dy,
+                            (float)dz);
+
+                    return true;
+                }
+            }
+            catch
+            {
+                // Deliberately ignored.
+            }
+
+            return false;
         }
     }
 }
