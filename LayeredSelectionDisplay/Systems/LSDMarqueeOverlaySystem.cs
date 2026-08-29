@@ -52,21 +52,10 @@ namespace LayeredSelectionDisplay.Systems
                 return;
             }
 
-            JobHandle dependencies;
-
             OverlayRenderSystem.Buffer buffer =
-                m_OverlayRenderSystem.GetBuffer(
-                    out dependencies);
+                m_OverlayRenderSystem.GetBuffer(out _);
 
-            // Ensure the overlay buffers are not being read while writing.
-            dependencies.Complete();
-
-            Color color =
-                new Color(
-                    1f,
-                    0f,
-                    1f,
-                    1f);
+            Color color = Color.magenta;
 
             const float lineWidth = 1f;
 
@@ -93,10 +82,6 @@ namespace LayeredSelectionDisplay.Systems
                 CreateLine(quad.d, quad.a, height),
                 lineWidth,
                 cameraFacing: true);
-
-            // The lines were written synchronously on the main thread.
-            m_OverlayRenderSystem.AddBufferWriter(
-                default);
         }
 
         private static Line3.Segment CreateLine(

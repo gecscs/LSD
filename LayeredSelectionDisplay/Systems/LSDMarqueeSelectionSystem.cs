@@ -118,7 +118,6 @@
 
         protected override void OnUpdate()
         {
-            // m_Log?.Verbose($"{nameof(OnUpdate)} active={m_Active} dragging={m_Dragging} actionModeIsGame={m_ToolSystem?.actionMode.IsGame()} mouseExists={(Mouse.current != null)} leftPressed={Mouse.current?.leftButton?.isPressed}");
             if (!m_Active)
             {
                 return;
@@ -130,20 +129,6 @@
                 return;
             }
 
-            // Resolve pending start only when an authoritative raycast hit becomes available
-            if (m_PendingStart && !m_Dragging)
-            {
-                if (TryGetRaycastHitPosition(out var resolvedPos))
-                {
-                    m_Marquee = new LSDMarquee(resolvedPos);
-                    m_Dragging = true;
-                    m_PendingStart = false;
-                    m_HasLastValidWorldPos = true;
-                    m_LastValidWorldPos = resolvedPos;
-                    // m_Log?.Debug($"{nameof(OnUpdate)} resolved pending start to {resolvedPos}");
-                }
-            }
-
             Mouse mouse = Mouse.current;
 
             if (mouse == null)
@@ -151,31 +136,72 @@
                 return;
             }
 
-            if (mouse.leftButton.wasPressedThisFrame)
+            bool isPressed = mouse.leftButton.isPressed;
+
+            // ------------------------------------------------------------
+            // NOT CURRENTLY DRAGGING
+            // ------------------------------------------------------------
+
+            if (!m_Dragging)
             {
-                // Try to start immediately with an authoritative hit; otherwise record pending start.
-                if (TryGetRaycastHitPosition(out var hitPos))
+                // We are waiting for the raycast to resolve the initial
+                // mouse-down position.
+                if (m_PendingStart)
                 {
-                    m_Marquee = new LSDMarquee(hitPos);
-                    m_Dragging = true;
-                    m_HasLastValidWorldPos = true;
-                    m_LastValidWorldPos = hitPos;
-                    // m_Log?.Debug($"{nameof(StartDrag)} marquee started at authoritative {hitPos}");
+                    // If the user released before we could resolve the
+                    // starting position, cancel the pending start.
+                    if (!isPressed)
+                    {
+                        m_PendingStart = false;
+                        return;
+                    }
+
+                    if (TryGetRaycastHitPosition(out float3 resolvedPosition))
+                    {
+                        StartMarquee(resolvedPosition);
+                    }
+
+                    return;
                 }
-                else
+
+                // Detect a new mouse press.
+                if (mouse.leftButton.wasPressedThisFrame)
                 {
-                    var mp = InputManager.instance.mousePosition;
-                    m_PendingStart = true;
-                    m_PendingScreenPos = new float2(mp.x, mp.y);
-                    // m_Log?.Debug($"{nameof(StartDrag)} pending start recorded screen {m_PendingScreenPos}");
+                    if (TryGetRaycastHitPosition(out float3 hitPosition))
+                    {
+                        StartMarquee(hitPosition);
+                    }
+                    else
+                    {
+                        m_PendingStart = true;
+
+                        var mp = InputManager.instance.mousePosition;
+
+                        m_PendingScreenPos =
+                            new float2(mp.x, mp.y);
+                    }
+
+                    return;
                 }
 
                 return;
             }
 
-            if (m_Dragging && mouse.leftButton.isPressed)
+            // ------------------------------------------------------------
+            // CURRENTLY DRAGGING
+            // ------------------------------------------------------------
+
+            // IMPORTANT:
+            // Once dragging has started, we don't care about
+            // wasPressedThisFrame / wasReleasedThisFrame anymore.
+            //
+            // We remain latched into the drag state until the button
+            // is actually no longer pressed.
+
+            if (isPressed)
             {
-                if (TryGetRaycastHitPosition(out float3 hitPosition))
+                if (TryGetRaycastHitPosition(
+                        out float3 hitPosition))
                 {
                     m_LastValidWorldPos = hitPosition;
                     m_HasLastValidWorldPos = true;
@@ -186,39 +212,23 @@
                     return;
                 }
 
-                float cameraYaw =
-                    Camera.main.transform.eulerAngles.y *
-                    Mathf.Deg2Rad;
-
-                m_Marquee.Update(
-                    m_LastValidWorldPos,
-                    cameraYaw);
+                UpdateMarquee(
+                    m_LastValidWorldPos);
 
                 return;
             }
 
-            if (m_Dragging && mouse.leftButton.wasReleasedThisFrame)
+            // ------------------------------------------------------------
+            // BUTTON IS NO LONGER PRESSED
+            // ------------------------------------------------------------
+
+            if (m_HasLastValidWorldPos)
             {
-                if (TryGetRaycastHitPosition(out float3 hitPosition))
-                {
-                    m_LastValidWorldPos = hitPosition;
-                    m_HasLastValidWorldPos = true;
-                }
-
-                if (m_HasLastValidWorldPos)
-                {
-                    float cameraYaw =
-                        Camera.main.transform.eulerAngles.y *
-                        Mathf.Deg2Rad;
-
-                    m_Marquee.Update(
-                        m_LastValidWorldPos,
-                        cameraYaw);
-                }
-
-                FinishDrag();
-                return;
+                UpdateMarquee(
+                    m_LastValidWorldPos);
             }
+
+            FinishDrag();
         }
 
         private void StartDrag()
@@ -341,6 +351,40 @@
             staticTree.Iterate(ref iterator);
         }
 
+        private void StartMarquee(float3 position)
+        {
+            m_Marquee = new LSDMarquee(position);
+
+            m_Dragging = true;
+            m_PendingStart = false;
+
+            m_HasLastValidWorldPos = true;
+            m_LastValidWorldPos = position;
+        }
+
+        private void UpdateMarquee(float3 position)
+        {
+            if (m_Marquee == null)
+            {
+                return;
+            }
+
+            Camera camera = Camera.main;
+
+            if (camera == null)
+            {
+                return;
+            }
+
+            float cameraYaw =
+                camera.transform.eulerAngles.y *
+                Mathf.Deg2Rad;
+
+            m_Marquee.Update(
+                position,
+                cameraYaw);
+        }
+
         private bool TryGetMouseWorldPosition(out Unity.Mathematics.float3 worldPosition)
         {
             worldPosition = default;
@@ -387,37 +431,9 @@
             {
                 if (m_ToolRaycastSystem != null && m_ToolRaycastSystem.GetRaycastResult(out var rayResult))
                 {
-                    var rrType = rayResult.GetType();
-                    var fHit = rrType.GetField("m_Hit", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (fHit != null)
+                    if (TryConvertToFloat3(rayResult.m_Hit.m_Position, out worldPosition))
                     {
-                        var hitObj = fHit.GetValue(rayResult);
-                        if (hitObj != null)
-                        {
-                            var hitType = hitObj.GetType();
-                            var fPos = hitType.GetField("m_Position", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                            if (fPos != null)
-                            {
-                                var val = fPos.GetValue(hitObj);
-                                if (TryConvertToFloat3(val, out worldPosition))
-                                {
-                                    return true;
-                                }
-                            }
-
-                            // try alternative common field names inside m_Hit
-                            var alt = hitType.GetField("m_Point", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                                ?? hitType.GetField("point", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                                ?? hitType.GetField("position", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                            if (alt != null)
-                            {
-                                var aval = alt.GetValue(hitObj);
-                                if (TryConvertToFloat3(aval, out worldPosition))
-                                {
-                                    return true;
-                                }
-                            }
-                        }
+                        return true;
                     }
                 }
             }
