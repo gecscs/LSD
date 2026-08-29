@@ -7,6 +7,10 @@
     {
         private readonly float3 m_StartPosition;
 
+        public Quad2 Quad { get; private set; }
+
+        public float3 StartPosition => m_StartPosition;
+
         public LSDMarquee(float3 startPosition)
         {
             m_StartPosition = startPosition;
@@ -16,21 +20,19 @@
             Quad = new Quad2(start, start, start, start);
         }
 
-        public Quad2 Quad { get; private set; }
-
         public Bounds2 Bounds
         {
             get
             {
                 float2 min = math.min(math.min(Quad.a, Quad.b), math.min(Quad.c, Quad.d));
 
-                float2 max = math.max(math.max(Quad.a, Quad.b),  math.max(Quad.c, Quad.d));
+                float2 max = math.max(math.max(Quad.a, Quad.b), math.max(Quad.c, Quad.d));
 
                 return new Bounds2(min, max);
             }
         }
 
-        public void Update(float3 currentPosition,  float cameraYaw)
+        public void Update(float3 currentPosition, float cameraYaw)
         {
             float2 start = new float2(m_StartPosition.x, m_StartPosition.z);
 
@@ -55,6 +57,7 @@
             float2 d = start + right * rightDistance;
 
             Quad = new Quad2(a, b, c, d);
+
         }
     }
 }

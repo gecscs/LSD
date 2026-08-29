@@ -37,7 +37,6 @@ namespace LayeredSelectionDisplay
         /// </summary>
         public static readonly string Id = "LayeredSelectionDisplay";
         private Harmony m_Harmony;
-        private GameObject m_MarqueeRendererGO;
 
         /// <summary>
         /// Gets the static reference to the mod instance.
@@ -118,18 +117,7 @@ namespace LayeredSelectionDisplay
             updateSystem.UpdateAt<LayeredSelectionDisplayUISystem>(SystemUpdatePhase.UIUpdate);
             updateSystem.UpdateAt<LayeredSelectionDisplayHighlightSystem>(SystemUpdatePhase.ToolUpdate);
             updateSystem.UpdateAt<LSDMarqueeSelectionSystem>(SystemUpdatePhase.ToolUpdate);
-
-            try
-            {
-                m_MarqueeRendererGO = new GameObject("LSD_MarqueeRenderer");
-                UnityObject.DontDestroyOnLoad(m_MarqueeRendererGO);
-                m_MarqueeRendererGO.AddComponent<LayeredSelectionDisplay.Rendering.MarqueeRenderer>();
-                Logger.Info("MarqueeRenderer created.");
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Failed to create MarqueeRenderer GameObject.");
-            }
+            updateSystem.UpdateAt<LSDMarqueeOverlaySystem>(SystemUpdatePhase.Rendering);
 
             Logger.Info($"{nameof(LayeredSelectionDisplayMod)}.{nameof(OnLoad)} Complete.");
         }
@@ -144,20 +132,6 @@ namespace LayeredSelectionDisplay
                 Settings.UnregisterInOptionsUI();
                 Settings = null;
             }
-
-            try
-            {
-                if (m_MarqueeRendererGO != null)
-                {
-                    UnityObject.Destroy(m_MarqueeRendererGO);
-                    m_MarqueeRendererGO = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Error destroying MarqueeRenderer GameObject.");
-            }
-
         }
 
         private void LoadNonEnglishLocalizations()
