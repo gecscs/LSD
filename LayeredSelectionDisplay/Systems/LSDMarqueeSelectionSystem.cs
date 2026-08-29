@@ -25,7 +25,8 @@
     using UnityEngine.InputSystem;
 
     [UpdateAfter(typeof(ToolRaycastSystem))]
-    public partial class LSDMarqueeSelectionSystem : GameSystemBase
+    public partial class LSDMarqueeSelectionSystem :
+        GameSystemBase
     {
         private ToolSystem m_ToolSystem;
 
@@ -51,7 +52,35 @@
 
         private float3 m_LastValidWorldPos;
 
-        public bool IsDragging => m_Dragging;
+        public bool IsDragging =>
+            m_Dragging;
+
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+
+            m_Log =
+                LayeredSelectionDisplayMod.Instance?.Logger;
+
+            m_ToolSystem =
+                World.GetOrCreateSystemManaged<
+                    ToolSystem>();
+
+            m_ToolRaycastSystem =
+                World.GetOrCreateSystemManaged<
+                    ToolRaycastSystem>();
+
+            m_ObjectSearchSystem =
+                World.GetOrCreateSystemManaged<
+                    Game.Objects.SearchSystem>();
+
+            m_UISystem =
+                World.GetOrCreateSystemManaged<
+                    LayeredSelectionDisplayUISystem>();
+
+            m_Camera =
+                Camera.main;
+        }
 
         public void StartSelection()
         {
@@ -59,10 +88,13 @@
                 $"{nameof(LSDMarqueeSelectionSystem)}.{nameof(StartSelection)}");
 
             m_Active = true;
+
             m_Dragging = false;
+
             m_Marquee = null;
 
             m_PendingStart = false;
+
             m_HasLastValidWorldPos = false;
 
             RefreshCamera();
@@ -74,11 +106,13 @@
                 $"{nameof(LSDMarqueeSelectionSystem)}.{nameof(CancelSelection)}");
 
             m_Active = false;
+
             m_Dragging = false;
 
             m_Marquee = null;
 
             m_PendingStart = false;
+
             m_HasLastValidWorldPos = false;
         }
 
@@ -91,7 +125,8 @@
                 return false;
             }
 
-            quad = m_Marquee.Quad;
+            quad =
+                m_Marquee.Quad;
 
             return true;
         }
@@ -104,13 +139,19 @@
                 m_Marquee == null)
             {
                 quad = default;
+
                 height = 0f;
 
                 return false;
             }
 
-            quad = m_Marquee.Quad;
+            quad =
+                m_Marquee.Quad;
 
+            /*
+             * Keep the marquee slightly above the ground to prevent
+             * z-fighting with terrain.
+             */
             height =
                 m_Marquee.StartPosition.y +
                 0.5f;
@@ -124,34 +165,14 @@
             if (m_Marquee == null)
             {
                 y = 0f;
+
                 return false;
             }
 
-            y = m_Marquee.StartPosition.y;
+            y =
+                m_Marquee.StartPosition.y;
 
             return true;
-        }
-
-        protected override void OnCreate()
-        {
-            base.OnCreate();
-
-            m_Log =
-                LayeredSelectionDisplayMod.Instance?.Logger;
-
-            m_ToolSystem =
-                World.GetOrCreateSystemManaged<ToolSystem>();
-
-            m_ToolRaycastSystem =
-                World.GetOrCreateSystemManaged<ToolRaycastSystem>();
-
-            m_ObjectSearchSystem =
-                World.GetOrCreateSystemManaged<Game.Objects.SearchSystem>();
-
-            m_UISystem =
-                World.GetOrCreateSystemManaged<LayeredSelectionDisplayUISystem>();
-
-            RefreshCamera();
         }
 
         protected override void OnUpdate()
@@ -168,7 +189,8 @@
                 return;
             }
 
-            Mouse mouse = Mouse.current;
+            Mouse mouse =
+                Mouse.current;
 
             if (mouse == null)
             {
@@ -178,59 +200,59 @@
             bool isPressed =
                 mouse.leftButton.isPressed;
 
+            /*
+             * ----------------------------------------------------------
+             * Waiting for mouse-down / raycast
+             * ----------------------------------------------------------
+             */
             if (!m_Dragging)
             {
-                UpdateWaitingForStart(
-                    mouse,
-                    isPressed);
-
-                return;
-            }
-
-            UpdateDragging(
-                isPressed);
-        }
-
-        private void UpdateWaitingForStart(
-            Mouse mouse,
-            bool isPressed)
-        {
-            if (m_PendingStart)
-            {
-                if (!isPressed)
+                if (m_PendingStart)
                 {
-                    m_PendingStart = false;
+                    if (!isPressed)
+                    {
+                        m_PendingStart = false;
+                        return;
+                    }
+
+                    if (TryGetRaycastHitPosition(
+                            out float3 resolvedPosition))
+                    {
+                        StartMarquee(
+                            resolvedPosition);
+                    }
+
+                    return;
+                }
+
+                if (!mouse.leftButton.wasPressedThisFrame)
+                {
                     return;
                 }
 
                 if (TryGetRaycastHitPosition(
-                        out float3 resolvedPosition))
+                        out float3 hitPosition))
                 {
-                    StartMarquee(resolvedPosition);
+                    StartMarquee(
+                        hitPosition);
+                }
+                else
+                {
+                    /*
+                     * ToolRaycastSystem has not yet produced the hit
+                     * for this frame. Wait for the next update.
+                     */
+                    m_PendingStart = true;
                 }
 
                 return;
             }
 
-            if (!mouse.leftButton.wasPressedThisFrame)
-            {
-                return;
-            }
-
-            if (TryGetRaycastHitPosition(
-                    out float3 hitPosition))
-            {
-                StartMarquee(hitPosition);
-            }
-            else
-            {
-                m_PendingStart = true;
-            }
-        }
-
-        private void UpdateDragging(
-            bool isPressed)
-        {
+            /*
+             * ----------------------------------------------------------
+             * Active drag
+             * ----------------------------------------------------------
+             */
             if (isPressed)
             {
                 if (TryGetRaycastHitPosition(
@@ -239,7 +261,8 @@
                     m_LastValidWorldPos =
                         hitPosition;
 
-                    m_HasLastValidWorldPos = true;
+                    m_HasLastValidWorldPos =
+                        true;
                 }
 
                 if (!m_HasLastValidWorldPos)
@@ -253,6 +276,11 @@
                 return;
             }
 
+            /*
+             * ----------------------------------------------------------
+             * Mouse released
+             * ----------------------------------------------------------
+             */
             if (m_HasLastValidWorldPos)
             {
                 UpdateMarquee(
@@ -268,7 +296,8 @@
             RefreshCamera();
 
             m_Marquee =
-                new LSDMarquee(position);
+                new LSDMarquee(
+                    position);
 
             m_Dragging = true;
 
@@ -295,6 +324,12 @@
                 return;
             }
 
+            /*
+             * Only read the camera yaw.
+             *
+             * The expensive work of actually writing the overlay is
+             * no longer performed here.
+             */
             float cameraYaw =
                 m_Camera.transform.eulerAngles.y *
                 Mathf.Deg2Rad;
@@ -306,6 +341,10 @@
 
         private void RefreshCamera()
         {
+            /*
+             * Camera.main is only used when we don't currently have
+             * a valid camera reference.
+             */
             if (m_Camera != null)
             {
                 return;
@@ -341,16 +380,17 @@
 
                 float cameraHeight = 0f;
 
-                Camera camera =
-                    Camera.main ??
-                    Camera.current;
-
-                if (camera != null)
+                if (m_Camera != null)
                 {
                     cameraHeight =
-                        camera.transform.position.y;
+                        m_Camera.transform.position.y;
                 }
 
+                /*
+                 * Slightly expand the quadtree query bounds so narrow
+                 * objects near the edge aren't lost due to floating
+                 * point precision.
+                 */
                 float expandMeters =
                     math.max(
                         0.5f,
@@ -358,11 +398,13 @@
 
                 float2 expandedMin =
                     bounds.min -
-                    new float2(expandMeters);
+                    new float2(
+                        expandMeters);
 
                 float2 expandedMax =
                     bounds.max +
-                    new float2(expandMeters);
+                    new float2(
+                        expandMeters);
 
                 Bounds2 expandedBounds =
                     new Bounds2(
@@ -385,7 +427,8 @@
                     Entity entity =
                         candidates[i];
 
-                    if (!EntityManager.Exists(entity))
+                    if (!EntityManager.Exists(
+                            entity))
                     {
                         continue;
                     }
@@ -397,13 +440,8 @@
                         continue;
                     }
 
-                    entities.Add(entity);
-                }
-
-                if (entities.Count == 0)
-                {
-                    m_Log?.Debug(
-                        $"{nameof(FinishDrag)} no entities found.");
+                    entities.Add(
+                        entity);
                 }
 
                 m_UISystem.SetMarqueeEntities(
@@ -429,14 +467,23 @@
                     true,
                     out dependencies);
 
+            /*
+             * This happens only when the drag finishes, not while
+             * the marquee is moving.
+             */
             dependencies.Complete();
 
             LSDMarqueeIterator iterator =
                 new LSDMarqueeIterator
                 {
-                    Entities = entities,
-                    OuterBounds = bounds,
-                    SelectionQuad = quad
+                    Entities =
+                        entities,
+
+                    OuterBounds =
+                        bounds,
+
+                    SelectionQuad =
+                        quad
                 };
 
             staticTree.Iterate(
@@ -499,10 +546,17 @@
 
             if (value is float3 mathVector)
             {
-                result = mathVector;
+                result =
+                    mathVector;
+
                 return true;
             }
 
+            /*
+             * Reflection is only a fallback for unknown vector-like
+             * types. It should not be reached for the normal CS2
+             * raycast position type.
+             */
             Type type =
                 value.GetType();
 
@@ -527,15 +581,15 @@
                     BindingFlags.Public |
                     BindingFlags.NonPublic);
 
+            if (fx == null ||
+                fy == null ||
+                fz == null)
+            {
+                return false;
+            }
+
             try
             {
-                if (fx == null ||
-                    fy == null ||
-                    fz == null)
-                {
-                    return false;
-                }
-
                 object ox =
                     fx.GetValue(value);
 
@@ -573,7 +627,7 @@
             }
             catch
             {
-                // Deliberately ignored.
+                // Ignore malformed vector-like values.
             }
 
             return false;
