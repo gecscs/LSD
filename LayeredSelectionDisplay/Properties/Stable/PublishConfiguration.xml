@@ -43,9 +43,9 @@
 
 	  When the vanilla selection filters aren't enough — especially in heavily detailed areas with lots of overlapping plants, decals, and props — LSD provides a **Marquee Tool** to select all assets within an area.
 
-	  Use the Marquee Tool to select an area and collect all relevant Move It assets into a dedicated list.
+	  Use the Marquee Tool to select an area and collect all relevant assets into a dedicated list.
 
-	  If you prefer, LSD can also import selections from the Move It mod
+	  If you prefer, LSD can also import selections from the Move It mod.
 
 	  From there you can:
 
@@ -74,9 +74,8 @@
 	  3. Draw a marquee around the area containing the assets you want to select. The configured LSD selection filters will be applied.
 	  4. LSD imports the selected assets into the list.
 	  5. Hover over an item in the list to highlight the corresponding asset in the game world.
-	  6. Left Click an item to select the asset and open its Info Panel.
-	  7. Right Click an item to open the asset inside Extra Details Tool's Transform Tool Gizmo panel if available.
-	  8. Remove any unwanted assets from the list to keep only the assets you want to work with.
+	  6. Click an item to select the asset and open its Info Panel.
+	  7. Remove any unwanted assets from the list to keep only the assets you want to work with.
 
 	  ### Import Move It's Selection
 
@@ -86,8 +85,7 @@
 	  4. LSD imports Move It's current selection into the list.
 	  5. Hover over an item in the list to highlight the corresponding asset in the game world.
 	  6. Click an item to select the asset and open its Info Panel.
-	  7. Right Click an item to open the asset inside Extra Details Tool's Transform Tool Gizmo panel if available.
-	  8. Remove any unwanted assets from the list to keep only the assets you want to work with.
+	  7. Remove any unwanted assets from the list to keep only the assets you want to work with.
 
 	  The list remains available until you make a new selection or reload Move It's, so you can continue selecting and manipulating assets from the same group.
 
@@ -133,7 +131,6 @@
 	  These mods are **not required by LSD itself**, but may be needed for specific localization setups or provide additional functionalities:
 
 	  - **Move It** - if installed, LSD provides a tool to import selections made using the Move It mod as an alternative to populate the selected assets list.
-	  - **Extra Detailing Tools** - if installed with a version that contains the Transform Tool Gizmo panel, LSD allows the user to open the asset directly on EDT's TT panel by right clicking the asset on the list.
 	  - **I18n Everywhere**
 	  - **European Portuguese Localization** — only required for the European Portuguese translation.
 
