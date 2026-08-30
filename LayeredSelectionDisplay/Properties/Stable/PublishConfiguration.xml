@@ -63,23 +63,31 @@
 
 	  ### Vanilla Selection Tool
 
-	  1. Open LSD's selection filters.
-	  2. Disable the asset types you don't want the vanilla selection tool to select.
-	  3. Use the vanilla selection tool normally.
-	  4. The disabled asset types will be ignored when selecting assets.
+	  1. Set the asset type filters according to what you want the vanilla selection tool to be able to select.
+	  2. Use the vanilla selection tool normally.
+	  3. Disabled asset types will be ignored when selecting assets.
 
 	  ### Marquee Tool
 
-	  1. Activate LSD's Marquee Tool.
-	  2. Use Move It to marquee-select the area containing the assets you want to work with.
-	  3. Click the Reload button on the List Panel.
-	  4. LSD imports the selected assets into its selection list.
-	  5. Hover over an item in the list to highlight that asset in the game world.
-	  6. Click the asset you want to work with.
-	  7. Its Info Panel will open, allowing you to manipulate the asset normally.
-	  8. Curate the assets list by removing undesired ones from it.
+	  1. Open the **Marquee List** panel by clicking the **Marquee Tool** button next to the selection filters.
+	  2. Click the **Marquee Tool** button at the top of the panel to activate the Marquee Selection Tool.
+	  3. Draw a marquee around the area containing the assets you want to select. The configured LSD selection filters will be applied.
+	  4. LSD imports the selected assets into the list.
+	  5. Hover over an item in the list to highlight the corresponding asset in the game world.
+	  6. Click an item to select the asset and open its Info Panel.
+	  7. Remove any unwanted assets from the list to keep only the assets you want to work with.
 
-	  The list remains available until you reload it, so you can continue selecting and manipulating assets from the same group.
+	  ### Import Move It's Selection
+
+	  1. Open the **Marquee List** panel by clicking the **Marquee Tool** button next to the selection filters.
+	  2. Use **Move It's Marquee Selection Tool** to select the area containing the assets you want to work with.
+	  3. Click the **Refresh** button at the top of the List Panel.
+	  4. LSD imports Move It's current selection into the list.
+	  5. Hover over an item in the list to highlight the corresponding asset in the game world.
+	  6. Click an item to select the asset and open its Info Panel.
+	  7. Remove any unwanted assets from the list to keep only the assets you want to work with.
+
+	  The list remains available until you make a new selection or reload Move It's, so you can continue selecting and manipulating assets from the same group.
 
 	  ---
 
