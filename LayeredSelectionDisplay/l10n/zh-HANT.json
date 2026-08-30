@@ -32,5 +32,7 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "展開面板",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "收合面板",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "工具",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "點擊以開啟清單面板，使用框選工具選取資產，或從 Move It 匯入已選取的資產。"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "點擊以開啟清單面板，使用框選工具選取資產，或從 Move It 匯入已選取的資產。",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "左鍵點擊: 打開資產資訊面板, 右鍵點擊: 在 EDT Transform Tool 中打開",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "左鍵點擊: 打開資產資訊面板"
 }

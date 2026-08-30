@@ -41,8 +41,7 @@ namespace LayeredSelectionDisplay.Systems
         private ValueBinding<bool> m_TransformGizmoToolExists;
         private ToolSystem m_ToolSystem;
         private ToolBaseSystem m_MoveItTool;
-        private ToolBaseSystem m_EdtTool;
-        private ToolBaseSystem m_TransformGizmoTool;
+        private ToolBaseSystem m_EDTTransformTool;
         private LSDMarqueeSelectionSystem m_MarqueeSelectionSystem;
         private ILog m_Log;
         private RenderingSystem m_RenderingSystem;
@@ -71,6 +70,8 @@ namespace LayeredSelectionDisplay.Systems
         private Entity m_HoveredEntity = Entity.Null;
         private Entity m_PreviousHoveredEntity = Entity.Null;
         private HoverState m_HoverState;
+        private Entity m_PendingTransformEntity = Entity.Null;
+        private bool m_RestartTransformGizmo;
 
         /// <summary>
         /// Get data, can be used inside or outside of system
@@ -203,8 +204,8 @@ namespace LayeredSelectionDisplay.Systems
             m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
             m_HoverState = new HoverState();
 
-            m_EdtTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(EDTToolId));
-            m_TransformGizmoTool = World.GetExistingSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId));
+            // m_EdtTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(EDTToolId));
+            // m_TransformGizmoTool = World.GetExistingSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId));
 
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
@@ -249,12 +250,16 @@ namespace LayeredSelectionDisplay.Systems
 
             AddBinding(new TriggerBinding(ModId, "OnTogglePanelSize", OnTogglePanelSize));
 
+            CreateTrigger("OnOpenTransform", (int index, int version) => OnOpenTransform(index, version));
             CreateTrigger("OnEntitySelect", (int index, int version) => OnEntitySelect(index, version));
             CreateTrigger("OnEntityHover", (int index, int version) => OnEntityHover(index, version));
             CreateTrigger("OnEntityLeave", (int index, int version) => OnEntityLeave(index, version));
             CreateTrigger("RefreshSelection", () => GetUpdatedSelectedEntitiesFromMoveIt());
 
             var moveItTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID));
+
+            m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", false);
+            AddBinding(m_TransformGizmoToolExists);
 
             AddBinding(m_SelectedEntitiesBinding = new ValueBinding<SelectedEntities>(ModId, "SelectedEntities", new SelectedEntities() { Entities = new List<SelectedEntity>() }));
 
@@ -306,17 +311,29 @@ namespace LayeredSelectionDisplay.Systems
                 // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} EdtExists false.");
             }
 
-            if (World.GetExistingSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId)) is ToolBaseSystem m_TransformGizmoTool)
+            if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId)) is ToolBaseSystem gizmoTool)
             {
-                m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", true);
-                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} TransformGizmoToolExists true.");
-                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} m_TransformGizmoTool.toolID: " + m_TransformGizmoTool.toolID);
+                // Found it
+                m_TransformGizmoToolExists.Update(true);
+                m_EDTTransformTool = gizmoTool;
             }
             else
             {
-                m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", false);
-                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} TransformGizmoToolExists false.");
+                m_TransformGizmoToolExists.Update(false);
+                m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} EDT TransformGizmoTool not found");
             }
+
+            //if (World.GetExistingSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId)) is ToolBaseSystem m_TransformGizmoTool)
+            //{
+            //    m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", true);
+            //    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} TransformGizmoToolExists true.");
+            //    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} m_TransformGizmoTool.toolID: " + m_TransformGizmoTool.toolID);
+            //}
+            //else
+            //{
+            //    m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", false);
+            //    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} TransformGizmoToolExists false.");
+            //}
 
             m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} after attempting to get Move It tool.");
             m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Old Tool Order:");
@@ -362,6 +379,31 @@ namespace LayeredSelectionDisplay.Systems
         protected override void OnUpdate()
         {
             base.OnUpdate();
+
+            if (!m_RestartTransformGizmo)
+            {
+                return;
+            }
+
+            // EDT has now been stopped and has had a chance to restore
+            // its previous entity to ToolSystem.selected.
+            m_RestartTransformGizmo = false;
+
+            Entity entity = m_PendingTransformEntity;
+            m_PendingTransformEntity = Entity.Null;
+
+            if (entity == Entity.Null || !EntityManager.Exists(entity))
+            {
+                return;
+            }
+
+            // Discard the entity restored by EDT during shutdown.
+            m_ToolSystem.selected = Entity.Null;
+
+            // Supply the new entity as the selection EDT will consume
+            // when it starts.
+            m_ToolSystem.selected = entity;
+            m_ToolSystem.activeTool = m_EDTTransformTool;
         }
 
         /// <summary>
@@ -578,25 +620,51 @@ namespace LayeredSelectionDisplay.Systems
 
                 m_ToolSystem.selected = entity;
                 m_ToolSystem.activeTool = m_DefaultToolSystem;
-
-                //m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} m_TransformGizmoToolExists.value: " + m_TransformGizmoToolExists.value.ToString());
-
-                //if (!m_TransformGizmoToolExists.value)
-                //{
-                //    m_ToolSystem.activeTool = m_DefaultToolSystem;
-                //}
-                //else
-                //{
-                //    m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} m_TransformGizmoTool.toolID: " + m_TransformGizmoTool.toolID);
-                //    m_ToolSystem.activeTool = m_DefaultToolSystem;
-                //    m_ToolSystem.activeTool = m_TransformGizmoTool;
-                //    m_ToolSystem.Enabled = true;
-                //}
             }
             else
             {
                 m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity does not exist: {index}, {version}");
             }
+        }
+
+        /// <summary>
+        /// Handles the event when an entity is opened for transformation in the UI.
+        /// </summary>
+        /// <param name="index"> The index of the selected entity. </param>
+        /// <param name="version"> The version of the selected entity. </param>
+        private void OnOpenTransform(int index, int version)
+        {
+            Entity entity = new Entity
+            {
+                Index = index,
+                Version = version,
+            };
+
+            if (!m_TransformGizmoToolExists.value || !EntityManager.Exists(entity))
+            {
+                m_Log?.Error(
+                    $"{nameof(OnOpenTransform)}: Entity does not exist or TransformGizmoTool is not available. " +
+                    $"index = {index}, version = {version}.");
+
+                return;
+            }
+
+            // EDT is already active. It owns its current entity internally,
+            // so we must restart the tool rather than simply changing ToolSystem.selected.
+            if (m_ToolSystem.activeTool == m_EDTTransformTool)
+            {
+                m_PendingTransformEntity = entity;
+                m_RestartTransformGizmo = true;
+
+                // Let EDT execute its normal shutdown.
+                m_ToolSystem.activeTool = m_DefaultToolSystem;
+
+                return;
+            }
+
+            // EDT is not currently active, so this is a normal startup.
+            m_ToolSystem.selected = entity;
+            m_ToolSystem.activeTool = m_EDTTransformTool;
         }
 
         /// <summary>

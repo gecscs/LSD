@@ -32,5 +32,7 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Paneel uitvouwen",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Paneel inklappen",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Gereedschappen",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klik om het lijstpaneel te openen en het selectiekader te gebruiken om assets te selecteren, of geselecteerde assets uit Move It te importeren."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klik om het lijstpaneel te openen en het selectiekader te gebruiken om assets te selecteren, of geselecteerde assets uit Move It te importeren.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Linker muisklik: Open asset-informatiepaneel, Rechter muisklik: Open in EDT Transform Tool",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Linker muisklik: Open asset-informatiepaneel"
 }

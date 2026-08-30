@@ -32,5 +32,7 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Развернуть панель",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Свернуть панель",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Инструменты",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Нажмите, чтобы открыть панель списка и использовать инструмент выделения рамкой для выбора объектов или импортировать выбранные объекты из Move It."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Нажмите, чтобы открыть панель списка и использовать инструмент выделения рамкой для выбора объектов или импортировать выбранные объекты из Move It.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Щелкните левой кнопкой: Откройте панель информации об объекте, Щелкните правой кнопкой: Откройте в EDT Transform Tool",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Щелкните левой кнопкой: Откройте панель информации об объекте"
 }

@@ -32,5 +32,7 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Agrandir le Panneau",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Réduire le Panneau",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Outils",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Cliquez pour ouvrir le panneau de liste et utiliser l'outil de sélection rectangulaire pour sélectionner des assets ou importer les assets sélectionnés depuis Move It."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Cliquez pour ouvrir le panneau de liste et utiliser l'outil de sélection rectangulaire pour sélectionner des assets ou importer les assets sélectionnés depuis Move It.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Clic gauche : Ouvrir le panneau d'informations de l'asset, Clic droit : Ouvrir dans EDT Transform Tool",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic gauche : Ouvrir le panneau d'informations de l'asset"
 }

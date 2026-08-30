@@ -81,6 +81,8 @@ namespace LayeredSelectionDisplay.Settings
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip", "Close Panel" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip", "Expand Panel" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip", "Collapse Panel" },
+                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip", "Left click: Open asset info panel, Right click: Open in EDT Transform Tool" },
+                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip", "Left click: Open asset info panel" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools", "Tools" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", "Click to open the List Panel and use the Marquee Tool to select assets, or import selected assets from Move It." },
             };
