@@ -126,7 +126,6 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend = (C
                 */
                 <>
                     { raycastTarget == 0 && (   
-                        // This section is only showing while using vanilla bulldozer.
                         <>  
                             <VanillaComponentResolver.instance.Section title={toolsSectionTitle}>
                                 <VanillaComponentResolver.instance.ToolButton  onSelect={() => onChangeListPanelVisibility()}     tooltip={marqueeToolTooltip}          src={marqueeToolIcon}          className={VanillaComponentResolver.instance.toolButtonTheme.button} focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}></VanillaComponentResolver.instance.ToolButton>

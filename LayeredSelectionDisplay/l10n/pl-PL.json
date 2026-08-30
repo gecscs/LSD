@@ -22,6 +22,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Wybrane zasoby",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Kliknij dowolny zasób z listy, aby otworzyć jego panel informacji.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Odśwież listę bieżącym wyborem z Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveIt": "Nie wybrano żadnych elementów. Użyj narzędzia zaznaczania prostokątem, aby zaznaczyć wszystkie obiekty w obszarze zgodnie z ustawionymi filtrami.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveItTip": "Użyj narzędzia zaznaczania prostokątem, aby zaznaczyć wszystkie obiekty w obszarze zgodnie z ustawionymi filtrami.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Nie wybrano żadnych elementów. Użyj narzędzia zaznaczania prostokątem, aby zaznaczyć wszystkie obiekty w obszarze zgodnie z ustawionymi filtrami. Możesz też użyć narzędzia zaznaczania prostokątem w Move It, a następnie kliknąć przycisk odświeżania u góry tego panelu. Musisz zamknąć Move It, aby podczas najechania kursorem na element listy zobaczyć podświetlony obiekt w świecie gry.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Użyj narzędzia zaznaczania prostokątem, aby zaznaczyć wszystkie obiekty w obszarze zgodnie z ustawionymi filtrami. Możesz też użyć narzędzia zaznaczania prostokątem w Move It, a następnie kliknąć przycisk odświeżania u góry tego panelu. Musisz zamknąć Move It, aby podczas najechania kursorem na element listy zobaczyć podświetlony obiekt w świecie gry.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Narzędzie zaznaczania prostokątem",

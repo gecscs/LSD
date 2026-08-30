@@ -22,6 +22,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - 已选择的资产",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "点击列表中的任意资产以打开其信息面板。",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "使用 Move It 的当前选择刷新列表",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveIt": "未选择任何项目。使用框选工具，根据设置的筛选条件选择区域内的所有资产。",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveItTip": "使用框选工具，根据设置的筛选条件选择区域内的所有资产。",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "未选择任何项目。使用框选工具，根据设置的筛选条件选择区域内的所有资产。或者，使用 Move It 的框选工具选择资产，然后点击此面板顶部的刷新按钮。你需要关闭 Move It，才能在将鼠标悬停在列表项目上时看到对应资产的高亮显示。",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "使用框选工具，根据设置的筛选条件选择区域内的所有资产。或者，使用 Move It 的框选工具选择资产，然后点击此面板顶部的刷新按钮。你需要关闭 Move It，才能在将鼠标悬停在列表项目上时看到对应资产的高亮显示。",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "框选工具",

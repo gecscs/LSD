@@ -77,7 +77,7 @@
 	  5. Hover over an item in the list to highlight that asset in the game world.
 	  6. Click the asset you want to work with.
 	  7. Its Info Panel will open, allowing you to manipulate the asset normally.
-	  8. Curate the assets list by removing undesired ones from it. 
+	  8. Curate the assets list by removing undesired ones from it.
 
 	  The list remains available until you reload it, so you can continue selecting and manipulating assets from the same group.
 
@@ -87,7 +87,6 @@
 
 	  LSD requires the following mods:
 
-	  - **Move It**
 	  - **Unified Icon Library**
 
 	  ---
@@ -121,8 +120,9 @@
 
 	  ## 🧩 Supplemental Mods
 
-	  These mods are **not required by LSD itself**, but may be needed for specific localization setups:
+	  These mods are **not required by LSD itself**, but may be needed for specific localization setups or provide additional functionalities:
 
+	  - **Move It** - if installed, LSD provides a tool to import selections made using the Move It mod as an alternative to populate the selected assets list.
 	  - **I18n Everywhere**
 	  - **European Portuguese Localization** — only required for the European Portuguese translation.
 
@@ -208,14 +208,19 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.1.0" />
+  <ModVersion Value="0.1.1" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.5.*" />
   <!--Dependency for the mod, can be set multiple-->
   <Dependency Id="74417" DisplayName="Unified Icon Library" Version="1.0.13" />
-  <Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />
+  <!--<Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />-->
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
+	  # Patch v0.1.1
+	  * Trees and Plants are now correctly filtered by the Marquee Tool.
+	  * Move It is no longer a dependency. If not found, the Reload From Move It button is hidden.
+	  * Updated localized strings to cover Move It's absence.
+
 	  # Patch v0.1.0
 	  * Own Marquee Selection Tool implemented.
 	  * Changed Marquee Tool button icon to the same as the main panel, and icon changes while the marquee tool has been selected and while its being drawn, toggling back  when the selection is finished.
@@ -224,7 +229,7 @@
 	  # Patch v0.0.9
 	  * List Panel design retouched to be closer to the vanilla panels.
 	  * Marquee Selector Button is now hidden until it gets its proper functionality.
-	
+
 	  # Patch v0.0.8
 	  * Buttons now have tooltips.
 	  * Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.

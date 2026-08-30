@@ -1,6 +1,7 @@
 ﻿namespace LayeredSelectionDisplay.Extensions
 {
     using Colossal.Entities;
+    using Colossal.Logging;
     using Game.Common;
     using Game.Objects;
     using Game.Prefabs;
@@ -14,6 +15,15 @@
             Entity entity,
             LayeredSelectionDisplayUISystem.VanillaFilters filters)
         {
+            //ILog m_Log = LayeredSelectionDisplayMod
+            //        .Instance?
+            //        .Logger;
+
+            //m_Log.Debug($"{nameof(EntityFilterExtensions)}.{nameof(MatchesLSDFilter)} filters: {filters.ToString()}");
+            //m_Log.Debug($"{nameof(EntityFilterExtensions)}.{nameof(MatchesLSDFilter)} entity: {entity.ToString()}");
+            //m_Log.Debug($"{nameof(EntityFilterExtensions)}.{nameof(MatchesLSDFilter)} plant? {entityManager.HasComponent<Plant>(entity)}");
+            //m_Log.Debug($"{nameof(EntityFilterExtensions)}.{nameof(MatchesLSDFilter)} tree? {entityManager.HasComponent<Tree>(entity)}");
+
             if (filters == LayeredSelectionDisplayUISystem.VanillaFilters.None)
             {
                 return false;
@@ -49,7 +59,9 @@
             if ((filters &
                  LayeredSelectionDisplayUISystem.VanillaFilters.Props) != 0 &&
                 entityManager.HasComponent<Object>(entity) &&
-                entityManager.HasComponent<Static>(entity))
+                entityManager.HasComponent<Static>(entity) &&
+                !entityManager.HasComponent<Tree>(entity) &&
+                !entityManager.HasComponent<Plant>(entity))
             {
                 return true;
             }

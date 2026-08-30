@@ -68,7 +68,7 @@
 	  5. Hover over an item in the list to highlight that asset in the game world.
 	  6. Click the asset you want to work with.
 	  7. Its Info Panel will open, allowing you to manipulate the asset normally.
-	  8. Curate the assets list by removing undesired ones from it. 
+	  8. Curate the assets list by removing undesired ones from it.
 
 	  The list remains available until you reload it, so you can continue selecting and manipulating assets from the same group.
 
@@ -78,7 +78,6 @@
 
 	  LSD requires the following mods:
 
-	  - **Move It**
 	  - **Unified Icon Library**
 
 	  ---
@@ -112,8 +111,9 @@
 
 	  ## 🧩 Supplemental Mods
 
-	  These mods are **not required by LSD itself**, but may be needed for specific localization setups:
+	  These mods are **not required by LSD itself**, but may be needed for specific localization setups or provide additional functionalities:
 
+	  - **Move It** - if installed, LSD provides a tool to import selections made using the Move It mod as an alternative to populate the selected assets list.
 	  - **I18n Everywhere**
 	  - **European Portuguese Localization** — only required for the European Portuguese translation.
 

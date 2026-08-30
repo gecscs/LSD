@@ -22,6 +22,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Geselecteerde items",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Klik op een item in de lijst om het informatiepaneel te openen.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Lijst vernieuwen met de huidige selectie uit Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveIt": "Geen items geselecteerd. Gebruik het selectiekader om alle assets binnen een gebied te selecteren volgens de ingestelde filters.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveItTip": "Gebruik het selectiekader om alle assets binnen een gebied te selecteren volgens de ingestelde filters.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Geen items geselecteerd. Gebruik het selectiekader om alle assets binnen een gebied te selecteren volgens de ingestelde filters. Je kunt ook het selectiekader van Move It gebruiken om assets te selecteren en vervolgens bovenaan dit paneel op de vernieuwingsknop klikken. Je moet Move It sluiten om het gemarkeerde asset in de spelwereld te zien wanneer je met de muis over een item in de lijst gaat.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Gebruik het selectiekader om alle assets binnen een gebied te selecteren volgens de ingestelde filters. Je kunt ook het selectiekader van Move It gebruiken om assets te selecteren en vervolgens bovenaan dit paneel op de vernieuwingsknop klikken. Je moet Move It sluiten om het gemarkeerde asset in de spelwereld te zien wanneer je met de muis over een item in de lijst gaat.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Selectiekader",

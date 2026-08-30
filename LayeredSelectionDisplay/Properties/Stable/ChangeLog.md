@@ -1,4 +1,9 @@
-﻿# Patch v0.1.0
+﻿# Patch v0.1.1
+* Trees and Plants are now correctly filtered by the Marquee Tool.
+* Move It is no longer a dependency. If not found, the Reload From Move It button is hidden.
+* Updated localized strings to cover Move It's absence.
+
+# Patch v0.1.0
 * Own Marquee Selection Tool implemented.
 * Changed Marquee Tool button icon to the same as the main panel, and icon changes while the marquee tool has been selected and while its being drawn, toggling back  when the selection is finished.
 * Updated localized strings.

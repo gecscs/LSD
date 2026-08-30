@@ -51,7 +51,7 @@ namespace LayeredSelectionDisplay
         /// Gets the version of the mod.
         /// </summary>
 #if !STABLE
-        internal string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString(4);
+        internal string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 #else
         internal string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 #endif

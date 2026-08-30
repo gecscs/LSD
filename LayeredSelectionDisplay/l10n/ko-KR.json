@@ -22,6 +22,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - 선택된 자산",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "정보 패널을 열려면 목록에서 자산을 클릭하세요.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Move It의 현재 선택 항목으로 목록 새로 고침",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveIt": "선택된 항목이 없습니다. 설정된 필터에 따라 영역 내의 모든 에셋을 선택하려면 영역 선택 도구를 사용하세요.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveItTip": "설정된 필터에 따라 영역 내의 모든 에셋을 선택하려면 영역 선택 도구를 사용하세요.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "선택된 항목이 없습니다. 설정된 필터에 따라 영역 내의 모든 에셋을 선택하려면 영역 선택 도구를 사용하세요. 또는 Move It의 영역 선택 도구로 에셋을 선택한 다음 이 패널 상단의 새로 고침 버튼을 클릭하세요. 목록의 항목에 마우스를 올렸을 때 해당 에셋이 게임 화면에서 강조 표시되도록 하려면 Move It을 닫아야 합니다.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "설정된 필터에 따라 영역 내의 모든 에셋을 선택하려면 영역 선택 도구를 사용하세요. 또는 Move It의 영역 선택 도구로 에셋을 선택한 다음 이 패널 상단의 새로 고침 버튼을 클릭하세요. 목록의 항목에 마우스를 올렸을 때 해당 에셋이 게임 화면에서 강조 표시되도록 하려면 Move It을 닫아야 합니다.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "영역 선택 도구",

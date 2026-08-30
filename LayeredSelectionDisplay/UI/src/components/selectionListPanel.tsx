@@ -20,6 +20,11 @@ const isGame$ = bindValue<boolean>(
     "IsGame"
 );
 
+const isMoveItInstalled$ = bindValue<boolean>(
+    mod.id,
+    "IsMoveItInstalled"
+);
+
 const isMarqueeToolSelected$ = bindValue<boolean>(
     mod.id,
     "IsMarqueeToolSelected"
@@ -141,6 +146,18 @@ export const SelectionListPanel = () => {
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip"]
         ) ?? "Refresh";
 
+    const listPanelNoItemsSelectedNoMoveIt =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveIt",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveIt"]
+        ) ?? "No items selected";
+
+    const listPanelNoItemsSelectedNoMoveItTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveItTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedNoMoveItTip"]
+        );
+
     const listPanelNoItemsSelected =
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected",
@@ -172,6 +189,9 @@ export const SelectionListPanel = () => {
         ) ?? "Collapse";
 
     const isGame = useValue(isGame$);
+
+    const isMoveItInstalled = useValue(isMoveItInstalled$);
+
     const isMarqueeToolSelected =
         useValue(isMarqueeToolSelected$);
 
@@ -179,6 +199,10 @@ export const SelectionListPanel = () => {
         useValue(isMarqueeToolActive$);
 
     const marqueeToolIconSrc = isMarqueeToolActive ? marqueeToolActiveSrc : marqueeToolSrc;
+
+    const noItemsTip = isMoveItInstalled ? listPanelNoItemsSelectedTip : listPanelNoItemsSelectedNoMoveItTip;
+
+    const noItemsText = isMoveItInstalled ? listPanelNoItemsSelected : listPanelNoItemsSelectedNoMoveIt;
 
     const selectedEntities =
         useValue(selectedEntities$);
@@ -261,46 +285,50 @@ export const SelectionListPanel = () => {
                         <img src={ marqueeToolIconSrc } />
                     </button>
                 </Tooltip>
+                <>
+                    {isMoveItInstalled ? (
+                        <>
+                            {/* Refresh */}
+                            <Tooltip tooltip={listPanelRefreshButtonToolTip} >
+                                <button
+                                    className={styles.headerButton}
+                                    title={listPanelRefreshButtonToolTip}
+                                    onMouseDown={event =>
+                                        event.stopPropagation()
+                                    }
+                                    onClick={HandleRefresh}
+                                >                                        
+                                    <svg
+                                        className={
+                                            styles.headerIcon
+                                        }
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 18 18"
+                                        fill="none"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            d="M14.5 9a5.5 5.5 0 1 1-1.6-3.9"
+                                            stroke="currentColor"
+                                            strokeWidth="1.4"
+                                            strokeLinecap="round"
+                                        />
 
-                {/* Refresh */}
-                <Tooltip tooltip={listPanelRefreshButtonToolTip} >
-                    <button
-                        className={styles.headerButton}
-                        title={listPanelRefreshButtonToolTip}
-                        onMouseDown={event =>
-                            event.stopPropagation()
-                        }
-                        onClick={HandleRefresh}
-                    >
-                                
-                        <svg
-                            className={
-                                styles.headerIcon
-                            }
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            fill="none"
-                            aria-hidden="true"
-                        >
-                            <path
-                                d="M14.5 9a5.5 5.5 0 1 1-1.6-3.9"
-                                stroke="currentColor"
-                                strokeWidth="1.4"
-                                strokeLinecap="round"
-                            />
-
-                            <polyline
-                                points="12.5,2.5 12.5,5.5 9.5,5.5"
-                                stroke="currentColor"
-                                strokeWidth="1.4"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                fill="none"
-                            />
-                        </svg>
-                    </button>
-                </Tooltip>
+                                        <polyline
+                                            points="12.5,2.5 12.5,5.5 9.5,5.5"
+                                            stroke="currentColor"
+                                            strokeWidth="1.4"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            fill="none"
+                                        />
+                                    </svg>
+                                </button>
+                            </Tooltip>    
+                        </>                
+                    ) : null }
+                </>
 
                 {/* Close */}
                 <Tooltip tooltip={listPanelCloseButtonToolTip} >
@@ -313,23 +341,6 @@ export const SelectionListPanel = () => {
                         onClick={CloseSelectionListPanel}
                     >
                         <div className="tinted-icon_iKo icon_PhD" style={{ maskImage: `url(Media/Glyphs/Close.svg)` }}> </div>
-                        {/* <svg
-                            className={
-                                styles.closeIcon
-                            }
-                            width="12"
-                            height="12"
-                            viewBox="0 0 12 12"
-                            fill="none"
-                            aria-hidden="true"
-                        >
-                            <path
-                                d="M2 2l8 8M10 2l-8 8"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                            />
-                        </svg> */}
                     </button>
                 </Tooltip>
             </div>
@@ -408,7 +419,7 @@ export const SelectionListPanel = () => {
                                         </div>
 
                                         <p>
-                                            {listPanelNoItemsSelected}
+                                            {noItemsText}
                                         </p>
 
                                     </div>

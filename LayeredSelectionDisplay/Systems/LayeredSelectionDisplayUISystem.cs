@@ -56,6 +56,7 @@ namespace LayeredSelectionDisplay.Systems
         private ValueBindingHelper<VanillaFilters> m_SelectedVanillaFilters;
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
+        private ValueBinding<bool> m_IsMoveItInstalled;
         private ValueBinding<bool> m_IsMarqueeToolSelected;
         private ValueBinding<bool> m_IsMarqueeToolActive;
         private LayeredSelectionDisplayModSettings m_settings;
@@ -213,6 +214,10 @@ namespace LayeredSelectionDisplay.Systems
             // These handle events activating actions triggered by clicking buttons in the UI.
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
 
+            // Initialize the Move It presence flag
+            m_IsMoveItInstalled = new ValueBinding<bool>(ModId, "IsMoveItInstalled", false);
+            AddBinding(m_IsMoveItInstalled);
+
             // Initialize the marquee tool panel  state to false.
             m_IsMarqueeToolSelected = new ValueBinding<bool>(ModId, "IsMarqueeToolSelected", false);
             AddBinding(m_IsMarqueeToolSelected);
@@ -281,6 +286,7 @@ namespace LayeredSelectionDisplay.Systems
                 {
                     m_MoveItTool = moveItTool;
                     m_MoveItSelectedEntitiesPropertyInfo = moveItSelectedEntities;
+                    m_IsMoveItInstalled.Update(true);
                     // m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} saved moveItTool");
                 }
             }
@@ -366,7 +372,7 @@ namespace LayeredSelectionDisplay.Systems
         {
             if (m_PanelPosition == null)
             {
-                m_Log?.Error($"{nameof(SetPanelPosition)}: UI binding for PanelPosition is null.");
+                // m_Log?.Error($"{nameof(SetPanelPosition)}: UI binding for PanelPosition is null.");
                 return;
             }
 
@@ -375,7 +381,7 @@ namespace LayeredSelectionDisplay.Systems
 
             if (m_settings == null)
             {
-                m_Log?.Warn($"{nameof(SetPanelPosition)}: settings object is null; skipping save.");
+                // m_Log?.Warn($"{nameof(SetPanelPosition)}: settings object is null; skipping save.");
                 return;
             }
 
@@ -519,10 +525,10 @@ namespace LayeredSelectionDisplay.Systems
         /// </summary>
         private void SelectMarqueeTool()
         {
-            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} Start LSD Marquee Selection");
-            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} m_MoveItSelectedEntities (before): {m_MoveItSelectedEntities.Count}");
+            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} Start LSD Marquee Selection");
+            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} m_MoveItSelectedEntities (before): {m_MoveItSelectedEntities.Count}");
             m_MarqueeSelectionSystem.StartSelection();
-            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} m_MoveItSelectedEntities (after): {m_MoveItSelectedEntities.Count}");
+            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} m_MoveItSelectedEntities (after): {m_MoveItSelectedEntities.Count}");
         }
 
         /// <summary>
