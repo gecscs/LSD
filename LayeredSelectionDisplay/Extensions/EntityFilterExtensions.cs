@@ -61,7 +61,8 @@
                 entityManager.HasComponent<Object>(entity) &&
                 entityManager.HasComponent<Static>(entity) &&
                 !entityManager.HasComponent<Tree>(entity) &&
-                !entityManager.HasComponent<Plant>(entity))
+                !entityManager.HasComponent<Plant>(entity) &&
+                !entityManager.IsDecal(entity))
             {
                 return true;
             }

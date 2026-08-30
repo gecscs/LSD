@@ -1,7 +1,16 @@
-﻿# Patch v0.1.2
+﻿# Patch v0.1.3
+* Extra Detailing Tools Transform Tool Panel now opens on move mode.
+* Leaving only the props filter on will no longer include trees and plants on the results.
+
+# Patch v0.1.2
 * If Extra Detailing Tools new version with the external Gizmo Transform Tool panel is available, the user now can right click the item on the list to open it on the new EDT TT panel.
 * Retouched Marquee overlay for better performance and visibility.
 * Updated localized strings to cover EDT's TT absence.
+
+# Patch v0.1.1
+* Trees and Plants are now correctly filtered by the Marquee Tool.
+* Move It is no longer a dependency. If not found, the Reload From Move It button is hidden.
+* Updated localized strings to cover Move It's absence.
 
 # Patch v0.1.0
 * Own Marquee Selection Tool implemented.

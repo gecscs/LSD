@@ -5,14 +5,12 @@
 // #define VERBOSE
 namespace LayeredSelectionDisplay.Systems
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
     using Colossal.Entities;
     using Colossal.Logging;
     using Colossal.Serialization.Entities;
     using Colossal.UI.Binding;
     using Game;
+    using Game.Areas;
     using Game.Common;
     using Game.Prefabs;
     using Game.Rendering;
@@ -23,10 +21,16 @@ namespace LayeredSelectionDisplay.Systems
     using LayeredSelectionDisplay.Domain;
     using LayeredSelectionDisplay.Extensions;
     using LayeredSelectionDisplay.Settings;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
     using Unity.Collections;
     using Unity.Entities;
     using Unity.Jobs;
     using Unity.Mathematics;
+    using UnityEngine.PlayerLoop;
+    using static Game.Simulation.CityProductionStatisticSystem.CityResourceUsage;
 
     /// <summary>
     /// UI system for LSD extensions to the default tool.
@@ -35,10 +39,13 @@ namespace LayeredSelectionDisplay.Systems
     {
         private const string ModId = "LayeredSelectionDisplay";
         private const string MoveItToolID = "MoveItTool";
-        private const string EDTToolId = "TransformGizmoTool";
         private const string TransformGizmoToolId = "TransformGizmoTool";
         private ValueBinding<bool> m_EdtExists;
         private ValueBinding<bool> m_TransformGizmoToolExists;
+        private int m_PendingTransformMode = 1;
+        private Entity m_PendingTransformEntity = Entity.Null;
+        private bool m_RestartTransformGizmo;
+        private bool m_SetPendingTransformMode;
         private ToolSystem m_ToolSystem;
         private ToolBaseSystem m_MoveItTool;
         private ToolBaseSystem m_EDTTransformTool;
@@ -70,8 +77,6 @@ namespace LayeredSelectionDisplay.Systems
         private Entity m_HoveredEntity = Entity.Null;
         private Entity m_PreviousHoveredEntity = Entity.Null;
         private HoverState m_HoverState;
-        private Entity m_PendingTransformEntity = Entity.Null;
-        private bool m_RestartTransformGizmo;
 
         /// <summary>
         /// Get data, can be used inside or outside of system
@@ -300,7 +305,7 @@ namespace LayeredSelectionDisplay.Systems
                 m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} move it tool not found");
             }
 
-            if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(EDTToolId)) is ToolBaseSystem m_EdtTool)
+            if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId)) is ToolBaseSystem m_EdtTool)
             {
                 m_EdtExists = new ValueBinding<bool>(ModId, "EdtExists", true);
                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} EdtExists true.");
@@ -374,36 +379,64 @@ namespace LayeredSelectionDisplay.Systems
         }
 
         /// <summary>
-        /// Handles the update logic for the Better Bulldozer UI system.
+        /// Handles deferred activation of the EDT TransformGizmoTool.
+        ///
+        /// EDT initializes its tool after ToolSystem.activeTool is changed.
+        /// Therefore the desired mode must be applied on a later update,
+        /// after EDT has finished its initialization.
         /// </summary>
         protected override void OnUpdate()
         {
             base.OnUpdate();
 
-            if (!m_RestartTransformGizmo)
+            // Phase 1:
+            // Restart EDT with a new entity.
+            if (m_RestartTransformGizmo)
             {
+                m_RestartTransformGizmo = false;
+
+                Entity entity = m_PendingTransformEntity;
+                m_PendingTransformEntity = Entity.Null;
+
+                if (entity == Entity.Null ||
+                    !EntityManager.Exists(entity))
+                {
+                    return;
+                }
+
+                // EDT restores ToolSystem.selected when it shuts down.
+                // Clear that value and provide the entity to consume
+                m_ToolSystem.selected = Entity.Null;
+                m_ToolSystem.selected = entity;
+
+                // Activate EDT
+                // Do NOT set the mode yet.
+                if (EDTBridge.OpenTransformGizmo(World, entity))
+                {
+                    // The mode will be applied on the next update.
+                    m_PendingTransformMode = 1;
+                    m_SetPendingTransformMode = true;
+                }
+
                 return;
             }
 
-            // EDT has now been stopped and has had a chance to restore
-            // its previous entity to ToolSystem.selected.
-            m_RestartTransformGizmo = false;
-
-            Entity entity = m_PendingTransformEntity;
-            m_PendingTransformEntity = Entity.Null;
-
-            if (entity == Entity.Null || !EntityManager.Exists(entity))
+            // Phase 2:
+            // Apply the desired mode AFTER EDT has initialized.
+            if (m_SetPendingTransformMode)
             {
-                return;
+                // Make sure EDT is now the active tool.
+                if (m_EDTTransformTool != null &&
+                    m_ToolSystem.activeTool == m_EDTTransformTool)
+                {
+                    if (EDTBridge.SetMode(
+                            World,
+                            m_PendingTransformMode))
+                    {
+                        m_SetPendingTransformMode = false;
+                    }
+                }
             }
-
-            // Discard the entity restored by EDT during shutdown.
-            m_ToolSystem.selected = Entity.Null;
-
-            // Supply the new entity as the selection EDT will consume
-            // when it starts.
-            m_ToolSystem.selected = entity;
-            m_ToolSystem.activeTool = m_EDTTransformTool;
         }
 
         /// <summary>
@@ -630,8 +663,8 @@ namespace LayeredSelectionDisplay.Systems
         /// <summary>
         /// Handles the event when an entity is opened for transformation in the UI.
         /// </summary>
-        /// <param name="index"> The index of the selected entity. </param>
-        /// <param name="version"> The version of the selected entity. </param>
+        /// <param name="index">The index of the selected entity.</param>
+        /// <param name="version">The version of the selected entity.</param>
         private void OnOpenTransform(int index, int version)
         {
             Entity entity = new Entity
@@ -640,31 +673,45 @@ namespace LayeredSelectionDisplay.Systems
                 Version = version,
             };
 
-            if (!m_TransformGizmoToolExists.value || !EntityManager.Exists(entity))
+            if (!m_TransformGizmoToolExists.value ||
+                !EntityManager.Exists(entity))
             {
                 m_Log?.Error(
-                    $"{nameof(OnOpenTransform)}: Entity does not exist or TransformGizmoTool is not available. " +
+                    $"{nameof(OnOpenTransform)}: Entity does not exist or " +
+                    $"TransformGizmoTool is not available. " +
                     $"index = {index}, version = {version}.");
 
                 return;
             }
 
-            // EDT is already active. It owns its current entity internally,
-            // so we must restart the tool rather than simply changing ToolSystem.selected.
+            // Set to open in Move mode
+            const int desiredMode = 1;
+
+            // Restart EDT so it gets the new entity through its normal initialization path
             if (m_ToolSystem.activeTool == m_EDTTransformTool)
             {
                 m_PendingTransformEntity = entity;
+                m_PendingTransformMode = desiredMode;
                 m_RestartTransformGizmo = true;
 
-                // Let EDT execute its normal shutdown.
+                // Cancel any previous deferred mode operation
+                m_SetPendingTransformMode = false;
+
+                // Let EDT perform its normal shutdown so that it can be opened fresh
                 m_ToolSystem.activeTool = m_DefaultToolSystem;
 
                 return;
             }
 
-            // EDT is not currently active, so this is a normal startup.
             m_ToolSystem.selected = entity;
-            m_ToolSystem.activeTool = m_EDTTransformTool;
+
+            if (EDTBridge.OpenTransformGizmo(World, entity))
+            {
+                // EDT will initialize itself during this frame/update.
+                // Apply mode 1 on the following update.
+                m_PendingTransformMode = desiredMode;
+                m_SetPendingTransformMode = true;
+            }
         }
 
         /// <summary>
