@@ -74,8 +74,9 @@
 	  3. Draw a marquee around the area containing the assets you want to select. The configured LSD selection filters will be applied.
 	  4. LSD imports the selected assets into the list.
 	  5. Hover over an item in the list to highlight the corresponding asset in the game world.
-	  6. Click an item to select the asset and open its Info Panel.
-	  7. Remove any unwanted assets from the list to keep only the assets you want to work with.
+	  6. Left Click an item to select the asset and open its Info Panel.
+	  7. Right Click an item to open the asset inside Extra Details Tool's Transform Tool Gizmo panel if available.
+	  8. Remove any unwanted assets from the list to keep only the assets you want to work with.
 
 	  ### Import Move It's Selection
 
@@ -85,7 +86,8 @@
 	  4. LSD imports Move It's current selection into the list.
 	  5. Hover over an item in the list to highlight the corresponding asset in the game world.
 	  6. Click an item to select the asset and open its Info Panel.
-	  7. Remove any unwanted assets from the list to keep only the assets you want to work with.
+	  7. Right Click an item to open the asset inside Extra Details Tool's Transform Tool Gizmo panel if available.
+	  8. Remove any unwanted assets from the list to keep only the assets you want to work with.
 
 	  The list remains available until you make a new selection or reload Move It's, so you can continue selecting and manipulating assets from the same group.
 
@@ -131,6 +133,7 @@
 	  These mods are **not required by LSD itself**, but may be needed for specific localization setups or provide additional functionalities:
 
 	  - **Move It** - if installed, LSD provides a tool to import selections made using the Move It mod as an alternative to populate the selected assets list.
+	  - **Extra Detailing Tools** - if installed with a version that contains the Transform Tool Gizmo panel, LSD allows the user to open the asset directly on EDT's TT panel by right clicking the asset on the list.
 	  - **I18n Everywhere**
 	  - **European Portuguese Localization** — only required for the European Portuguese translation.
 
@@ -216,7 +219,7 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.1.1" />
+  <ModVersion Value="0.1.2" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.5.*" />
   <!--Dependency for the mod, can be set multiple-->
@@ -224,6 +227,11 @@
   <!--<Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />-->
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
+	  # Patch v0.1.2
+	  * If Extra Detailing Tools new version with the external Gizmo Transform Tool panel is available, the user now can right click the item on the list to open it on the new EDT TT panel.
+	  * Retouched Marquee overlay for better performance and visibility.
+	  * Updated localized strings to cover EDT's TT absence.
+	  
 	  # Patch v0.1.1
 	  * Trees and Plants are now correctly filtered by the Marquee Tool.
 	  * Move It is no longer a dependency. If not found, the Reload From Move It button is hidden.

@@ -19,10 +19,10 @@ namespace LayeredSelectionDisplay.Systems
             m_SelectionSystem;
 
         private static readonly Color
-            s_Color = Color.magenta;
+            s_Color = Color.blue;
 
         private const float
-            k_LineWidth = 1f;
+            k_LineWidth = 0.4f;
 
         protected override void OnCreate()
         {
@@ -63,7 +63,7 @@ namespace LayeredSelectionDisplay.Systems
                     quad.b,
                     height),
                 k_LineWidth,
-                cameraFacing: true);
+                cameraFacing: false);
 
             buffer.DrawLine(
                 s_Color,
@@ -72,7 +72,7 @@ namespace LayeredSelectionDisplay.Systems
                     quad.c,
                     height),
                 k_LineWidth,
-                cameraFacing: true);
+                cameraFacing: false);
 
             buffer.DrawLine(
                 s_Color,
@@ -81,7 +81,7 @@ namespace LayeredSelectionDisplay.Systems
                     quad.d,
                     height),
                 k_LineWidth,
-                cameraFacing: true);
+                cameraFacing: false);
 
             buffer.DrawLine(
                 s_Color,
@@ -90,7 +90,7 @@ namespace LayeredSelectionDisplay.Systems
                     quad.a,
                     height),
                 k_LineWidth,
-                cameraFacing: true);
+                cameraFacing: false);
         }
 
         private static

@@ -50,7 +50,7 @@ const panelPosition$ = bindValue(
 const expandedListPanel$ = bindValue(mod.id, "ExpandedListPanel", false);
 
 const edtToolExists$ = bindValue<boolean>(mod.id, "EdtExists");
-const transformGizmoToolExists$ = bindValue<boolean>(mod.id, "TransformGizmoToolExists");
+const transformGizmoToolExists$ = bindValue<boolean>(mod.id, "TransformGizmoToolExists", false);
 
 
 function OnEntityHover(index: number, version: number) {
@@ -61,16 +61,17 @@ function OnEntityLeave(index: number, version: number) {
     trigger(mod.id, "OnEntityLeave", index, version);
 }
 
-function OnEntitySelect(index: number, version: number) {
+function OnEntitySelect(index: number, version: number, button: number) {
 
+    // Check if the right mouse button (button 2) was clicked to open the transform tool.
+    if (button == 2) {
+        // console.debug(`OnOpenTransform called with index = ${index}, version = ${version}`);
+        trigger(mod.id, "OnOpenTransform", index, version);
+        return;
+    }
+
+    // Trigger the entity select event for left mouse button clicks.
     trigger(mod.id, "OnEntitySelect", index, version);
-
-    const edtToolExists = useValue(edtToolExists$);
-    const transformGizmoToolExists = useValue(transformGizmoToolExists$);
-
-    // if (edtToolExists && transformGizmoToolExists) {
-    //     trigger("EDT", "TransformGizmoTool.SelectTransformGizmosTool");
-    // }
 }
 
 function RefreshSelection() {
@@ -188,6 +189,18 @@ export const SelectionListPanel = () => {
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip"]
         ) ?? "Collapse";
 
+    const listPanelListItemToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip"]
+        );
+
+    const listPanelListItemNoEdtToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip"]
+        );
+
     const isGame = useValue(isGame$);
 
     const isMoveItInstalled = useValue(isMoveItInstalled$);
@@ -203,6 +216,10 @@ export const SelectionListPanel = () => {
     const noItemsTip = isMoveItInstalled ? listPanelNoItemsSelectedTip : listPanelNoItemsSelectedNoMoveItTip;
 
     const noItemsText = isMoveItInstalled ? listPanelNoItemsSelected : listPanelNoItemsSelectedNoMoveIt;
+
+    const transformGizmoToolExists = useValue(transformGizmoToolExists$);
+
+    const itemToolTip = transformGizmoToolExists ? listPanelListItemToolTip : listPanelListItemNoEdtToolTip;
 
     const selectedEntities =
         useValue(selectedEntities$);
@@ -449,14 +466,9 @@ export const SelectionListPanel = () => {
                                                 {visibleEntities.map(
                                                     (entity, index) => (
 
+                                                        
                                                         <li
-                                                            key={entity.Index}
-                                                            onMouseDown={() =>
-                                                                OnEntitySelect(
-                                                                    entity.Index,
-                                                                    entity.Version
-                                                                )
-                                                            }
+                                                            key={entity.Index}                                                            
                                                             onMouseEnter={() =>
                                                                 OnEntityHover(
                                                                     entity.Index,
@@ -470,7 +482,6 @@ export const SelectionListPanel = () => {
                                                                 )
                                                             }
                                                         >
-
                                                             <span
                                                                 className={
                                                                     styles.entityIndex
@@ -488,11 +499,22 @@ export const SelectionListPanel = () => {
                                                                 className={ styles.separator}
                                                             />
 
-                                                            <span
-                                                                className={styles.entityName}
-                                                            >
-                                                                {entity.Name}
-                                                            </span>
+                                                            <Tooltip tooltip={itemToolTip}>
+                                                                <span
+                                                                    className={styles.entityName}
+                                                                    onMouseUp={(e) =>{
+                                                                        e.preventDefault();
+                                                                        e.stopPropagation();
+                                                                        OnEntitySelect(
+                                                                            entity.Index,
+                                                                            entity.Version,
+                                                                            e.button
+                                                                        )
+                                                                    }}
+                                                                >
+                                                                    {entity.Name}
+                                                                </span>
+                                                            </Tooltip>
 
                                                             <Tooltip tooltip={removeFromListToolTip} >
                                                                 <button
@@ -500,9 +522,10 @@ export const SelectionListPanel = () => {
                                                                         styles.removeButton
                                                                     }
                                                                     title={removeFromListToolTip}
-                                                                    onMouseDown={event =>
-                                                                        event.stopPropagation()
-                                                                    }
+                                                                    onMouseDown={event =>{
+                                                                        event.stopPropagation();                                                                        event.preventDefault();
+                                                                        event.preventDefault();
+                                                                    }}
                                                                     onClick={event => {
                                                                         event.stopPropagation();
 
@@ -515,7 +538,7 @@ export const SelectionListPanel = () => {
                                                                 </button>
                                                             </Tooltip>
 
-                                                        </li>
+                                                        </li>                                                        
                                                     )
                                                 )}
 

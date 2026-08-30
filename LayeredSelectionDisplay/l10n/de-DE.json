@@ -32,5 +32,7 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Panel erweitern",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Panel reduzieren",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Werkzeuge",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klicken, um das Listenpanel zu öffnen und das Auswahlrechteck-Werkzeug zu verwenden, um Assets auszuwählen oder ausgewählte Assets aus Move It zu importieren."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klicken, um das Listenpanel zu öffnen und das Auswahlrechteck-Werkzeug zu verwenden, um Assets auszuwählen oder ausgewählte Assets aus Move It zu importieren.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Linksklick: Öffne das Informationsfenster des Assets, Rechtsklick: Öffne im EDT Transform Tool",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Linksklick: Öffne das Informationsfenster des Assets"
 }
