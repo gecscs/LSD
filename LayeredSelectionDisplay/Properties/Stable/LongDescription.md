@@ -113,7 +113,7 @@
 
   Translation volunteers are welcome!
 
-  Join the [Cities: Skylines Modding Discord](https://discord.com/channels/1357924258730213447/1532833938169397440) to discuss the translation project and get access to the Crowdin project.
+  Join the [Cities: Skylines Modding Discord](https://discord.com/channels/1024242828114673724/1543648594547187882) to discuss the translation project and get access to the Crowdin project.
 
   ---
 

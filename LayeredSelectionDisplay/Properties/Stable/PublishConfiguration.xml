@@ -122,7 +122,7 @@
 
 	  Translation volunteers are welcome!
 
-	  Join the [Cities: Skylines Modding Discord](https://discord.com/channels/1357924258730213447/1532833938169397440) to discuss the translation project and get access to the Crowdin project.
+	  Join the [Cities: Skylines Modding Discord](https://discord.com/channels/1024242828114673724/1543648594547187882) to discuss the translation project and get access to the Crowdin project.
 
 	  ---
 
@@ -286,7 +286,7 @@
 	  * Still requires a preselection made inside MoveIt to display the selected assets in the list, and the list needs to be refreshed manually by closing the list and reopening it.</ChangeLog>
   <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="youtube" Url="https://www.youtube.com/@Obelix-Red" />
-	<ExternalLink Type="discord" Url="https://discord.gg/HTav7ARPs2" />
+	<ExternalLink Type="discord" Url="https://discord.com/channels/1024242828114673724/1543648594547187882" />
 	<ExternalLink Type="github" Url="https://github.com/gecscs/LSD" />
 	<ExternalLink Type="crowdin" Url="https://crowdin.com/project/layered-selection-display" />
   <!-- Supported values Public, Private, Unlisted -->
