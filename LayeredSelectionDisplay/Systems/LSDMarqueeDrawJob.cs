@@ -1,28 +1,13 @@
 ﻿namespace LayeredSelectionDisplay.Systems
 {
     using Colossal.Mathematics;
-
     using Game.Rendering;
-
     using Unity.Jobs;
     using Unity.Mathematics;
-
     using UnityEngine;
 
-    /// <summary>
-    /// Writes the LSD marquee geometry into the game's
-    /// OverlayRenderSystem buffer.
-    ///
-    /// This job intentionally contains no managed state and performs
-    /// no camera access. All data required for rendering is copied into
-    /// the job before it is scheduled.
-    /// </summary>
     internal struct LSDMarqueeDrawJob : IJob
     {
-        /*
-         * OverlayRenderSystem.Buffer is the same type used by
-         * Move It's DrawOverlaysJob.
-         */
         public OverlayRenderSystem.Buffer Buffer;
 
         public Quad2 Quad;
@@ -35,16 +20,6 @@
 
         public void Execute()
         {
-            /*
-             * Move It draws its marquee as four LineSimple calls.
-             *
-             * We use the same basic approach here.
-             *
-             * The important difference from the original LSD code is
-             * that these calls execute as part of the job dependency
-             * chain registered with OverlayRenderSystem.
-             */
-
             Buffer.DrawLine(
                 Color,
                 CreateLine(

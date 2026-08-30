@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Отключение этого параметра предотвратит выбор поверхностей.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Выбранные объекты",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Щелкните любой объект в списке, чтобы открыть его информационную панель.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Обновить список текущим выделением из Move It",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Элементы не выбраны. Используйте инструмент выделения Move It (marquee), чтобы выбрать объекты, затем нажмите кнопку обновления в верхней части этой панели. Вам потребуется закрыть Move It, чтобы увидеть выделенный элемент при наведении на него в списке.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Используйте инструмент выделения MoveIt, чтобы выбрать объекты, затем нажмите кнопку обновления в этой панели. Вам потребуется закрыть MoveIt, чтобы увидеть выделенный элемент при наведении на него в списке.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Инструмент выделения (marquee) (еще не реализовано)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Обновить список текущим выбором из Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Элементы не выбраны. Используйте инструмент выделения рамкой, чтобы выбрать все объекты в области согласно установленным фильтрам. Также можно выбрать объекты с помощью инструмента выделения рамкой в Move It, а затем нажать кнопку обновления в верхней части этой панели. Необходимо закрыть Move It, чтобы при наведении на элемент списка соответствующий объект подсвечивался в игровом мире.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Используйте инструмент выделения рамкой, чтобы выбрать все объекты в области согласно установленным фильтрам. Также можно выбрать объекты с помощью инструмента выделения рамкой в Move It, а затем нажать кнопку обновления в верхней части этой панели. Необходимо закрыть Move It, чтобы при наведении на элемент списка соответствующий объект подсвечивался в игровом мире.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Инструмент выделения рамкой",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Удалить объект из списка",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Закрыть панель",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Развернуть панель",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Свернуть панель",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Инструменты",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Нажмите, чтобы открыть панель списка и импортировать выбранные объекты из Move It."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Нажмите, чтобы открыть панель списка и использовать инструмент выделения рамкой для выбора объектов или импортировать выбранные объекты из Move It."
 }

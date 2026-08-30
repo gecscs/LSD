@@ -57,6 +57,7 @@ namespace LayeredSelectionDisplay.Systems
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
         private ValueBinding<bool> m_IsMarqueeToolSelected;
+        private ValueBinding<bool> m_IsMarqueeToolActive;
         private LayeredSelectionDisplayModSettings m_settings;
         private ValueBinding<float2> m_PanelPosition;
         private ValueBinding<bool> m_ExpandedListPanel;
@@ -212,10 +213,13 @@ namespace LayeredSelectionDisplay.Systems
             // These handle events activating actions triggered by clicking buttons in the UI.
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
 
-            // Initialize the marquee tool selection state to false.
+            // Initialize the marquee tool panel  state to false.
             m_IsMarqueeToolSelected = new ValueBinding<bool>(ModId, "IsMarqueeToolSelected", false);
-
             AddBinding(m_IsMarqueeToolSelected);
+
+            // Initialize the marquee tool selection state to false
+            m_IsMarqueeToolActive = new ValueBinding<bool>(ModId, "IsMarqueeToolActive", false);
+            AddBinding(m_IsMarqueeToolActive);
 
             float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
 
@@ -410,6 +414,11 @@ namespace LayeredSelectionDisplay.Systems
             {
                 m_MarqueeSelectionSystem.CancelSelection();
             }
+        }
+
+        public void SetMarqueeToolState(bool state)
+        {
+            m_IsMarqueeToolActive.Update(state);
         }
 
         public void SetMarqueeEntities(IEnumerable<Entity> entities)

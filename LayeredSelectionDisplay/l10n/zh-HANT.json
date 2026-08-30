@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "關閉此項將阻止工具選取地表或表面。",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - 已選取的資產",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "點擊列表中的任一資產以打開其資訊面板。",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "使用 Move It 的目前選取來重新整理列表",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "未選取任何項目。使用 Move It 的矩形選取工具選擇資產，然後點擊此面板頂部的重新整理按鈕。您需要關閉 Move It，才能在將滑鼠移至列表項目上時看到高亮項目。",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "使用 MoveIt 的矩形選取工具選擇資產，然後在此面板中點擊重新整理按鈕。您需要關閉 MoveIt，才能在將滑鼠移至列表項目上時看到高亮項目。",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "框選工具（尚未實現）",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "使用 Move It 的目前選取項目重新整理清單",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "未選取任何項目。使用框選工具，根據設定的篩選條件選取區域內的所有資產。或者，使用 Move It 的框選工具選取資產，然後點擊此面板頂部的重新整理按鈕。你需要關閉 Move It，才能在將滑鼠游標移到清單項目上時看到對應資產的高亮顯示。",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "使用框選工具，根據設定的篩選條件選取區域內的所有資產。或者，使用 Move It 的框選工具選取資產，然後點擊此面板頂部的重新整理按鈕。你需要關閉 Move It，才能在將滑鼠游標移到清單項目上時看到對應資產的高亮顯示。",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "框選工具",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "從列表中移除資產",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "關閉面板",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "展開面板",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "收合面板",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "工具",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "點擊以打開列表面板並匯入 Move It 中選取的資產。"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "點擊以開啟清單面板，使用框選工具選取資產，或從 Move It 匯入已選取的資產。"
 }

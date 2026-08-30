@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Disattivando questo impedirà allo strumento di selezionare superfici.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Asset selezionati",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Fai clic su un asset nella lista per aprire il pannello delle informazioni.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Aggiorna la lista con la selezione corrente da Move It",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Nessun elemento selezionato. Usa lo strumento di selezione rettangolare di Move It per scegliere gli asset e poi clicca il pulsante di aggiornamento in alto in questo pannello. Dovrai chiudere Move It per vedere l'elemento evidenziato quando ci passi sopra nella lista.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Usa lo strumento di selezione rettangolare di MoveIt per scegliere gli asset e poi clicca il pulsante di aggiornamento in questo pannello. Dovrai chiudere MoveIt per vedere l'elemento evidenziato quando ci passi sopra nella lista.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Strumento Marquee (non ancora implementato)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Aggiorna l'elenco con la selezione corrente di Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Nessun elemento selezionato. Usa lo strumento di selezione rettangolare per selezionare tutti gli asset all'interno di un'area in base ai filtri impostati. In alternativa, usa lo strumento di selezione rettangolare di Move It per selezionare gli asset e poi fai clic sul pulsante di aggiornamento nella parte superiore di questo pannello. È necessario chiudere Move It per visualizzare l'asset evidenziato quando passi il mouse sugli elementi dell'elenco.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Usa lo strumento di selezione rettangolare per selezionare tutti gli asset all'interno di un'area in base ai filtri impostati. In alternativa, usa lo strumento di selezione rettangolare di Move It per selezionare gli asset e poi fai clic sul pulsante di aggiornamento nella parte superiore di questo pannello. È necessario chiudere Move It per visualizzare l'asset evidenziato quando passi il mouse sugli elementi dell'elenco.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Strumento di selezione rettangolare",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Rimuovi asset dalla lista",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Chiudi pannello",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Espandi pannello",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Riduci pannello",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Strumenti",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Clicca per aprire il pannello Lista e importare gli asset selezionati da Move It."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Fai clic per aprire il pannello dell'elenco e usare lo strumento di selezione rettangolare per selezionare gli asset oppure importare gli asset selezionati da Move It."
 }

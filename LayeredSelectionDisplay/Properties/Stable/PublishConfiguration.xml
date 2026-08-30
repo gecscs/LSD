@@ -41,9 +41,11 @@
 
 	  ### 🔲 Marquee Tool
 
-	  When the vanilla selection filters aren't enough — especially in heavily detailed areas with lots of overlapping plants, decals, and props — LSD provides a **Marquee Tool** powered by Move It's selection system.
+	  When the vanilla selection filters aren't enough — especially in heavily detailed areas with lots of overlapping plants, decals, and props — LSD provides a **Marquee Tool** to select all assets within an area.
 
 	  Use the Marquee Tool to select an area and collect all relevant Move It assets into a dedicated list.
+
+	  If you prefer, LSD can also import selections from the Move It mod
 
 	  From there you can:
 
@@ -53,7 +55,7 @@
 	  - Click an item to select it and open its Info Panel.
 	  - Continue working with multiple assets from the same list.
 
-	  The selection list persists until you reload it, allowing you to manipulate multiple assets without having to repeat the marquee selection.
+	  The selection list persists until you perform or import a new one, allowing you to manipulate multiple assets without having to repeat the marquee selection.
 
 	  ---
 
@@ -206,7 +208,7 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.0.9" />
+  <ModVersion Value="0.1.0" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.5.*" />
   <!--Dependency for the mod, can be set multiple-->
@@ -214,6 +216,11 @@
   <Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
+	  # Patch v0.1.0
+	  * Own Marquee Selection Tool implemented.
+	  * Changed Marquee Tool button icon to the same as the main panel, and icon changes while the marquee tool has been selected and while its being drawn, toggling back  when the selection is finished.
+	  * Updated localized strings.
+
 	  # Patch v0.0.9
 	  * List Panel design retouched to be closer to the vanilla panels.
 	  * Marquee Selector Button is now hidden until it gets its proper functionality.

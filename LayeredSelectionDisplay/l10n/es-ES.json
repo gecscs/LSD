@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Desactivar esto previene que la herramienta seleccione superficies.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Elementos seleccionados",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Seleccione cualquier elemento de la lista para abrir su panel de información.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Actualizar lista con la selección actual de Move It",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "No hay elementos seleccionados",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Usa la herramienta de selección de marco de Move It para seleccionar elementos y después hacer clic en el botón de actualizar de este panel. Se necesita cerrar Move It para ver los elementos resaltados cuando se pasa por encima en la lista.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Herramienta de Selección (aún no implementada)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Actualizar la lista con la selección actual de Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "No hay elementos seleccionados. Usa la herramienta de selección rectangular para seleccionar todos los recursos dentro de un área según los filtros establecidos. Como alternativa, usa la herramienta de selección rectangular de Move It para seleccionar los recursos y después haz clic en el botón de actualización situado en la parte superior de este panel. Debes cerrar Move It para poder ver resaltado en el mundo del juego el recurso correspondiente al pasar el cursor sobre un elemento de la lista.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Usa la herramienta de selección rectangular para seleccionar todos los recursos dentro de un área según los filtros establecidos. Como alternativa, usa la herramienta de selección rectangular de Move It para seleccionar los recursos y después haz clic en el botón de actualización situado en la parte superior de este panel. Debes cerrar Move It para poder ver resaltado en el mundo del juego el recurso correspondiente al pasar el cursor sobre un elemento de la lista.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Herramienta de selección rectangular",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Eliminar elemento de la lista",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Cerrar Panel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Expandir Panel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Contraer Panel",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Herramientas",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Seleccionar para abrir el panel de la lista e importar los elementos seleccionados desde Move It."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Haz clic para abrir el panel de la lista y usar la herramienta de selección rectangular para seleccionar recursos o importar recursos seleccionados desde Move It."
 }

@@ -1,22 +1,17 @@
 ﻿namespace LayeredSelectionDisplay.Systems
 {
     using System.Collections.Generic;
-
     using Colossal.Logging;
     using Colossal.Mathematics;
-
     using Game;
     using Game.Objects;
     using Game.Tools;
-
     using LayeredSelectionDisplay.Extensions;
     using LayeredSelectionDisplay.Selection;
-
     using Unity.Collections;
     using Unity.Entities;
     using Unity.Jobs;
     using Unity.Mathematics;
-
     using UnityEngine;
     using UnityEngine.InputSystem;
 
@@ -34,13 +29,6 @@
 
         private Camera m_Camera;
 
-        /*
-         * Dedicated terrain-only raycast, independent of ToolRaycastSystem
-         * and LSD's own DefaultToolSystemInitializeRaycastPatch, which
-         * reconfigures ToolRaycastSystem.typeMask for hover-filtering
-         * purposes and does not guarantee TypeMask.Terrain stays set.
-         * See LSDTerrainRaycast for the full rationale.
-         */
         private LSDTerrainRaycast m_TerrainRaycast;
 
         private LSDMarquee m_Marquee;
@@ -49,19 +37,10 @@
 
         private bool m_Dragging;
 
-        /*
-         * Last valid terrain/world position.
-         *
-         * Once a drag starts, this is deliberately retained when a
-         * raycast temporarily fails.
-         */
         private float3 m_LastValidWorldPosition;
 
         private bool m_HasLastValidWorldPosition;
 
-        /*
-         * Raycast result sampled exactly once per OnUpdate.
-         */
         private float3 m_FrameWorldPosition;
 
         private bool m_HasFrameWorldPosition;
@@ -97,6 +76,8 @@
         {
             m_Active = true;
 
+            m_UISystem.SetMarqueeToolState(true);
+
             m_Dragging = false;
 
             m_Marquee = null;
@@ -111,6 +92,8 @@
         public void CancelSelection()
         {
             m_Active = false;
+
+            m_UISystem.SetMarqueeToolState(false);
 
             m_Dragging = false;
 
@@ -192,20 +175,6 @@
                 return;
             }
 
-            /*
-             * ----------------------------------------------------------
-             * SAMPLE THE WORLD POSITION ONCE
-             * ----------------------------------------------------------
-             *
-             * This is important.
-             *
-             * We register this frame's terrain raycast input first, then
-             * read back the previously-completed result. There is exactly
-             * one raycast registration and one result read per frame, and
-             * it is entirely our own dedicated terrain-only raycast - not
-             * shared with, or affected by, ToolRaycastSystem's active-tool
-             * configuration or LSD's own filter-driven raycast patches.
-             */
             m_TerrainRaycast.Update();
 
             m_HasFrameWorldPosition =
@@ -221,11 +190,6 @@
                     true;
             }
 
-            /*
-             * ----------------------------------------------------------
-             * WAITING FOR MOUSE DOWN
-             * ----------------------------------------------------------
-             */
             if (!m_Dragging)
             {
                 if (!mouse.leftButton.wasPressedThisFrame)
@@ -233,13 +197,6 @@
                     return;
                 }
 
-                /*
-                 * We cannot start a world-space marquee without a
-                 * resolved world position.
-                 *
-                 * Crucially, we simply wait for the next frame.
-                 * We do NOT create a fake position and we do NOT cancel.
-                 */
                 if (!m_HasFrameWorldPosition)
                 {
                     return;
@@ -251,17 +208,6 @@
                 return;
             }
 
-            /*
-             * ----------------------------------------------------------
-             * DRAGGING
-             * ----------------------------------------------------------
-             */
-
-            /*
-             * Mouse release ends the marquee.
-             *
-             * We deliberately do this BEFORE any other state changes.
-             */
             if (mouse.leftButton.wasReleasedThisFrame)
             {
                 if (m_HasLastValidWorldPosition)
@@ -275,19 +221,11 @@
                 return;
             }
 
-            /*
-             * If the button is still down, continue dragging.
-             */
             if (!mouse.leftButton.isPressed)
             {
                 return;
             }
 
-            /*
-             * A failed raycast is NOT a drag cancellation.
-             *
-             * We simply keep the last valid position.
-             */
             if (m_HasFrameWorldPosition)
             {
                 UpdateMarquee(

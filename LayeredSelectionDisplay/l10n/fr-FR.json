@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Désactiver cette option empêchera l'outil de sélectionner des surfaces.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Ressources sélectionnées",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Cliquez sur une ressource de la liste pour ouvrir son panneau d'informations.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Rafraîchir la liste avec la sélection actuelle de Move It",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Aucun élément sélectionné",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Utilisez l'outil de sélection Move It pour choisir les éléments, puis cliquez sur le bouton Actualiser dans ce panneau. Vous devrez fermer Move It afin de voir l'élément en surbrillance lorsque vous le survolez dans la liste.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Outil Marque-page (non implémenté)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Actualiser la liste avec la sélection actuelle de Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Aucun élément sélectionné. Utilisez l'outil de sélection rectangulaire pour sélectionner tous les assets d'une zone selon les filtres définis. Vous pouvez également utiliser l'outil de sélection rectangulaire de Move It pour sélectionner les assets, puis cliquer sur le bouton d'actualisation en haut de ce panneau. Vous devrez fermer Move It pour voir l'asset correspondant mis en évidence dans le monde du jeu lorsque vous survolez un élément de la liste.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Utilisez l'outil de sélection rectangulaire pour sélectionner tous les assets d'une zone selon les filtres définis. Vous pouvez également utiliser l'outil de sélection rectangulaire de Move It pour sélectionner les assets, puis cliquer sur le bouton d'actualisation en haut de ce panneau. Vous devrez fermer Move It pour voir l'asset correspondant mis en évidence dans le monde du jeu lorsque vous survolez un élément de la liste.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Outil de sélection rectangulaire",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Supprimer l'élément de la liste",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Fermer le Panneau",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Agrandir le Panneau",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Réduire le Panneau",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Outils",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Cliquez pour ouvrir le panneau de liste et importer les éléments sélectionnés à partir de Move It."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Cliquez pour ouvrir le panneau de liste et utiliser l'outil de sélection rectangulaire pour sélectionner des assets ou importer les assets sélectionnés depuis Move It."
 }

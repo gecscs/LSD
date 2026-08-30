@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Se desativado, a ferramenta não selecionará superfícies.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Itens selecionados",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Clique em qualquer item da lista para abrir seu painel de informações.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Atualizar lista com a seleção atual do Move It",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Nenhum item selecionado. Use a ferramenta de seleção retangular (marquee) do Move It para escolher itens e depois clique no botão de atualizar no topo deste painel. Você precisará fechar o Move It para ver o item destacado ao passar o cursor sobre ele na lista.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Use a ferramenta de seleção retangular do MoveIt para escolher itens e depois clique no botão de atualizar neste painel. Você precisará fechar o MoveIt para ver o item destacado ao passar o cursor sobre ele na lista.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Ferramenta Marquee (ainda não implementada)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Atualizar a lista com a seleção atual do Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Nenhum item selecionado. Use a Ferramenta de Seleção Retangular para selecionar todos os assets dentro de uma área de acordo com os filtros definidos. Como alternativa, use a Ferramenta de Seleção Retangular do Move It para selecionar os assets e depois clique no botão de atualização no topo deste painel. Você precisará fechar o Move It para ver o asset destacado no mundo do jogo ao passar o mouse sobre um item da lista.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Use a Ferramenta de Seleção Retangular para selecionar todos os assets dentro de uma área de acordo com os filtros definidos. Como alternativa, use a Ferramenta de Seleção Retangular do Move It para selecionar os assets e depois clique no botão de atualização no topo deste painel. Você precisará fechar o Move It para ver o asset destacado no mundo do jogo ao passar o mouse sobre um item da lista.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Ferramenta de Seleção Retangular",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Remover item da lista",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Fechar painel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Expandir painel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Recolher painel",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Ferramentas",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Clique para abrir o painel de lista e importar itens selecionados do Move It."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Clique para abrir o Painel da Lista e usar a Ferramenta de Seleção Retangular para selecionar assets ou importar assets selecionados do Move It."
 }

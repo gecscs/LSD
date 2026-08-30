@@ -32,9 +32,11 @@
 
 	  ### 🔲 Marquee Tool
 
-	  When the vanilla selection filters aren't enough — especially in heavily detailed areas with lots of overlapping plants, decals, and props — LSD provides a **Marquee Tool** powered by Move It's selection system.
+	  When the vanilla selection filters aren't enough — especially in heavily detailed areas with lots of overlapping plants, decals, and props — LSD provides a **Marquee Tool** to select all assets within an area.
 
 	  Use the Marquee Tool to select an area and collect all relevant Move It assets into a dedicated list.
+
+	  If you prefer, LSD can also import selections from the Move It mod
 
 	  From there you can:
 
@@ -44,7 +46,7 @@
 	  - Click an item to select it and open its Info Panel.
 	  - Continue working with multiple assets from the same list.
 
-	  The selection list persists until you reload it, allowing you to manipulate multiple assets without having to repeat the marquee selection.
+	  The selection list persists until you perform or import a new one, allowing you to manipulate multiple assets without having to repeat the marquee selection.
 
 	  ---
 

@@ -22,13 +22,13 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Ausgewählte Objekte",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Klicken Sie auf ein Asset in der Liste, um das Informationsfenster zu öffnen.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Liste mit der aktuellen Auswahl aus Move It aktualisieren",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Keine Objekte ausgewählt. Verwenden Sie das Auswahlrechteck-Werkzeug von Move It, um Assets auszuwählen, und klicken Sie dann auf die Schaltfläche „Aktualisieren“ oben in diesem Panel. Sie müssen Move It schließen, um das hervorgehobene Element beim Überfahren in der Liste sehen zu können.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Verwenden Sie das Auswahlrechteck-Werkzeug von MoveIt, um Assets auszuwählen, und klicken Sie dann auf die Aktualisieren-Schaltfläche in diesem Panel. Sie müssen MoveIt schließen, um das hervorgehobene Element beim Überfahren in der Liste sehen zu können.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Auswahlrechteck-Werkzeug (noch nicht implementiert)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Keine Elemente ausgewählt. Verwende das Auswahlrechteck-Werkzeug, um entsprechend den festgelegten Filtern alle Assets innerhalb eines Bereichs auszuwählen. Alternativ kannst du mit dem Auswahlrechteck-Werkzeug von Move It Assets auswählen und anschließend oben in diesem Panel auf die Aktualisierungsschaltfläche klicken. Move It muss geschlossen werden, damit das beim Darüberfahren mit der Maus über einen Listeneintrag hervorgehobene Asset angezeigt werden kann.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Verwende das Auswahlrechteck-Werkzeug, um entsprechend den festgelegten Filtern alle Assets innerhalb eines Bereichs auszuwählen. Alternativ kannst du mit dem Auswahlrechteck-Werkzeug von Move It Assets auswählen und anschließend oben in diesem Panel auf die Aktualisierungsschaltfläche klicken. Move It muss geschlossen werden, damit das beim Darüberfahren mit der Maus über einen Listeneintrag hervorgehobene Asset angezeigt werden kann.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Auswahlrechteck-Werkzeug",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Asset aus der Liste entfernen",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Panel schließen",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Panel erweitern",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Panel reduzieren",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Werkzeuge",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klicken, um das Listenpanel zu öffnen und ausgewählte Assets aus Move It zu importieren."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klicken, um das Listenpanel zu öffnen und das Auswahlrechteck-Werkzeug zu verwenden, um Assets auszuwählen oder ausgewählte Assets aus Move It zu importieren."
 }

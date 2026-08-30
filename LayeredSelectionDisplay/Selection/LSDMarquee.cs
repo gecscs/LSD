@@ -1,7 +1,6 @@
 ﻿namespace LayeredSelectionDisplay.Selection
 {
     using Colossal.Mathematics;
-
     using Unity.Mathematics;
 
     internal sealed class LSDMarquee

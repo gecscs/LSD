@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "이 옵션을 끄면 도구가 표면을 선택하지 않습니다.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - 선택된 자산",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "정보 패널을 열려면 목록에서 자산을 클릭하세요.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Move It에서 현재 선택 항목으로 목록 새로 고침",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "선택된 항목이 없습니다. Move It의 마퀴 선택 도구를 사용하여 자산을 선택한 다음 이 패널 상단의 새로 고침 버튼을 클릭하세요. 목록에서 항목 위로 마우스를 올렸을 때 강조된 항목을 보려면 Move It을 닫아야 합니다.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "MoveIt의 마퀴 선택 도구를 사용하여 자산을 선택한 다음 이 패널에서 새로 고침 버튼을 클릭하세요. 목록에서 항목 위로 마우스를 올렸을 때 강조된 항목을 보려면 MoveIt을 닫아야 합니다.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "마퀴 도구(아직 구현되지 않음)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Move It의 현재 선택 항목으로 목록 새로 고침",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "선택된 항목이 없습니다. 설정된 필터에 따라 영역 내의 모든 에셋을 선택하려면 영역 선택 도구를 사용하세요. 또는 Move It의 영역 선택 도구로 에셋을 선택한 다음 이 패널 상단의 새로 고침 버튼을 클릭하세요. 목록의 항목에 마우스를 올렸을 때 해당 에셋이 게임 화면에서 강조 표시되도록 하려면 Move It을 닫아야 합니다.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "설정된 필터에 따라 영역 내의 모든 에셋을 선택하려면 영역 선택 도구를 사용하세요. 또는 Move It의 영역 선택 도구로 에셋을 선택한 다음 이 패널 상단의 새로 고침 버튼을 클릭하세요. 목록의 항목에 마우스를 올렸을 때 해당 에셋이 게임 화면에서 강조 표시되도록 하려면 Move It을 닫아야 합니다.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "영역 선택 도구",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "목록에서 자산 제거",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "패널 닫기",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "패널 확장",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "패널 축소",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "도구",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "클릭하여 목록 패널을 열고 Move It에서 선택한 자산을 가져옵니다."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "클릭하여 목록 패널을 열고 영역 선택 도구로 에셋을 선택하거나 Move It에서 선택한 에셋을 가져옵니다."
 }

@@ -71,15 +71,15 @@ namespace LayeredSelectionDisplay.Settings
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title", "LSD - Selected Assets" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro", "Click any asset from the list to open its info panel." },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip", "Refresh list with current selection from Move It" },
-                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", "No items selected. Use Move It marquee selection tool to choose assets and then click the refresh button at the top of this panel. You will need to close Move It in order to see the highlighted item when hovering it on the list." },
-                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip", "Use MoveIt marquee selection tool to choose assets and then click the refresh button in this panel. You will need to close MoveIt in order to see the highlighted item when hovering it on the list." },
-                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip", "Marquee Tool (not yet implemented)" },
+                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected", "No items selected. Use the Marquee Tool to select all assets inside an area according to the filters set. Alternatively, use Move It marquee tool to choose assets and then click the refresh button at the top of this panel. You will need to close Move It in order to see the highlighted item when hovering it on the list." },
+                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip", "Use the Marquee Tool to select all assets inside an area according to the filters set. Alternatively, use Move It marquee tool to choose assets and then click the refresh button at the top of this panel. You will need to close Move It in order to see the highlighted item when hovering it on the list." },
+                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip", "Marquee Selection Tool" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip", "Remove asset from list" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip", "Close Panel" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip", "Expand Panel" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip", "Collapse Panel" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools", "Tools" },
-                { "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", "Click to open the List Panel and import selected assets from Move It." },
+                { "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", "Click to open the List Panel and use the Marquee Tool to select assets, or import selected assets from Move It." },
             };
         }
 

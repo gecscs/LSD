@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "关闭此项将阻止工具选择表面。",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - 已选择的资产",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "点击列表中的任意资产以打开其信息面板。",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "使用来自 Move It 的当前选择刷新列表",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "未选择任何项目。使用 Move It 的矩形选择（marquee）工具选择资产，然后点击此面板顶部的刷新按钮。要在将鼠标悬停在列表项上时看到高亮项，您需要关闭 Move It。",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "使用 MoveIt 的矩形选择工具选择资产，然后点击此面板中的刷新按钮。要在将鼠标悬停在列表项上时看到高亮项，您需要关闭 MoveIt。",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "矩形选择工具（尚未实现）",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "使用 Move It 的当前选择刷新列表",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "未选择任何项目。使用框选工具，根据设置的筛选条件选择区域内的所有资产。或者，使用 Move It 的框选工具选择资产，然后点击此面板顶部的刷新按钮。你需要关闭 Move It，才能在将鼠标悬停在列表项目上时看到对应资产的高亮显示。",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "使用框选工具，根据设置的筛选条件选择区域内的所有资产。或者，使用 Move It 的框选工具选择资产，然后点击此面板顶部的刷新按钮。你需要关闭 Move It，才能在将鼠标悬停在列表项目上时看到对应资产的高亮显示。",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "框选工具",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "从列表中移除资产",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "关闭面板",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "展开面板",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "折叠面板",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "工具",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "点击以打开列表面板并导入 Move It 中选定的资产。"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "点击以打开列表面板，使用框选工具选择资产，或从 Move It 导入已选择的资产。"
 }

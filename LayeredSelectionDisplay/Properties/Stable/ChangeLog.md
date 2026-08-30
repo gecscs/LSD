@@ -1,4 +1,9 @@
-﻿# Patch v0.0.9
+﻿# Patch v0.1.0
+* Own Marquee Selection Tool implemented.
+* Changed Marquee Tool button icon to the same as the main panel, and icon changes while the marquee tool has been selected and while its being drawn, toggling back  when the selection is finished.
+* Updated localized strings.
+
+# Patch v0.0.9
 * List Panel design retouched to be closer to the vanilla panels.
 * Marquee Selector Button is now hidden until it gets its proper functionality.
 

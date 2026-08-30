@@ -11,6 +11,9 @@ import { SelectedEntities } from "../Domain/SelectedEntities";
 import { SelectedEntity } from "../Domain/SelectedEntity";
 import classNames from "classnames";
 
+import marqueeToolSrc from "../img/icon_Marquee_Off.svg";
+import marqueeToolActiveSrc from "../img/icon_Marquee_Active.svg";
+
 
 const isGame$ = bindValue<boolean>(
     mod.id,
@@ -20,6 +23,11 @@ const isGame$ = bindValue<boolean>(
 const isMarqueeToolSelected$ = bindValue<boolean>(
     mod.id,
     "IsMarqueeToolSelected"
+);
+
+const isMarqueeToolActive$ = bindValue<boolean>(
+    mod.id,
+    "IsMarqueeToolActive"
 );
 
 const selectedEntities$ = bindValue<SelectedEntities>(
@@ -167,6 +175,11 @@ export const SelectionListPanel = () => {
     const isMarqueeToolSelected =
         useValue(isMarqueeToolSelected$);
 
+    const isMarqueeToolActive =
+        useValue(isMarqueeToolActive$);
+
+    const marqueeToolIconSrc = isMarqueeToolActive ? marqueeToolActiveSrc : marqueeToolSrc;
+
     const selectedEntities =
         useValue(selectedEntities$);
 
@@ -243,44 +256,9 @@ export const SelectionListPanel = () => {
                         onMouseDown={event =>
                             event.stopPropagation()
                         }
-                        onClick={SelectMarqueeTool}
-                    >
-                        <svg
-                            className={
-                                styles.headerIcon
-                            }
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            fill="none"
-                            aria-hidden="true"
-                        >
-                            <rect
-                                x="1.5"
-                                y="1.5"
-                                width="11"
-                                height="11"
-                                rx="1"
-                                stroke="currentColor"
-                                strokeWidth="1.3"
-                                strokeDasharray="3 2"
-                            />
-
-                            <path
-                                d="M10 10l5.5 5.5"
-                                stroke="currentColor"
-                                strokeWidth="1.3"
-                                strokeLinecap="round"
-                            />
-
-                            <path
-                                d="M13 13l2.8.5-.5-2.8"
-                                stroke="currentColor"
-                                strokeWidth="1.3"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                        </svg>
+                        onClick={ SelectMarqueeTool }
+                            >       
+                        <img src={ marqueeToolIconSrc } />
                     </button>
                 </Tooltip>
 

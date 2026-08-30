@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Wyłączenie tego spowoduje, że narzędzie nie będzie wybierać powierzchni.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Wybrane zasoby",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Kliknij dowolny zasób z listy, aby otworzyć jego panel informacji.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Odśwież listę aktualnym zaznaczeniem z Move It",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Brak wybranych elementów. Użyj narzędzia zaznaczania (marquee) Move It, aby wybrać zasoby, a następnie kliknij przycisk odświeżania u góry tego panelu. Musisz zamknąć Move It, aby zobaczyć podświetlony element podczas najechania na niego na liście.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Użyj narzędzia zaznaczania MoveIt, aby wybrać zasoby, a następnie kliknij przycisk odświeżania w tym panelu. Musisz zamknąć MoveIt, aby zobaczyć podświetlony element podczas najechania na niego na liście.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Narzędzie zaznaczania (marquee) (jeszcze nie zaimplementowane)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Odśwież listę bieżącym wyborem z Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Nie wybrano żadnych elementów. Użyj narzędzia zaznaczania prostokątem, aby zaznaczyć wszystkie obiekty w obszarze zgodnie z ustawionymi filtrami. Możesz też użyć narzędzia zaznaczania prostokątem w Move It, a następnie kliknąć przycisk odświeżania u góry tego panelu. Musisz zamknąć Move It, aby podczas najechania kursorem na element listy zobaczyć podświetlony obiekt w świecie gry.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Użyj narzędzia zaznaczania prostokątem, aby zaznaczyć wszystkie obiekty w obszarze zgodnie z ustawionymi filtrami. Możesz też użyć narzędzia zaznaczania prostokątem w Move It, a następnie kliknąć przycisk odświeżania u góry tego panelu. Musisz zamknąć Move It, aby podczas najechania kursorem na element listy zobaczyć podświetlony obiekt w świecie gry.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Narzędzie zaznaczania prostokątem",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Usuń zasób z listy",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Zamknij panel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Rozwiń panel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Zwiń panel",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Narzędzia",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Kliknij, aby otworzyć panel listy i zaimportować wybrane zasoby z Move It."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Kliknij, aby otworzyć panel listy i użyć narzędzia zaznaczania prostokątem do wyboru obiektów lub zaimportować wybrane obiekty z Move It."
 }

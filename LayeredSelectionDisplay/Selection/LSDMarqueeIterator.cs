@@ -66,9 +66,7 @@
 
         public void Dispose()
         {
-            /*
-             * The owner of the NativeList disposes it.
-             */
+             // The owner of the NativeList disposes it.
         }
     }
 }

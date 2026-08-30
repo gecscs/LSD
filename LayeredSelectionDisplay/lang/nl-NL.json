@@ -21,14 +21,14 @@
   "LayeredSelectionDisplay.TOOLTIP_DESCRIPTION[VanillaSurfaceFilter]": "Als u dit uitschakelt zal het hulpmiddel geen oppervlakken selecteren.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Title": "LSD - Geselecteerde items",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.Intro": "Klik op een item in de lijst om het informatiepaneel te openen.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Lijst vernieuwen met huidige selectie van Move It",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Geen items geselecteerd. Gebruik het selectievak-gereedschap (marquee) van Move It om items te kiezen en klik vervolgens op de vernieuw-knop bovenaan dit paneel. U moet Move It sluiten om het gemarkeerde item te zien wanneer u eroverheen zweeft in de lijst.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Gebruik het selectievak-gereedschap van MoveIt om items te kiezen en klik daarna op de vernieuw-knop in dit paneel. U moet MoveIt sluiten om het gemarkeerde item te zien wanneer u eroverheen zweeft in de lijst.",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Selectiekader-gereedschap (nog niet geïmplementeerd)",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip": "Lijst vernieuwen met de huidige selectie uit Move It",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelected": "Geen items geselecteerd. Gebruik het selectiekader om alle assets binnen een gebied te selecteren volgens de ingestelde filters. Je kunt ook het selectiekader van Move It gebruiken om assets te selecteren en vervolgens bovenaan dit paneel op de vernieuwingsknop klikken. Je moet Move It sluiten om het gemarkeerde asset in de spelwereld te zien wanneer je met de muis over een item in de lijst gaat.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.NoItemsSelectedTip": "Gebruik het selectiekader om alle assets binnen een gebied te selecteren volgens de ingestelde filters. Je kunt ook het selectiekader van Move It gebruiken om assets te selecteren en vervolgens bovenaan dit paneel op de vernieuwingsknop klikken. Je moet Move It sluiten om het gemarkeerde asset in de spelwereld te zien wanneer je met de muis over een item in de lijst gaat.",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip": "Selectiekader",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip": "Item uit de lijst verwijderen",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Paneel sluiten",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Paneel uitvouwen",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Paneel inklappen",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Gereedschappen",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klik om het lijstpaneel te openen en geselecteerde items uit Move It te importeren."
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klik om het lijstpaneel te openen en het selectiekader te gebruiken om assets te selecteren, of geselecteerde assets uit Move It te importeren."
 }
