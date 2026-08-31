@@ -1,4 +1,7 @@
-﻿# Patch v0.1.3
+﻿# Patch v0.1.4
+* Removed unrecognized CSS properties from SCSS stylesheet.
+
+# Patch v0.1.3
 * Extra Detailing Tools Transform Tool Panel now opens on move mode.
 * Leaving only the props filter on will no longer include trees and plants on the results.
 

@@ -127,7 +127,7 @@
 
   ---
 
-  ## 💬 Support & Feedback
+  ## 💬 Support &amp; Feedback
 
   For bug reports, questions, suggestions, and modding-related issues, please use the appropriate modding channels on the **Cities: Skylines Modding Discord**.
 
@@ -151,7 +151,7 @@
   - **Gagaxm / El Gaga** — Expanded the original concept by suggesting the use of a marquee-based selection system for handling multiple overlapping assets. Testing and feedback.
   - **MayorCheeks / b00tyCheeks** — Testing and feedback.
 
-  ### Code & Mod References
+  ### Code &amp; Mod References
 
   LSD was developed with inspiration, references, or code contributions derived from:
 
