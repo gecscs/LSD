@@ -135,7 +135,7 @@
 
   ---
 
-  ## 💬 Support and Feedback
+  ## 💬 Support &amp; Feedback
 
   For bug reports, questions, suggestions, and modding-related issues, please use the appropriate modding channels on the **Cities: Skylines Modding Discord**.
 
@@ -159,7 +159,7 @@
   - **Gagaxm / El Gaga** — Expanded the original concept by suggesting the use of a marquee-based selection system for handling multiple overlapping assets. Testing and feedback.
   - **MayorCheeks / b00tyCheeks** — Testing and feedback.
 
-  ### Code and Mod References
+  ### Code &amp; Mod References
 
   LSD was developed with inspiration, references, or code contributions derived from:
 
@@ -214,86 +214,92 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.1.4" />
+  <ModVersion Value="0.1.6" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.6.*" />
   <!--Dependency for the mod, can be set multiple-->
   <Dependency Id="74417" DisplayName="Unified Icon Library" Version="1.0.13" />
   <!--<Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />-->
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-  <ChangeLog>
-	  # Patch v0.1.4
-	  * Removed unrecognized CSS properties from SCSS stylesheet.
-	  
-	  # Patch v0.1.3
-	  * Extra Detailing Tools Transform Tool Panel now opens on move mode.
-	  * Leaving only the props filter on will no longer include trees and plants on the results.
+  <ChangeLog># Patch v0.1.6
+* More corrections to publishing settings.
 
-	  # Patch v0.1.2
-	  * If Extra Detailing Tools new version with the external Gizmo Transform Tool panel is available, the user now can right click the item on the list to open it on the new EDT TT panel.
-	  * Retouched Marquee overlay for better performance and visibility.
-	  * Updated localized strings to cover EDT's TT absence.
+# Patch v0.1.5
+* Corrected publishing settings.
 
-	  # Patch v0.1.1
-	  * Trees and Plants are now correctly filtered by the Marquee Tool.
-	  * Move It is no longer a dependency. If not found, the Reload From Move It button is hidden.
-	  * Updated localized strings to cover Move It's absence.
+# Patch v0.1.4
+* Removed unrecognized CSS properties from SCSS stylesheet.
 
-	  # Patch v0.1.0
-	  * Own Marquee Selection Tool implemented.
-	  * Changed Marquee Tool button icon to the same as the main panel, and icon changes while the marquee tool has been selected and while its being drawn, toggling back  when the selection is finished.
-	  * Updated localized strings.
+# Patch v0.1.3
+* Extra Detailing Tools Transform Tool Panel now opens on move mode.
+* Leaving only the props filter on will no longer include trees and plants on the results.
 
-	  # Patch v0.0.9
-	  * List Panel design retouched to be closer to the vanilla panels.
-	  * Marquee Selector Button is now hidden until it gets its proper functionality.
+# Patch v0.1.2
+* If Extra Detailing Tools new version with the external Gizmo Transform Tool panel is available, the user now can right click the item on the list to open it on the new EDT TT panel.
+* Retouched Marquee overlay for better performance and visibility.
+* Updated localized strings to cover EDT's TT absence.
 
-	  # Patch v0.0.8
-	  * Buttons now have tooltips.
-	  * Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.
-	  * All languages added (many translated via GPT).
+# Patch v0.1.1
+* Trees and Plants are now correctly filtered by the Marquee Tool.
+* Move It is no longer a dependency. If not found, the Reload From Move It button is hidden.
+* Updated localized strings to cover Move It's absence.
 
-	  # Patch V0.0.7
-	  * Complete revamp of the List Panel.
-	  * New close panel button.
-	  * New Select With Marquee button (not yet functional).
-	  * Reload from Move It button moved to the top bar along with the 2 new buttons.
-	  * Each listed item now includes a Remove button that removes the item from the list, but keeps the original list in memory so it can be reloaded back from Move it, provided it has not changed there.
-	  * Bottom bar is now clickable to expand/collapse the list panel.
-	  * Expanded state of panel is also kept on hidden settings and is restored along with position when the panel is reopened in the same or in a new playing session.
+# Patch v0.1.0
+* Own Marquee Selection Tool implemented.
+* Changed Marquee Tool button icon to the same as the main panel, and icon changes while the marquee tool has been selected and while its being drawn, toggling back  when the selection is finished.
+* Updated localized strings.
 
-	  # Patch V0.0.6
-	  * French and Spanish translations.
-	  * More code cleanup.
-	  * Added Thumbnail.
-	  * Detached Git from BB fork tree.
-	  * Further Tweeks to the Long Description of the mod.
+# Patch v0.0.9
+* List Panel design retouched to be closer to the vanilla panels.
+* Marquee Selector Button is now hidden until it gets its proper functionality.
 
-	  # Patch V0.0.5
-	  * Tweeks to the Long Description of the mod.
+# Patch v0.0.8
+* Buttons now have tooltips.
+* Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.
+* All languages added (many translated via GPT).
 
-	  # Patch V0.0.4
-	  * List Panel is now draggable and the position is kept between game sessions by saving it in the mod's settings.
-	  * Cleanup of some unused code and logging statements.
+# Patch V0.0.7
+* Complete revamp of the List Panel.
+* New close panel button.
+* New Select With Marquee button (not yet functional).
+* Reload from Move It button moved to the top bar along with the 2 new buttons.
+* Each listed item now includes a Remove button that removes the item from the list, but keeps the original list in memory so it can be reloaded back from Move it, provided it has not changed there.
+* Bottom bar is now clickable to expand/collapse the list panel.
+* Expanded state of panel is also kept on hidden settings and is restored along with position when the panel is reopened in the same or in a new playing session.
 
-	  # Patch V0.0.3
-	  * List panel now contains a button to refresh the list based on the lastest Move It selection, so it no longer requires closing and reopening the list to refresh it.
-	  * Still requires a preselection made inside MoveIt to display the selected assets in the list.
-	  * Panel now shows the names of the assets prefabs if they are available, otherwise it will show the name of the asset itself.
-	  * Instructions are now presented in the list panel when no assets are selected.
-	  * The list panel remains visible and partially functional even when Move It is running, only being unable to hightlight the assets when hovered on the list. Selecting one asset from the list closes Move It and restores full functionality to the list panel.
-	  * List panel continues to be fully functional and listing the selected assets event when the info panel of one is opened, allowing the user to select another asset from the list without having to close the info panel first nor having to reopen the list panel.
-	  * Assets like roads, rails, netlanes, paths that might have been selected in Move It are skipped and not be listed in the list panel.
-	  * The panel's design has been improved to be more visually appealing (I hope), and closer to the vanilla UI style.
+# Patch V0.0.6
+* French and Spanish translations.
+* More code cleanup.
+* Added Thumbnail.
+* Detached Git from BB fork tree.
+* Further Tweeks to the Long Description of the mod.
 
-	  # Patch V0.0.2
-	  * Fully working version of the Selected Assets List Panel
-	  * Still requires a preselection made inside MoveIt to display the selected assets in the list, and the list needs to be refreshed manually by closing the list and reopening it.</ChangeLog>
+# Patch V0.0.5
+* Tweeks to the Long Description of the mod.
+
+# Patch V0.0.4
+* List Panel is now draggable and the position is kept between game sessions by saving it in the mod's settings.
+* Cleanup of some unused code and logging statements.
+
+# Patch V0.0.3
+* List panel now contains a button to refresh the list based on the lastest Move It selection, so it no longer requires closing and reopening the list to refresh it.
+* Still requires a preselection made inside MoveIt to display the selected assets in the list.
+* Panel now shows the names of the assets prefabs if they are available, otherwise it will show the name of the asset itself.
+* Instructions are now presented in the list panel when no assets are selected.
+* The list panel remains visible and partially functional even when Move It is running, only being unable to hightlight the assets when hovered on the list. Selecting one asset from the list closes Move It and restores full functionality to the list panel.
+* List panel continues to be fully functional and listing the selected assets event when the info panel of one is opened, allowing the user to select another asset from the list without having to close the info panel first nor having to reopen the list panel.
+* Assets like roads, rails, netlanes, paths that might have been selected in Move It are skipped and not be listed in the list panel.
+* The panel's design has been improved to be more visually appealing (I hope), and closer to the vanilla UI style.
+
+# Patch V0.0.2
+* Fully working version of the Selected Assets List Panel
+* Still requires a preselection made inside MoveIt to display the selected assets in the list, and the list needs to be refreshed manually by closing the list and reopening it.</ChangeLog>
   <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
   <ExternalLink Type="youtube" Url="https://www.youtube.com/@Obelix-Red" />
   <ExternalLink Type="discord" Url="https://discord.com/channels/1024242828114673724/1543648594547187882" />
   <ExternalLink Type="github" Url="https://github.com/gecscs/LSD" />
   <ExternalLink Type="crowdin" Url="https://crowdin.com/project/layered-selection-display" />
+  <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/beta-lsd-layered-selection-display.1939905/" />
   <!-- Supported values Public, Private, Unlisted -->
   <AccessLevel Value="Unlisted" />
 </Publish>

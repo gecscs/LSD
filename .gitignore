@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /BetterBulldozer/Keys.props
+/LayeredSelectionDisplay/Properties/PublishProfiles/FolderProfileUpdate.pubxml

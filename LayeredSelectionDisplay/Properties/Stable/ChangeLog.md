@@ -1,4 +1,10 @@
-﻿# Patch v0.1.4
+﻿# Patch v0.1.6
+* More corrections to publishing settings.
+
+# Patch v0.1.5
+* Corrected publishing settings.
+
+# Patch v0.1.4
 * Removed unrecognized CSS properties from SCSS stylesheet.
 
 # Patch v0.1.3
