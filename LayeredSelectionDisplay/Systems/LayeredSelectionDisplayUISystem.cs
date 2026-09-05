@@ -5,6 +5,10 @@
 // #define VERBOSE
 namespace LayeredSelectionDisplay.Systems
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
     using Colossal.Entities;
     using Colossal.Logging;
     using Colossal.Serialization.Entities;
@@ -21,10 +25,6 @@ namespace LayeredSelectionDisplay.Systems
     using LayeredSelectionDisplay.Domain;
     using LayeredSelectionDisplay.Extensions;
     using LayeredSelectionDisplay.Settings;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Reflection;
     using Unity.Collections;
     using Unity.Entities;
     using Unity.Jobs;
@@ -62,6 +62,9 @@ namespace LayeredSelectionDisplay.Systems
         private ValueBindingHelper<VanillaFilters> m_SelectedVanillaFilters;
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
+
+        private ValueBinding<bool> m_IsFiltersPanelVisible;
+
         private ValueBinding<bool> m_IsMoveItInstalled;
         private ValueBinding<bool> m_IsMarqueeToolSelected;
         private ValueBinding<bool> m_IsMarqueeToolActive;
@@ -209,13 +212,15 @@ namespace LayeredSelectionDisplay.Systems
             m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
             m_HoverState = new HoverState();
 
-            // m_EdtTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(EDTToolId));
-            // m_TransformGizmoTool = World.GetExistingSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId));
 
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
             m_IsGame = CreateBinding("IsGame", false);
             m_SelectedVanillaFilters = CreateBinding("SelectedVanillaFilters", VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props);
+
+            // Flag to indicate whether the filters panel is visible in the UI.
+            m_IsFiltersPanelVisible = new ValueBinding<bool>(ModId, "IsFiltersPanelVisible", false);
+            AddBinding(m_IsFiltersPanelVisible);
 
             // These handle events activating actions triggered by clicking buttons in the UI.
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
@@ -245,6 +250,9 @@ namespace LayeredSelectionDisplay.Systems
             }
 
             AddBinding(new TriggerBinding<float2>(ModId, "SetPanelPosition", SetPanelPosition));
+
+            // This handles the event when the filters panel visibility is toggled in the UI.
+            AddBinding(new TriggerBinding(ModId, "OnChangeFiltersPanelVisibility", OnChangeFiltersPanelVisibility));
 
             // This handles the event when the marquee tool is selected in the UI.
             AddBinding(new TriggerBinding(ModId, "OnChangeListPanelVisibility", OnChangeListPanelVisibility));
@@ -478,6 +486,15 @@ namespace LayeredSelectionDisplay.Systems
             {
                 m_Log?.Error(ex, $"{nameof(SetPanelPosition)}: failed to save settings");
             }
+        }
+
+        /// <summary>
+        /// Toggles the visibility of the filters panel in the UI.
+        /// </summary>
+        private void OnChangeFiltersPanelVisibility()
+        {
+            m_IsFiltersPanelVisible.Update(
+                !m_IsFiltersPanelVisible.value);
         }
 
         /// <summary>

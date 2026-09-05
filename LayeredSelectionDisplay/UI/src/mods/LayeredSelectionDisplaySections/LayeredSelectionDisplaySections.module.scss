@@ -1,0 +1,19 @@
+.minimizedPanel {
+    position: absolute;
+    inset: 0;
+    width: 70rem;
+    height: 12rem;
+    pointer-events: none;
+}
+
+.toggleIco {
+    position: absolute;
+    width: 7rem;
+    height: 7rem;
+    left: 50%;
+    top: 60%;
+    box-sizing: border-box;
+    border-right: 1.5rem solid rgba(255, 255, 255, 0.35);
+    border-bottom: 1.5rem solid rgba(255, 255, 255, 0.35);
+    transform: translate(-50%, -50%) rotate(225deg);
+}
