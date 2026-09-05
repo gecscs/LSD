@@ -34,5 +34,7 @@
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Herramientas",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Haz clic para abrir el panel de la lista y usar la herramienta de selección rectangular para seleccionar recursos o importar recursos seleccionados desde Move It.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Clic izquierdo: Abrir el panel de información del recurso, Clic derecho: Abrir en EDT Transform Tool",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic izquierdo: Abrir el panel de información del recurso"
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic izquierdo: Abrir el panel de información del recurso",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Ocultar panel de filtros",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Mostrar panel de filtros"
 }
