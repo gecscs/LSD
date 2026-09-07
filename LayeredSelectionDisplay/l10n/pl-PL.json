@@ -34,5 +34,7 @@
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Narzędzia",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Kliknij, aby otworzyć panel listy i użyć narzędzia zaznaczania prostokątem do wyboru obiektów lub zaimportować wybrane obiekty z Move It.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Kliknij lewym przyciskiem: Otwórz panel informacji o zasobie, Kliknij prawym przyciskiem: Otwórz w EDT Transform Tool",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Kliknij lewym przyciskiem: Otwórz panel informacji o zasobie"
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Kliknij lewym przyciskiem: Otwórz panel informacji o zasobie",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Ukryj panel filtrów",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Pokaż panel filtrów"
 }

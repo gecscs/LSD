@@ -34,5 +34,7 @@
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Strumenti",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Fai clic per aprire il pannello dell'elenco e usare lo strumento di selezione rettangolare per selezionare gli asset oppure importare gli asset selezionati da Move It.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Clic sinistro: Apri il pannello delle informazioni dell'asset, Clic destro: Apri in EDT Transform Tool",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic sinistro: Apri il pannello delle informazioni dell'asset"
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic sinistro: Apri il pannello delle informazioni dell'asset",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Nascondi pannello dei filtri",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Mostra pannello dei filtri"
 }

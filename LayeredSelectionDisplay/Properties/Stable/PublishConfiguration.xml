@@ -208,20 +208,34 @@
   <!--Thumbnail-->
   <Thumbnail Value="Properties/Stable/Thumbnail.png" />
   <!--Screenshot, can be set multiple-->
-  <Screenshot Value="Properties/Stable/Thumbnail.png" />
+  <Screenshot Value="Properties/Previews/010.jpg" />
+  <Screenshot Value="Properties/Previews/020.jpg" />
+  <Screenshot Value="Properties/Previews/030.jpg" />
+  <Screenshot Value="Properties/Previews/040.jpg" />
+  <Screenshot Value="Properties/Previews/050.jpg" />
+  <Screenshot Value="Properties/Previews/060.jpg" />
+  <Screenshot Value="Properties/Previews/070.jpg" />
+  <Screenshot Value="Properties/Previews/080.jpg" />
+  <Screenshot Value="Properties/Previews/090.jpg" />
+  <Screenshot Value="Properties/Previews/100.jpg" />
   <!--Tag, can be set multiple-->
   <Tag Value="Code Mod" />
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.1.6" />
+  <ModVersion Value="0.2.0" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.6.*" />
   <!--Dependency for the mod, can be set multiple-->
   <Dependency Id="74417" DisplayName="Unified Icon Library" Version="1.0.13" />
   <!--<Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />-->
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-  <ChangeLog># Patch v0.1.6
+  <ChangeLog># Patch v0.2.0
+* Filters panel now starts hidden and can be toggled with a slim button at the bottom of the game view.
+* Changed Reload from MoveIt and Minimize icons.
+* Localized the tooltips for the show and hide buttons and added all translations.
+
+# Patch v0.1.6
 * More corrections to publishing settings.
 
 # Patch v0.1.5

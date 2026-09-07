@@ -34,5 +34,7 @@
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "도구",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "클릭하여 목록 패널을 열고 영역 선택 도구로 에셋을 선택하거나 Move It에서 선택한 에셋을 가져옵니다.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "왼쪽 클릭: 자산 정보 패널 열기, 오른쪽 클릭: EDT Transform Tool에서 열기",
-  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "왼쪽 클릭: 자산 정보 패널 열기"
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "왼쪽 클릭: 자산 정보 패널 열기",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "필터 패널 숨기기",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "필터 패널 표시"
 }

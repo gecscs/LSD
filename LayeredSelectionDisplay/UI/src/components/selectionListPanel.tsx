@@ -314,33 +314,8 @@ export const SelectionListPanel = () => {
                                         event.stopPropagation()
                                     }
                                     onClick={HandleRefresh}
-                                >                                        
-                                    <svg
-                                        className={
-                                            styles.headerIcon
-                                        }
-                                        width="18"
-                                        height="18"
-                                        viewBox="0 0 18 18"
-                                        fill="none"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            d="M14.5 9a5.5 5.5 0 1 1-1.6-3.9"
-                                            stroke="currentColor"
-                                            strokeWidth="1.4"
-                                            strokeLinecap="round"
-                                        />
-
-                                        <polyline
-                                            points="12.5,2.5 12.5,5.5 9.5,5.5"
-                                            stroke="currentColor"
-                                            strokeWidth="1.4"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            fill="none"
-                                        />
-                                    </svg>
+                                >       
+                                    <img src="coui://uil/Standard/ArrowLoad.svg" />
                                 </button>
                             </Tooltip>    
                         </>                
@@ -405,7 +380,7 @@ export const SelectionListPanel = () => {
 
                                     <div className={styles.emptyState}>
 
-                                        <div className={styles.emptyIcon}>
+                                        <div onClick={ SelectMarqueeTool } className={styles.emptyIcon}>
                                             <svg
                                                 width="20"
                                                 height="20"
