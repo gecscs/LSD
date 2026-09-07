@@ -115,7 +115,7 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
                     const present = defaultToolActive && isGame && !!document.querySelector(".tool-panel_V_j");
                     if (lastToolPanelPresentRef.current !== present) {
                         lastToolPanelPresentRef.current = present;
-                        console.log("Tool panel presence changed:", present);
+                        //console.log("Tool panel presence changed:", present);
                         forceRerender((n) => n + 1);
                     }
                 };

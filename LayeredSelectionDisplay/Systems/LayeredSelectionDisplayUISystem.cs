@@ -40,6 +40,8 @@ namespace LayeredSelectionDisplay.Systems
         private const string TransformGizmoToolId = "TransformGizmoTool";
         private const string SubElementBulldozerToolID = "Bulldoze Tool";
         private ToolBaseSystem m_BetterBulldozerTool;
+        private const string AreaToolID = "Area Tool";
+        private ToolBaseSystem m_AreaTool;
         private ValueBinding<bool> m_EdtExists;
         private ValueBinding<bool> m_TransformGizmoToolExists;
         private int m_PendingTransformMode = 1;
@@ -356,6 +358,15 @@ namespace LayeredSelectionDisplay.Systems
                 m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Better Bulldozer tool not found (not installed?).");
             }
 
+            if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(AreaToolID)) is ToolBaseSystem areaTool)
+            {
+                m_AreaTool = areaTool;
+            }
+            else
+            {
+                m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Area Tool not found.");
+            }
+
             if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId)) is ToolBaseSystem m_EdtTool)
             {
                 m_EdtExists = new ValueBinding<bool>(ModId, "EdtExists", true);
@@ -429,7 +440,7 @@ namespace LayeredSelectionDisplay.Systems
             base.OnUpdate();
 
             bool isDefaultToolActive =
-                m_ToolSystem.activeTool == m_DefaultToolSystem &&
+                (m_ToolSystem.activeTool == m_DefaultToolSystem || m_ToolSystem.activeTool == m_AreaTool) &&
                 m_ToolSystem.activeTool != m_BetterBulldozerTool;
 
             if (m_IsDefaultToolActive.value != isDefaultToolActive)
