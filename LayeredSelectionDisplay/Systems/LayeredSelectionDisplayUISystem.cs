@@ -226,7 +226,6 @@ namespace LayeredSelectionDisplay.Systems
                 binding);
         }
 
-
         /// <inheritdoc/>
         protected override void OnCreate()
         {
@@ -285,10 +284,6 @@ namespace LayeredSelectionDisplay.Systems
             }
 
             AddBinding(new TriggerBinding<float2>(ModId, "SetPanelPosition", SetPanelPosition));
-
-            AddBinding(m_IsToolsWrapperVisible = new ValueBinding<bool>(ModId, "IsToolsWrapperVisible", false));
-
-            AddBinding(new TriggerBinding(ModId, "OnToolsWrapperVisibilityChanged", OnToolsWrapperVisibilityChanged));
 
             // This handles the event when the filters panel visibility is toggled in the UI.
             AddBinding(new TriggerBinding(ModId, "OnChangeFiltersPanelVisibility", OnChangeFiltersPanelVisibility));
@@ -383,18 +378,6 @@ namespace LayeredSelectionDisplay.Systems
                 m_TransformGizmoToolExists.Update(false);
                 m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} EDT TransformGizmoTool not found");
             }
-
-            //if (World.GetExistingSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId)) is ToolBaseSystem m_TransformGizmoTool)
-            //{
-            //    m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", true);
-            //    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} TransformGizmoToolExists true.");
-            //    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} m_TransformGizmoTool.toolID: " + m_TransformGizmoTool.toolID);
-            //}
-            //else
-            //{
-            //    m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", false);
-            //    // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} TransformGizmoToolExists false.");
-            //}
 
             m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} after attempting to get Move It tool.");
             m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Old Tool Order:");
@@ -499,14 +482,6 @@ namespace LayeredSelectionDisplay.Systems
                     }
                 }
             }
-        }
-
-        private void OnToolsWrapperVisibilityChanged()
-        {
-            // m_Log.Debug("OnToolsWrapperVisibilityChanged called");
-            // m_Log.Debug($"m_IsToolsWrapperVisible before change: {m_IsToolsWrapperVisible.value}");
-            m_IsToolsWrapperVisible.Update(!m_IsToolsWrapperVisible.value);
-            // m_Log.Debug($"m_IsToolsWrapperVisible after change: {m_IsToolsWrapperVisible.value}");
         }
 
         /// <summary>

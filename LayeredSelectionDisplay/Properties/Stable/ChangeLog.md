@@ -1,4 +1,9 @@
-﻿# Patch v0.1.6
+﻿# Patch v0.2.0
+* Filters panel now starts hidden and can be toggled with a slim button at the bottom of the game view.
+* Changed Reload from MoveIt and Minimize icons.
+* Localized the tooltips for the show and hide buttons and added all translations.
+
+# Patch v0.1.6
 * More corrections to publishing settings.
 
 # Patch v0.1.5
