@@ -29,8 +29,6 @@ namespace LayeredSelectionDisplay.Systems
     using Unity.Entities;
     using Unity.Jobs;
     using Unity.Mathematics;
-    using UnityEngine.PlayerLoop;
-    using static Game.Simulation.CityProductionStatisticSystem.CityResourceUsage;
 
     /// <summary>
     /// UI system for LSD extensions to the default tool.
@@ -40,6 +38,8 @@ namespace LayeredSelectionDisplay.Systems
         private const string ModId = "LayeredSelectionDisplay";
         private const string MoveItToolID = "MoveItTool";
         private const string TransformGizmoToolId = "TransformGizmoTool";
+        private const string SubElementBulldozerToolID = "Bulldoze Tool";
+        private ToolBaseSystem m_BetterBulldozerTool;
         private ValueBinding<bool> m_EdtExists;
         private ValueBinding<bool> m_TransformGizmoToolExists;
         private int m_PendingTransformMode = 1;
@@ -59,19 +59,19 @@ namespace LayeredSelectionDisplay.Systems
         private ValueBinding<int> m_RaycastTarget;
         private ValueBindingHelper<bool> m_IsGame;
         private ValueBindingHelper<bool> m_IsEditor;
+        private ValueBinding<bool> m_IsDefaultToolActive;
         private ValueBindingHelper<VanillaFilters> m_SelectedVanillaFilters;
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
-
+        private ValueBinding<bool> m_IsToolsWrapperVisible;
         private ValueBinding<bool> m_IsFiltersPanelVisible;
-
         private ValueBinding<bool> m_IsMoveItInstalled;
         private ValueBinding<bool> m_IsMarqueeToolSelected;
         private ValueBinding<bool> m_IsMarqueeToolActive;
         private LayeredSelectionDisplayModSettings m_settings;
         private ValueBinding<float2> m_PanelPosition;
         private ValueBinding<bool> m_ExpandedListPanel;
-        private NativeHashSet<Entity> m_MoveItSelectedEntities = new(0, Allocator.Persistent);
+        private NativeHashSet<Entity> m_MoveItSelectedEntities = new (0, Allocator.Persistent);
         private PropertyInfo m_MoveItSelectedEntitiesPropertyInfo;
         private GetterValueBinding<HashSet<Entity>> m_MoveItSelectedEntitiesBinding;
         private ValueBinding<SelectedEntities> m_SelectedEntitiesBinding;
@@ -80,36 +80,6 @@ namespace LayeredSelectionDisplay.Systems
         private Entity m_HoveredEntity = Entity.Null;
         private Entity m_PreviousHoveredEntity = Entity.Null;
         private HoverState m_HoverState;
-
-        /// <summary>
-        /// Get data, can be used inside or outside of system
-        /// </summary>
-        /// <param name="readOnly">true.</param>
-        /// <param name="deps">dependency.</param>
-        /// <returns>MoveItSelectedEntities.</returns>
-        public NativeHashSet<Entity> GetEntities(bool readOnly, out JobHandle deps)
-        {
-            deps = readOnly ? m_writeDeps : JobHandle.CombineDependencies(m_readDeps, m_writeDeps);
-            return m_MoveItSelectedEntities;
-        }
-
-        /// <summary>
-        /// Register jobhandle as read dependency.
-        /// </summary>
-        /// <param name="jobHandle">jobhandle to add.</param>
-        public void AddEntitiesReader(JobHandle jobHandle)
-        {
-            m_readDeps = JobHandle.CombineDependencies(m_readDeps, jobHandle);
-        }
-
-        /// <summary>
-        /// Registers jobhandle as write dependency.
-        /// </summary>
-        /// <param name="jobHandle">jobhandle to add.</param>
-        public void AddEntitiesWriter(JobHandle jobHandle)
-        {
-            m_writeDeps = JobHandle.CombineDependencies(m_writeDeps, jobHandle);
-        }
 
         /// <summary>
         /// An enum to handle different raycast target options.
@@ -179,6 +149,36 @@ namespace LayeredSelectionDisplay.Systems
         }
 
         /// <summary>
+        /// Get data, can be used inside or outside of system
+        /// </summary>
+        /// <param name="readOnly">true.</param>
+        /// <param name="deps">dependency.</param>
+        /// <returns>MoveItSelectedEntities.</returns>
+        public NativeHashSet<Entity> GetEntities(bool readOnly, out JobHandle deps)
+        {
+            deps = readOnly ? m_writeDeps : JobHandle.CombineDependencies(m_readDeps, m_writeDeps);
+            return m_MoveItSelectedEntities;
+        }
+
+        /// <summary>
+        /// Register jobhandle as read dependency.
+        /// </summary>
+        /// <param name="jobHandle">jobhandle to add.</param>
+        public void AddEntitiesReader(JobHandle jobHandle)
+        {
+            m_readDeps = JobHandle.CombineDependencies(m_readDeps, jobHandle);
+        }
+
+        /// <summary>
+        /// Registers jobhandle as write dependency.
+        /// </summary>
+        /// <param name="jobHandle">jobhandle to add.</param>
+        public void AddEntitiesWriter(JobHandle jobHandle)
+        {
+            m_writeDeps = JobHandle.CombineDependencies(m_writeDeps, jobHandle);
+        }
+
+        /// <summary>
         /// Gets a value indicating what to raycast.
         /// </summary>
         public RaycastTarget SelectedRaycastTarget { get => (RaycastTarget)m_RaycastTarget.value; }
@@ -192,6 +192,40 @@ namespace LayeredSelectionDisplay.Systems
         /// Gets a value indicating whether the marquee tool is selected.
         /// </summary>
         public HoverState HoverState => m_HoverState;
+
+        /// <summary>
+        /// Sets the active state of the marquee tool in the UI.
+        /// </summary>
+        /// <param name="state">A boolean indicating the desired active state of the marquee tool.</param>
+        public void SetMarqueeToolState(bool state)
+        {
+            m_IsMarqueeToolActive.Update(state);
+        }
+
+        /// <summary>
+        /// Sets the entities currently selected by the marquee tool in the UI.
+        /// </summary>
+        /// <param name="entities">A collection of entities to be selected.</param>
+        public void SetMarqueeEntities(IEnumerable<Entity> entities)
+        {
+            SelectedEntities binding =
+                new SelectedEntities
+                {
+                    Entities =
+                        new List<SelectedEntity>(),
+                };
+
+            foreach (Entity entity in entities)
+            {
+                AddEntityToSelectedEntities(
+                    binding,
+                    entity);
+            }
+
+            m_SelectedEntitiesBinding.Update(
+                binding);
+        }
+
 
         /// <inheritdoc/>
         protected override void OnCreate()
@@ -212,6 +246,7 @@ namespace LayeredSelectionDisplay.Systems
             m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
             m_HoverState = new HoverState();
 
+            AddBinding(m_IsDefaultToolActive = new ValueBinding<bool>(ModId, "IsDefaultToolActive", true));
 
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
@@ -250,6 +285,10 @@ namespace LayeredSelectionDisplay.Systems
             }
 
             AddBinding(new TriggerBinding<float2>(ModId, "SetPanelPosition", SetPanelPosition));
+
+            AddBinding(m_IsToolsWrapperVisible = new ValueBinding<bool>(ModId, "IsToolsWrapperVisible", false));
+
+            AddBinding(new TriggerBinding(ModId, "OnToolsWrapperVisibilityChanged", OnToolsWrapperVisibilityChanged));
 
             // This handles the event when the filters panel visibility is toggled in the UI.
             AddBinding(new TriggerBinding(ModId, "OnChangeFiltersPanelVisibility", OnChangeFiltersPanelVisibility));
@@ -311,6 +350,15 @@ namespace LayeredSelectionDisplay.Systems
             else
             {
                 m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} move it tool not found");
+            }
+
+            if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(SubElementBulldozerToolID)) is ToolBaseSystem betterBulldozerTool)
+            {
+                m_BetterBulldozerTool = betterBulldozerTool;
+            }
+            else
+            {
+                m_Log.Info($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} Better Bulldozer tool not found (not installed?).");
             }
 
             if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(TransformGizmoToolId)) is ToolBaseSystem m_EdtTool)
@@ -397,6 +445,15 @@ namespace LayeredSelectionDisplay.Systems
         {
             base.OnUpdate();
 
+            bool isDefaultToolActive =
+                m_ToolSystem.activeTool == m_DefaultToolSystem &&
+                m_ToolSystem.activeTool != m_BetterBulldozerTool;
+
+            if (m_IsDefaultToolActive.value != isDefaultToolActive)
+            {
+                m_IsDefaultToolActive.Update(isDefaultToolActive);
+            }
+
             // Phase 1:
             // Restart EDT with a new entity.
             if (m_RestartTransformGizmo)
@@ -434,17 +491,22 @@ namespace LayeredSelectionDisplay.Systems
             if (m_SetPendingTransformMode)
             {
                 // Make sure EDT is now the active tool.
-                if (m_EDTTransformTool != null &&
-                    m_ToolSystem.activeTool == m_EDTTransformTool)
+                if (m_EDTTransformTool != null && m_ToolSystem.activeTool == m_EDTTransformTool)
                 {
-                    if (EDTBridge.SetMode(
-                            World,
-                            m_PendingTransformMode))
+                    if (EDTBridge.SetMode(World, m_PendingTransformMode))
                     {
                         m_SetPendingTransformMode = false;
                     }
                 }
             }
+        }
+
+        private void OnToolsWrapperVisibilityChanged()
+        {
+            // m_Log.Debug("OnToolsWrapperVisibilityChanged called");
+            // m_Log.Debug($"m_IsToolsWrapperVisible before change: {m_IsToolsWrapperVisible.value}");
+            m_IsToolsWrapperVisible.Update(!m_IsToolsWrapperVisible.value);
+            // m_Log.Debug($"m_IsToolsWrapperVisible after change: {m_IsToolsWrapperVisible.value}");
         }
 
         /// <summary>
@@ -493,8 +555,9 @@ namespace LayeredSelectionDisplay.Systems
         /// </summary>
         private void OnChangeFiltersPanelVisibility()
         {
-            m_IsFiltersPanelVisible.Update(
-                !m_IsFiltersPanelVisible.value);
+            m_Log.Debug($"m_IsFiltersPanelVisible before change: {m_IsFiltersPanelVisible.value}");
+            m_IsFiltersPanelVisible.Update(!m_IsFiltersPanelVisible.value);
+            m_Log.Debug($"m_IsFiltersPanelVisible after change: {m_IsFiltersPanelVisible.value}");
         }
 
         /// <summary>
@@ -512,31 +575,6 @@ namespace LayeredSelectionDisplay.Systems
             {
                 m_MarqueeSelectionSystem.CancelSelection();
             }
-        }
-
-        public void SetMarqueeToolState(bool state)
-        {
-            m_IsMarqueeToolActive.Update(state);
-        }
-
-        public void SetMarqueeEntities(IEnumerable<Entity> entities)
-        {
-            SelectedEntities binding =
-                new SelectedEntities
-                {
-                    Entities =
-                        new List<SelectedEntity>(),
-                };
-
-            foreach (Entity entity in entities)
-            {
-                AddEntityToSelectedEntities(
-                    binding,
-                    entity);
-            }
-
-            m_SelectedEntitiesBinding.Update(
-                binding);
         }
 
         /// <summary>

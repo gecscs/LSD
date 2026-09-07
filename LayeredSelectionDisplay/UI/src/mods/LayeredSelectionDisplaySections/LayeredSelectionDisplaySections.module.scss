@@ -2,18 +2,18 @@
     position: absolute;
     inset: 0;
     width: 70rem;
-    height: 12rem;
+    height: 15rem;
     pointer-events: auto;
 }
 
 .toggleIco {
     position: absolute;
-    width: 7rem;
-    height: 7rem;
+    width: 8rem;
+    height: 8rem;
     left: 50%;
-    top: 65%;
+    top: 50%;
     box-sizing: border-box;
-    border-right: 1.5rem solid rgba(255, 255, 255, 0.35);
-    border-bottom: 1.5rem solid rgba(255, 255, 255, 0.35);
+    border-right: 1.8rem solid rgba(255, 255, 255, 0.45);
+    border-bottom: 1.8rem solid rgba(255, 255, 255, 0.45);
     transform: translate(-50%, -50%) rotate(225deg);
 }
