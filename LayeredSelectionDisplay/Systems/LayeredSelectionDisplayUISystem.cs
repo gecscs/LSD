@@ -530,9 +530,9 @@ namespace LayeredSelectionDisplay.Systems
         /// </summary>
         private void OnChangeFiltersPanelVisibility()
         {
-            m_Log.Debug($"m_IsFiltersPanelVisible before change: {m_IsFiltersPanelVisible.value}");
+            // m_Log.Debug($"m_IsFiltersPanelVisible before change: {m_IsFiltersPanelVisible.value}");
             m_IsFiltersPanelVisible.Update(!m_IsFiltersPanelVisible.value);
-            m_Log.Debug($"m_IsFiltersPanelVisible after change: {m_IsFiltersPanelVisible.value}");
+            // m_Log.Debug($"m_IsFiltersPanelVisible after change: {m_IsFiltersPanelVisible.value}");
         }
 
         /// <summary>
