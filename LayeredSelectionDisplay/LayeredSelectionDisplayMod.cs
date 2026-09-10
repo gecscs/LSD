@@ -109,7 +109,7 @@ namespace LayeredSelectionDisplay
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Settings));
             Logger.Info($"[{nameof(LayeredSelectionDisplayMod)}] {nameof(OnLoad)} Loading localization for other languages.");
 
-            // LoadNonEnglishLocalizations();
+            LoadNonEnglishLocalizations();
 #if DEBUG && EXPORT_EN_US
             GenerateLanguageFile();
 #endif
