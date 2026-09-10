@@ -1,4 +1,7 @@
-﻿# Patch v0.2.0
+﻿# Patch v0.2.1
+* Localization is now working properly.
+
+# Patch v0.2.0
 * Filters panel now starts hidden and can be toggled with a slim button at the bottom of the game view.
 * Changed Reload from MoveIt and Minimize icons.
 * Localized the tooltips for the show and hide buttons and added all translations.

@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /BetterBulldozer/Keys.props
 /LayeredSelectionDisplay/Properties/PublishProfiles/FolderProfileUpdate.pubxml
+/LayeredSelectionDisplay/Library/ilpp.pid
