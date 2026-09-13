@@ -80,6 +80,7 @@ function RefreshSelection() {
 
 function CloseSelectionListPanel() {
     trigger(mod.id, "OnChangeListPanelVisibility");
+    SavePanelPosition();
 }
 
 function SelectMarqueeTool() {
@@ -371,7 +372,7 @@ export const SelectionListPanel = () => {
                             }}
                             header={panelHeader}
                             footer={panelFooter}
-                            onMouseUp={SavePanelPosition}
+                            //onDragEnd={SavePanelPosition}
                         >
 
                             <div className={styles.body}>

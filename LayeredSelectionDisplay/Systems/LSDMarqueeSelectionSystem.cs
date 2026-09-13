@@ -139,37 +139,37 @@
                             ComponentType.ReadOnly<Car>(),
                             ComponentType.ReadOnly<Airplane>(),
                             ComponentType.ReadOnly<Helicopter>(),
-                            ComponentType.ReadOnly<PassengerTransport>(),
+                            //ComponentType.ReadOnly<PassengerTransport>(),
                             ComponentType.ReadOnly<Train>(),
-                            ComponentType.ReadOnly<Game.Vehicles.PublicTransport>(),
-                            ComponentType.ReadOnly<Game.Vehicles.CargoTransport>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.PublicTransport>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.CargoTransport>(),
                             ComponentType.ReadOnly<Creature>(),
-                            ComponentType.ReadOnly<CreatureData>(),
+                            //ComponentType.ReadOnly<CreatureData>(),
                             ComponentType.ReadOnly<Stopped>(),
                             ComponentType.ReadOnly<Human>(),
                             ComponentType.ReadOnly<Animal>(),
                             ComponentType.ReadOnly<Bicycle>(),
                             ComponentType.ReadOnly<Aircraft>(),
-                            ComponentType.ReadOnly<Game.Vehicles.Ambulance>(),
-                            ComponentType.ReadOnly<Game.Vehicles.Hearse>(),
-                            // ComponentType.ReadOnly<Game.Vehicles.GuestVehicle>(),
-                            ComponentType.ReadOnly<Game.Vehicles.GarbageTruck>(),
-                            ComponentType.ReadOnly<Game.Vehicles.FireEngine>(),
-                            ComponentType.ReadOnly<Game.Vehicles.CarTrailer>(),
-                            ComponentType.ReadOnly<Game.Vehicles.DeliveryTruck>(),
-                            ComponentType.ReadOnly<Game.Vehicles.PersonalCar>(),
-                            ComponentType.ReadOnly<Game.Vehicles.CarTrailer>(),
-                            ComponentType.ReadOnly<Game.Vehicles.ParkedTrain>(),
-                            ComponentType.ReadOnly<Game.Vehicles.ParkedCar>(),
-                            // ComponentType.ReadOnly<Game.Vehicles.OwnedVehicle>(),
-                            ComponentType.ReadOnly<Game.Vehicles.ParkMaintenanceVehicle>(),
-                            ComponentType.ReadOnly<Game.Vehicles.RoadMaintenanceVehicle>(),
-                            ComponentType.ReadOnly<Game.Vehicles.PrisonerTransport>(),
-                            ComponentType.ReadOnly<Game.Vehicles.Taxi>(),
-                            ComponentType.ReadOnly<Game.Vehicles.MaintenanceVehicle>(),
-                            ComponentType.ReadOnly<Game.Vehicles.Watercraft>(),
-                            ComponentType.ReadOnly<Game.Vehicles.Rocket>(),
-                            ComponentType.ReadOnly<Game.Vehicles.WorkVehicle>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.Ambulance>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.Hearse>(),
+                            //// ComponentType.ReadOnly<Game.Vehicles.GuestVehicle>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.GarbageTruck>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.FireEngine>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.CarTrailer>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.DeliveryTruck>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.PersonalCar>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.CarTrailer>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.ParkedTrain>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.ParkedCar>(),
+                            //// ComponentType.ReadOnly<Game.Vehicles.OwnedVehicle>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.ParkMaintenanceVehicle>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.RoadMaintenanceVehicle>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.PrisonerTransport>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.Taxi>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.MaintenanceVehicle>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.Watercraft>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.Rocket>(),
+                            //ComponentType.ReadOnly<Game.Vehicles.WorkVehicle>(),
                             ComponentType.ReadOnly<Game.Objects.Moving>(),
                         },
                         None = new ComponentType[]
@@ -436,12 +436,9 @@
             Bounds2 bounds,
             Quad2 quad)
         {
-            m_Log.Debug($"entities: {entities.ToJSONString()}");
+            m_Log.Debug($"entities (start): {entities.ToJSONString()}");
 
-            SearchMovingEntities(
-                entities,
-                bounds,
-                quad);
+            SearchMovingEntities(entities, bounds, quad);
 
             //m_Log.Debug($"Moving-tree candidates: {entities.Length}");
 
@@ -491,7 +488,7 @@
             //        $"CreatureData={EntityManager.HasComponent<CreatureData>(entity)}");
             //}
 
-            //m_Log.Debug($"entities (2): {entities.ToJSONString()}");
+            m_Log.Debug($"entities (2): {entities.ToJSONString()}");
 
             JobHandle movingDependencies;
 
@@ -605,7 +602,7 @@
             staticTree.Iterate(
                 ref iterator2);
 
-            //m_Log.Debug($"entities (3): {entities.ToJSONString()}");
+            m_Log.Debug($"entities (3): {entities.ToJSONString()}");
         }
     }
 }

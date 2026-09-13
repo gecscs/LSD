@@ -1,4 +1,7 @@
-﻿
+﻿# Patch v0.3.1
+* Increased the marquee lines for better visibility and to prevent issues with DLSS;
+* Minor optimizations to the marquee drawing code and filtering logic.
+
 # Patch v0.3.0
 * New filters added to the selection tool: Moving Objects (cims, vehicles, animals).
 * New filters added to the selection tool exclusive to the Marquee Tool: Markers and Net Sub-Objects.

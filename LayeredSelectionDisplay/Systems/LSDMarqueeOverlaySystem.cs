@@ -22,7 +22,7 @@ namespace LayeredSelectionDisplay.Systems
             s_Color = Color.blue;
 
         private const float
-            k_LineWidth = 0.4f;
+            k_LineWidth = 1.0f;
 
         protected override void OnCreate()
         {

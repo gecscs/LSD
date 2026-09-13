@@ -70,6 +70,8 @@ namespace LayeredSelectionDisplay.Settings
             {
                 m_AllowSubObjectSelection = value;
                 World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<LayeredSelectionDisplayUISystem>()?.m_AllowSubObjectSelection.Update(value);
+                m_Log = LayeredSelectionDisplayMod.Instance.Logger;
+                m_Log.Debug("AllowSubObjectSelection set to: " + value);
                 ApplyAndSave();
             }
         }

@@ -48,6 +48,8 @@
                 return;
             }
 
+            //Entities.Add(entity);
+
             if (!Entities.Contains(entity))
             {
                 Entities.Add(entity);
@@ -62,6 +64,8 @@
             {
                 return;
             }
+
+            //Entities.Add(item.m_Area);
 
             if (!Entities.Contains(item.m_Area))
             {
