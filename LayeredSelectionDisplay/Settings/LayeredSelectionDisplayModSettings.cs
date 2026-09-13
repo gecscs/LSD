@@ -5,9 +5,12 @@
 namespace LayeredSelectionDisplay.Settings
 {
     using Colossal.IO.AssetDatabase;
+    using Colossal.Logging;
     using Game.Modding;
     using Game.Settings;
+    using LayeredSelectionDisplay.Systems;
     using System.ComponentModel;
+    using Unity.Entities;
     using Unity.Mathematics;
 
     /// <summary>
@@ -25,6 +28,8 @@ namespace LayeredSelectionDisplay.Settings
         {
             // SetDefaults();
         }
+
+        private ILog m_Log;
 
         /// <summary>
         /// Gets a value indicating the version.
@@ -49,10 +54,25 @@ namespace LayeredSelectionDisplay.Settings
         [SettingsUIHidden]
         public bool ExpandedListPanel { get; set; } = false;
 
+        private bool m_AllowSubObjectSelection = false;
+
         /// <summary>
         /// Gets or sets a value indicating whether sub-object selection is allowed.
         /// </summary>
-        public bool AllowSubObjectSelection { get; set; } = false;
+        public bool AllowSubObjectSelection
+        {
+            get
+            {
+                return m_AllowSubObjectSelection;
+            }
+
+            set
+            {
+                m_AllowSubObjectSelection = value;
+                World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<LayeredSelectionDisplayUISystem>()?.m_AllowSubObjectSelection.Update(value);
+                ApplyAndSave();
+            }
+        }
 
         /// <inheritdoc/>
         public override void SetDefaults()

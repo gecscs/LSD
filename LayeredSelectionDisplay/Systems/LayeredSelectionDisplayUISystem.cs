@@ -82,7 +82,7 @@ namespace LayeredSelectionDisplay.Systems
         private Entity m_HoveredEntity = Entity.Null;
         private Entity m_PreviousHoveredEntity = Entity.Null;
         private HoverState m_HoverState;
-        private ValueBinding<bool> m_AllowSubObjectSelection;
+        public ValueBinding<bool> m_AllowSubObjectSelection;
 
         /// <summary>
         /// An enum to handle different raycast target options.
@@ -273,6 +273,7 @@ namespace LayeredSelectionDisplay.Systems
             m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
             m_HoverState = new HoverState();
             m_AllowSubObjectSelection = new ValueBinding<bool>(ModId, "AllowSubObjectSelection", LayeredSelectionDisplayMod.Instance.Settings.AllowSubObjectSelection);
+            AddBinding(m_AllowSubObjectSelection);
 
             AddBinding(m_IsDefaultToolActive = new ValueBinding<bool>(ModId, "IsDefaultToolActive", true));
 
