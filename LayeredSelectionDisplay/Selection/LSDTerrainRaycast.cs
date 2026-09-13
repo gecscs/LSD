@@ -34,7 +34,7 @@
             {
                 m_Line = ToolRaycastSystem.CalculateRaycastLine(camera),
                 m_Offset = default,
-                m_TypeMask = TypeMask.Terrain,
+                m_TypeMask = TypeMask.All, // TypeMask.Terrain,
             };
 
             m_RaycastSystem.AddInput(m_Owner, input);

@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Paneel sluiten",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Paneel uitvouwen",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Paneel inklappen",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Gereedschappen",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klik om het lijstpaneel te openen en het selectiekader te gebruiken om assets te selecteren, of geselecteerde assets uit Move It te importeren.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Linker muisklik: Open asset-informatiepaneel, Rechter muisklik: Open in EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Linker muisklik: Open asset-informatiepaneel",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Filterpaneel verbergen",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Filterpaneel tonen"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Filterpaneel tonen",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Gereedschappen",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klik om het lijstpaneel te openen en het selectiekader te gebruiken om assets te selecteren, of geselecteerde assets uit Move It te importeren.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "Alleen selectiekader",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "Deze filters zijn alleen van toepassing wanneer je het selectiekader gebruikt om objecten te selecteren. Ze hebben geen invloed op de standaardselectie.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "Filter voor bewegende objecten",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "Als je dit uitschakelt, worden bewegende objecten niet geselecteerd.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filter voor netwerksubobjecten",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Als je dit uitschakelt, worden netwerksubobjecten niet geselecteerd, zoals draad- en buisknooppunten in gebouwen.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Markerfilter",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Als je dit uitschakelt, worden markerobjecten in gebouwen niet geselecteerd."
 }

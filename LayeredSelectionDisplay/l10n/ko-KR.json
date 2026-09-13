@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "패널 닫기",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "패널 확장",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "패널 축소",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "도구",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "클릭하여 목록 패널을 열고 영역 선택 도구로 에셋을 선택하거나 Move It에서 선택한 에셋을 가져옵니다.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "왼쪽 클릭: 자산 정보 패널 열기, 오른쪽 클릭: EDT Transform Tool에서 열기",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "왼쪽 클릭: 자산 정보 패널 열기",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "도구",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "클릭하여 목록 패널을 열고 영역 선택 도구로 에셋을 선택하거나 Move It에서 선택한 에셋을 가져옵니다.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "필터 패널 숨기기",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "필터 패널 표시"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "필터 패널 표시",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "선택 영역만",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "이 필터는 선택 영역 도구를 사용하여 개체를 선택할 때만 적용됩니다. 기본 선택에는 영향을 주지 않습니다.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "이동 개체 필터",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "이 옵션을 끄면 도구가 이동 개체를 선택하지 않습니다.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "네트워크 하위 개체 필터",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "이 옵션을 끄면 도구가 건물 내부의 전선 및 배관 노드와 같은 네트워크 하위 개체를 선택하지 않습니다.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "마커 필터",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "이 옵션을 끄면 도구가 건물 내부의 마커 개체를 선택하지 않습니다."
 }

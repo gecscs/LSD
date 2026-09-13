@@ -7,6 +7,7 @@ namespace LayeredSelectionDisplay.Settings
     using Colossal.IO.AssetDatabase;
     using Game.Modding;
     using Game.Settings;
+    using System.ComponentModel;
     using Unity.Mathematics;
 
     /// <summary>
@@ -43,15 +44,20 @@ namespace LayeredSelectionDisplay.Settings
         public float2 EditorListPanelPosition { get; set; }
 
         /// <summary>
-        /// Sets if the List Panel is expanded or not.
+        /// Gets or sets a value indicating whether the List Panel is expanded or not.
         /// </summary>
         [SettingsUIHidden]
         public bool ExpandedListPanel { get; set; } = false;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether sub-object selection is allowed.
+        /// </summary>
+        public bool AllowSubObjectSelection { get; set; } = false;
+
         /// <inheritdoc/>
         public override void SetDefaults()
         {
-            throw new System.NotImplementedException();
+            AllowSubObjectSelection = false;
         }
     }
 }

@@ -48,7 +48,10 @@
                 return;
             }
 
-            Entities.Add(entity);
+            if (!Entities.Contains(entity))
+            {
+                Entities.Add(entity);
+            }
         }
 
         public void Iterate(
@@ -60,8 +63,10 @@
                 return;
             }
 
-            Entities.Add(
-                item.m_Area);
+            if (!Entities.Contains(item.m_Area))
+            {
+                Entities.Add(item.m_Area);
+            }
         }
 
         public void Dispose()

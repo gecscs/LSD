@@ -59,6 +59,11 @@ namespace LayeredSelectionDisplay.Patches
                 {
                     toolRaycastSystem.typeMask &= ~TypeMask.StaticObjects;
                 }
+
+                if ((betterBulldozerUISystem.SelectedVanillaFilters & LayeredSelectionDisplayUISystem.VanillaFilters.MovingObjects) != LayeredSelectionDisplayUISystem.VanillaFilters.MovingObjects)
+                {
+                    toolRaycastSystem.typeMask &= ~TypeMask.MovingObjects;
+                }
             }
         }
     }

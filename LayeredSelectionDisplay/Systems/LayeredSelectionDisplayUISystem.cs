@@ -82,6 +82,7 @@ namespace LayeredSelectionDisplay.Systems
         private Entity m_HoveredEntity = Entity.Null;
         private Entity m_PreviousHoveredEntity = Entity.Null;
         private HoverState m_HoverState;
+        private ValueBinding<bool> m_AllowSubObjectSelection;
 
         /// <summary>
         /// An enum to handle different raycast target options.
@@ -92,6 +93,16 @@ namespace LayeredSelectionDisplay.Systems
             /// Do not change the raycast targets.
             /// </summary>
             Vanilla,
+
+            /// <summary>
+            /// Exclusively target surfaces and spaces
+            /// </summary>
+            Areas,
+
+            /// <summary>
+            /// Exclusively target markers.
+            /// </summary>
+            Markers,
 
             /// <summary>
             /// Exclusively target standalone lanes such as fences, hedges, street markings, or vehicle lanes.
@@ -145,9 +156,24 @@ namespace LayeredSelectionDisplay.Systems
             Surfaces = 64,
 
             /// <summary>
+            /// Markers.
+            /// </summary>
+            MovingObjects = 128,
+
+            /// <summary>
+            /// Net sub-objects, such as wire and pipe nodes inside buildings.
+            /// </summary>
+            NetSubObjects = 256,
+
+            /// <summary>
+            /// Moving objects, such as vehicles and citizens.
+            /// </summary>
+            Marquers = 512,
+
+            /// <summary>
             /// Vanilla bulldozer, no filters.
             /// </summary>
-            All = 128,
+            All = 1024,
         }
 
         /// <summary>
@@ -246,6 +272,7 @@ namespace LayeredSelectionDisplay.Systems
             m_prefabUISystem = World.GetOrCreateSystemManaged<PrefabUISystem>();
             m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
             m_HoverState = new HoverState();
+            m_AllowSubObjectSelection = new ValueBinding<bool>(ModId, "AllowSubObjectSelection", LayeredSelectionDisplayMod.Instance.Settings.AllowSubObjectSelection);
 
             AddBinding(m_IsDefaultToolActive = new ValueBinding<bool>(ModId, "IsDefaultToolActive", true));
 
@@ -717,7 +744,7 @@ namespace LayeredSelectionDisplay.Systems
             if (!m_TransformGizmoToolExists.value ||
                 !EntityManager.Exists(entity))
             {
-                m_Log?.Error(
+                m_Log?.Warn(
                     $"{nameof(OnOpenTransform)}: Entity does not exist or " +
                     $"TransformGizmoTool is not available. " +
                     $"index = {index}, version = {version}.");
@@ -815,6 +842,8 @@ namespace LayeredSelectionDisplay.Systems
 
         private void ChangeVanillaFilters(VanillaFilters toggledFilter)
         {
+            bool allowSubObjectSelection = LayeredSelectionDisplayMod.Instance.Settings.AllowSubObjectSelection;
+
             if (toggledFilter != VanillaFilters.All && (m_SelectedVanillaFilters.Value & VanillaFilters.All) == VanillaFilters.All)
             {
                 m_SelectedVanillaFilters.Value &= ~VanillaFilters.All;
@@ -826,7 +855,13 @@ namespace LayeredSelectionDisplay.Systems
             }
             else if (toggledFilter == VanillaFilters.All && m_SelectedVanillaFilters.Value == VanillaFilters.None)
             {
-                m_SelectedVanillaFilters.Value |= VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props | VanillaFilters.Surfaces | VanillaFilters.All;
+                if (allowSubObjectSelection)
+                {
+                    m_SelectedVanillaFilters.Value |= VanillaFilters.MovingObjects | VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props | VanillaFilters.Surfaces | VanillaFilters.NetSubObjects | VanillaFilters.Marquers | VanillaFilters.All;
+                    return;
+                }
+
+                m_SelectedVanillaFilters.Value |= VanillaFilters.MovingObjects | VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props | VanillaFilters.Surfaces | VanillaFilters.All;
                 return;
             }
 
@@ -839,7 +874,7 @@ namespace LayeredSelectionDisplay.Systems
                 m_SelectedVanillaFilters.Value |= toggledFilter;
             }
 
-            if ((int)m_SelectedVanillaFilters.Value == 127)
+            if ((int)m_SelectedVanillaFilters.Value == (allowSubObjectSelection ? 1023 : 255))
             {
                 m_SelectedVanillaFilters.Value |= VanillaFilters.All;
             }

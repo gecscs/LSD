@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Chiudi pannello",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Espandi pannello",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Riduci pannello",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Strumenti",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Fai clic per aprire il pannello dell'elenco e usare lo strumento di selezione rettangolare per selezionare gli asset oppure importare gli asset selezionati da Move It.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Clic sinistro: Apri il pannello delle informazioni dell'asset, Clic destro: Apri in EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic sinistro: Apri il pannello delle informazioni dell'asset",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Strumenti",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Fai clic per aprire il pannello dell'elenco e usare lo strumento di selezione rettangolare per selezionare gli asset oppure importare gli asset selezionati da Move It.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Nascondi pannello dei filtri",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Mostra pannello dei filtri"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Mostra pannello dei filtri",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "Solo selezione rettangolare",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "Questi filtri si applicano solo quando si utilizza lo strumento di selezione rettangolare per selezionare gli oggetti. Non influiscono sulla selezione predefinita.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "Filtro degli oggetti mobili",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "Disattivando questa opzione si impedisce allo strumento di selezionare gli oggetti mobili.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filtro dei sottoggetti delle reti",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Disattivando questa opzione si impedisce allo strumento di selezionare i sottoggetti delle reti, come i nodi di cavi e tubature all’interno degli edifici.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Filtro dei contrassegni",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Disattivando questa opzione si impedisce allo strumento di selezionare gli oggetti contrassegno all’interno degli edifici."
 }

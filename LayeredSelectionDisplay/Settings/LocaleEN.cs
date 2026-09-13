@@ -52,6 +52,8 @@ namespace LayeredSelectionDisplay.Settings
                 { m_Setting.GetSettingsLocaleID(), "Layered Selection Display" },
                 { m_Setting.GetOptionLabelLocaleID(nameof(LayeredSelectionDisplayModSettings.Version)), "Version" },
                 { m_Setting.GetOptionDescLocaleID(nameof(LayeredSelectionDisplayModSettings.Version)), $"Version number of the Layered Selection Display mod installed." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(LayeredSelectionDisplayModSettings.AllowSubObjectSelection)), "Allow Sub-Object Selection while using the Marquee Tool" },
+                { m_Setting.GetOptionDescLocaleID(nameof(LayeredSelectionDisplayModSettings.AllowSubObjectSelection)), $"Warning: May cause issues while manipulating sub-objects such as wires and pipe nodes." },
                 { "LAYERED_SELECTION_DISPLAY.Filter", "Filter" },
                 { "LAYERED_SELECTION_DISPLAY_DESCRIPTION.SurfacesFilterButton", "For selecting surfaces inside or outside of buildings in one click." },
                 { TooltipTitleKey("AllFilters"), "Toggle all Filters on/off" },
@@ -87,6 +89,14 @@ namespace LayeredSelectionDisplay.Settings
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip", "Hide filters panel" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip", "Show filters panel" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", "Click to open the List Panel and use the Marquee Tool to select assets, or import selected assets from Move It." },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection", "Marquee Only" },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription", "These filters only apply when using the Marquee Tool to select assets. They do not affect default selection." },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter", "Moving Objects Filter" },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription", "Toggling this off will prevent the tool from selecting moving objects." },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter", "Net Sub-Objects Filter" },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription", "Toggling this off will prevent the tool from selecting net sub-objects (e.g., wire and pipe nodes inside buildings)." },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter", "Markers Filter" },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription", "Toggling this off will prevent the tool from selecting marker objects inside buildings." },
             };
         }
 

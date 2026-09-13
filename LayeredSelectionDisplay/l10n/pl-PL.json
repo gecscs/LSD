@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Zamknij panel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Rozwiń panel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Zwiń panel",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Narzędzia",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Kliknij, aby otworzyć panel listy i użyć narzędzia zaznaczania prostokątem do wyboru obiektów lub zaimportować wybrane obiekty z Move It.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Kliknij lewym przyciskiem: Otwórz panel informacji o zasobie, Kliknij prawym przyciskiem: Otwórz w EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Kliknij lewym przyciskiem: Otwórz panel informacji o zasobie",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Narzędzia",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Kliknij, aby otworzyć panel listy i użyć narzędzia zaznaczania prostokątem do wyboru obiektów lub zaimportować wybrane obiekty z Move It.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Ukryj panel filtrów",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Pokaż panel filtrów"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Pokaż panel filtrów",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "Tylko zaznaczanie ramką",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "Te filtry mają zastosowanie tylko podczas korzystania z narzędzia zaznaczania ramką. Nie wpływają na zaznaczanie domyślne.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "Filtr poruszających się obiektów",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "Wyłączenie tej opcji uniemożliwi narzędziu zaznaczanie poruszających się obiektów.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filtr podobiektów sieci",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Wyłączenie tej opcji uniemożliwi narzędziu zaznaczanie podobiektów sieci, takich jak węzły przewodów i rur wewnątrz budynków.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Filtr znaczników",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Wyłączenie tej opcji uniemożliwi narzędziu zaznaczanie obiektów znaczników wewnątrz budynków."
 }

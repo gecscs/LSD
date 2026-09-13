@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Fermer le Panneau",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Agrandir le Panneau",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Réduire le Panneau",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Outils",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Cliquez pour ouvrir le panneau de liste et utiliser l'outil de sélection rectangulaire pour sélectionner des assets ou importer les assets sélectionnés depuis Move It.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Clic gauche : Ouvrir le panneau d'informations de l'asset, Clic droit : Ouvrir dans EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic gauche : Ouvrir le panneau d'informations de l'asset",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Outils",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Cliquez pour ouvrir le panneau de liste et utiliser l'outil de sélection rectangulaire pour sélectionner des assets ou importer les assets sélectionnés depuis Move It.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Masquer le panneau des filtres",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Afficher le panneau des filtres"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Afficher le panneau des filtres",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "Sélection rectangulaire uniquement",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "Ces filtres s’appliquent uniquement lors de l’utilisation de l’outil de sélection rectangulaire. Ils n’affectent pas la sélection par défaut.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "Filtre des objets mobiles",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "Désactiver cette option empêche l’outil de sélectionner les objets mobiles.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filtre des sous-objets de réseau",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Désactiver cette option empêche l’outil de sélectionner les sous-objets de réseau, comme les nœuds de câbles et de canalisations à l’intérieur des bâtiments.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Filtre des marqueurs",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Désactiver cette option empêche l’outil de sélectionner les objets marqueurs à l’intérieur des bâtiments."
 }

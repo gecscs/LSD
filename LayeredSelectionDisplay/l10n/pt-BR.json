@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Fechar painel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Expandir painel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Recolher painel",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Ferramentas",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Clique para abrir o Painel da Lista e usar a Ferramenta de Seleção Retangular para selecionar assets ou importar assets selecionados do Move It.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Clique com o botão esquerdo: Abra o painel de informações do asset, Clique com o botão direito: Abra no EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clique com o botão esquerdo: Abra o painel de informações do asset",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Ferramentas",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Clique para abrir o Painel da Lista e usar a Ferramenta de Seleção Retangular para selecionar assets ou importar assets selecionados do Move It.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Ocultar painel de filtros",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Mostrar painel de filtros"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Mostrar painel de filtros",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "Somente seleção retangular",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "Estes filtros só se aplicam ao usar a ferramenta de seleção retangular para selecionar objetos. Eles não afetam a seleção padrão.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "Filtro de objetos móveis",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "Desativar esta opção impede que a ferramenta selecione objetos móveis.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filtro de subobjetos de rede",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Desativar esta opção impede que a ferramenta selecione subobjetos de rede, como nós de fios e canos dentro de edifícios.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Filtro de marcadores",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Desativar esta opção impede que a ferramenta selecione objetos marcadores dentro de edifícios."
 }

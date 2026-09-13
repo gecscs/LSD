@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Panel schließen",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Panel erweitern",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Panel reduzieren",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Werkzeuge",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klicken, um das Listenpanel zu öffnen und das Auswahlrechteck-Werkzeug zu verwenden, um Assets auszuwählen oder ausgewählte Assets aus Move It zu importieren.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Linksklick: Öffne das Informationsfenster des Assets, Rechtsklick: Öffne im EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Linksklick: Öffne das Informationsfenster des Assets",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Werkzeuge",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klicken, um das Listenpanel zu öffnen und das Auswahlrechteck-Werkzeug zu verwenden, um Assets auszuwählen oder ausgewählte Assets aus Move It zu importieren.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Filterpanel ausblenden",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Filterpanel anzeigen"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Filterpanel anzeigen",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "Nur Auswahlrahmen",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "Diese Filter gelten nur bei der Auswahl von Objekten mit dem Auswahlrahmen-Werkzeug. Sie haben keinen Einfluss auf die Standardauswahl.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "Filter für bewegliche Objekte",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "Durch Deaktivieren dieser Option wird verhindert, dass das Werkzeug bewegliche Objekte auswählt.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filter für Netzwerk-Unterobjekte",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Durch Deaktivieren dieser Option wird verhindert, dass das Werkzeug Netzwerk-Unterobjekte auswählt, z. B. Kabel- und Rohrknoten innerhalb von Gebäuden.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Markerfilter",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Durch Deaktivieren dieser Option wird verhindert, dass das Werkzeug Markerobjekte innerhalb von Gebäuden auswählt."
 }

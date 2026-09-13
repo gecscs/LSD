@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "關閉面板",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "展開面板",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "收合面板",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "工具",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "點擊以開啟清單面板，使用框選工具選取資產，或從 Move It 匯入已選取的資產。",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "左鍵點擊: 打開資產資訊面板, 右鍵點擊: 在 EDT Transform Tool 中打開",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "左鍵點擊: 打開資產資訊面板",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "工具",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "點擊以開啟清單面板，使用框選工具選取資產，或從 Move It 匯入已選取的資產。",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "隱藏篩選面板",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "顯示篩選面板"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "顯示篩選面板",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "僅框選",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "這些篩選器僅在使用框選工具選取資產時生效，不會影響預設選取。",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "移動物件篩選器",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "關閉此選項後，該工具將不會選取移動物件。",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "網路子物件篩選器",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "關閉此選項後，該工具將不會選取網路子物件，例如建築物內的電線和管線節點。",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "標記篩選器",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "關閉此選項後，該工具將不會選取建築物內的標記物件。"
 }

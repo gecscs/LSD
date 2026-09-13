@@ -31,10 +31,18 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CloseButtonToolTip": "Закрыть панель",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ExpandButtonToolTip": "Развернуть панель",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Свернуть панель",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Инструменты",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Нажмите, чтобы открыть панель списка и использовать инструмент выделения рамкой для выбора объектов или импортировать выбранные объекты из Move It.",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Щелкните левой кнопкой: Откройте панель информации об объекте, Щелкните правой кнопкой: Откройте в EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Щелкните левой кнопкой: Откройте панель информации об объекте",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Инструменты",
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Нажмите, чтобы открыть панель списка и использовать инструмент выделения рамкой для выбора объектов или импортировать выбранные объекты из Move It.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Скрыть панель фильтров",
-  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Показать панель фильтров"
+  "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Показать панель фильтров",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection": "Только рамка выделения",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription": "Эти фильтры применяются только при использовании инструмента рамки выделения. Они не влияют на выделение по умолчанию.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter": "Фильтр движущихся объектов",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription": "Отключение этой функции не позволит инструменту выделять движущиеся объекты.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Фильтр сетевых подобъектов",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Отключение этой функции не позволит инструменту выделять сетевые подобъекты, например узлы проводов и труб внутри зданий.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Фильтр маркеров",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Отключение этой функции не позволит инструменту выделять объекты-маркеры внутри зданий."
 }

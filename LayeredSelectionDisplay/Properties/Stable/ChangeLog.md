@@ -1,4 +1,10 @@
-﻿# Patch v0.2.1
+﻿
+# Patch v0.3.0
+* New filters added to the selection tool: Moving Objects (cims, vehicles, animals).
+* New filters added to the selection tool exclusive to the Marquee Tool: Markers and Net Sub-Objects.
+* Settings now allow the user to prevent selection of all sub-objects of buildings using the Marquee Tool.
+	  
+# Patch v0.2.1
 * Localization is now working properly.
 
 # Patch v0.2.0

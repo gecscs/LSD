@@ -225,7 +225,7 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.2.1" />
+  <ModVersion Value="0.3.0" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.6.*" />
   <!--Dependency for the mod, can be set multiple-->
@@ -233,6 +233,11 @@
   <!--<Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />-->
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
+	  # Patch v0.3.0
+	  * New filters added to the selection tool: Moving Objects (cims, vehicles, animals).
+	  * New filters added to the selection tool exclusive to the Marquee Tool: Markers and Net Sub-Objects.
+	  * Settings now allow the user to prevent selection of all sub-objects of buildings using the Marquee Tool.
+
 	  # Patch v0.2.1
 	  * Localization is now working properly.
 

@@ -19,6 +19,7 @@ const isGame$ = bindValue<boolean>(mod.id, "IsGame");
 const selectedVanillaFilters$ = bindValue<VanillaFilters>(mod.id, "SelectedVanillaFilters");
 const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
 const isFiltersPanelVisible$ = bindValue<boolean>(mod.id, "IsFiltersPanelVisible");
+const allowSubObjectSelection$ = bindValue<boolean>(mod.id, "AllowSubObjectSelection", false);
 
 // These contain the coui paths to Unified Icon Library svg assets
 const uilStandard = "coui://uil/Standard/";
@@ -30,6 +31,9 @@ const treeSrc = uilStandard + "TreeAdult.svg";
 const plantSrc = uilStandard + "FlowerPot.svg";
 const buildingSrc = uilStandard + "House.svg";
 const propsSrc = uilStandard + "BenchAndLampProps.svg";
+const movingObjectsSrc = uilStandard + "CubeSimulation.svg";
+const netSubObjectsSrc = uilStandard + "DottedLinesMarkers.svg";
+const markersSrc = uilStandard + "MarkerSpawner.svg";
 
 const isDefaultToolActive$ = bindValue<boolean>(mod.id, "IsDefaultToolActive");
 
@@ -65,7 +69,10 @@ enum VanillaFilters {
     Decals = 16,
     Props = 32,
     Surfaces = 64,
-    All = 128,
+    MovingObjects = 128,
+    NetSubObjects = 256,
+    Marquers = 512,
+    All = 1024,
 }
 
 const descriptionToolTipStyle = getModule(
@@ -104,6 +111,7 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
             const isMarqueeToolSelected = useValue(isMarqueeToolSelected$);
             const marqueeToolIcon = isMarqueeToolSelected ? marqueeToolActiveSrc : marqueeToolSrc;
             const isFiltersPanelVisible = useValue(isFiltersPanelVisible$);
+            const allowSubObjectSelection = useValue(allowSubObjectSelection$);
 
             // Forces a re-render only when tool-panel presence actually flips —
             // not on every internal DOM churn (that was the earlier crash cause).
@@ -218,6 +226,16 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
             const toolsSectionTitleTranslated = translate("LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools", locale["LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools"]);
             const marqueeToolTooltipTranslated = translate("LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip", locale["LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip"]);
 
+            const HidePanelToolTip = translate("LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip", locale["LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip"]);
+            const marqueeOnlyFilterSectionTitle = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSection"]);
+            const marqueeOnlyFilterSectionDescription = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.MarqueeOnlyFilterSectionDescription"]);
+            const movingObjectsFilterTitle = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilter"]);
+            const movingObjectsFilterTooltip = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.MovingObjectsFilterDescription"]);
+            const netSubObjectsFilterTitle = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter"]);
+            const netSubObjectsFilterTooltip = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription"]);
+            const markersFilterTitle = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter"]);
+            const markersTooltip = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription"]);
+
             // ORIGINAL COMPONENT
             const result: JSX.Element = Component();
 
@@ -261,7 +279,10 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
                                         />
 
                                         <VanillaComponentResolver.instance.ToolButton
-                                            onSelect={() => onChangeFiltersPanelVisibility() }
+                                            onSelect={() => onChangeFiltersPanelVisibility()}
+                                            tooltip={
+                                                HidePanelToolTip
+                                            }
                                             src="coui://uil/Standard/ArrowsMinimizeBold.svg"
                                             className={
                                                 VanillaComponentResolver
@@ -308,6 +329,27 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
                                                     .FOCUS_DISABLED
                                             }
                                         />
+
+                                        <VanillaComponentResolver.instance.ToolButton
+                                            selected={
+                                                (selectedVanillaFilters &
+                                                    VanillaFilters.MovingObjects) ==
+                                                VanillaFilters.MovingObjects
+                                            }
+                                            tooltip={
+                                                descriptionTooltip(
+                                                    movingObjectsFilterTitle, movingObjectsFilterTooltip
+                                                )
+                                            }
+                                            onSelect={() =>
+                                                changeSelectedVanillaFilter(
+                                                    VanillaFilters.MovingObjects
+                                                )
+                                            }
+                                            src={movingObjectsSrc}
+                                            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                                            className={VanillaComponentResolver.instance.toolButtonTheme.button}>
+                                        </VanillaComponentResolver.instance.ToolButton>
 
                                         <VanillaComponentResolver.instance.ToolButton
                                             selected={
@@ -448,6 +490,54 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
                                                     .FOCUS_DISABLED
                                             }
                                         />
+                                    </VanillaComponentResolver.instance.Section>
+                                </>
+                            )}
+                            {allowSubObjectSelection && (
+                                <>
+                                    <VanillaComponentResolver.instance.Section title={marqueeOnlyFilterSectionTitle}>
+                                        <VanillaComponentResolver.instance.ToolButton
+                                            className={VanillaComponentResolver.instance.toolButtonTheme.button}
+                                            selected={
+                                                (selectedVanillaFilters &
+                                                    VanillaFilters.NetSubObjects) ==
+                                                VanillaFilters.NetSubObjects
+                                            }
+                                            tooltip={
+                                                descriptionTooltip(
+                                                    netSubObjectsFilterTitle,
+                                                    netSubObjectsFilterTooltip
+                                                )
+                                            }
+                                            onSelect={() =>
+                                                changeSelectedVanillaFilter(
+                                                    VanillaFilters.NetSubObjects
+                                                )
+                                            }
+                                            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                                            src={netSubObjectsSrc}>
+                                        </VanillaComponentResolver.instance.ToolButton>
+
+                                        <VanillaComponentResolver.instance.ToolButton
+                                            className={VanillaComponentResolver.instance.toolButtonTheme.button}
+                                            selected={
+                                                (selectedVanillaFilters &
+                                                    VanillaFilters.Marquers) ==
+                                                VanillaFilters.Marquers
+                                            }
+                                            tooltip={
+                                                descriptionTooltip(
+                                                    markersFilterTitle,
+                                                    markersTooltip
+                                                )
+                                            }
+                                            onSelect={() =>                                                
+                                                changeSelectedVanillaFilter(
+                                                    VanillaFilters.Marquers
+                                                )}
+                                            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                                            src={markersSrc}>
+                                        </VanillaComponentResolver.instance.ToolButton>
                                     </VanillaComponentResolver.instance.Section>
                                 </>
                             )}
