@@ -6,7 +6,7 @@ import { bindValue, trigger, useValue } from "cs2/api";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../../../mod.json";
 import locale from "../lang/en-US.json";
-import { getModule } from "cs2/modding";
+import { findModule, getModule } from "cs2/modding";
 import { Tooltip } from "cs2/ui";
 import marqueeToolSrc from "../../img/icon_Marquee_Off.svg";
 import marqueeToolActiveSrc from "../../img/icon_Marquee_Active.svg";
@@ -113,19 +113,28 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
             const isFiltersPanelVisible = useValue(isFiltersPanelVisible$);
             const allowSubObjectSelection = useValue(allowSubObjectSelection$);
 
-            // Forces a re-render only when tool-panel presence actually flips —
-            // not on every internal DOM churn (that was the earlier crash cause).
-            const [, forceRerender] = useState(0);
-            const lastToolPanelPresentRef = useRef<boolean | null>(null);
+            const [toolPanelPresent, setToolPanelPresent] =
+                useState<boolean>(() => {
+                    return (
+                        defaultToolActive &&
+                        isGame &&
+                        !!document.querySelector(".tool-panel_V_j")
+                    );
+                });
 
             useEffect(() => {
                 const checkForChange = () => {
                     const present = defaultToolActive && isGame && !!document.querySelector(".tool-panel_V_j");
-                    if (lastToolPanelPresentRef.current !== present) {
-                        lastToolPanelPresentRef.current = present;
-                        //console.log("Tool panel presence changed:", present);
-                        forceRerender((n) => n + 1);
-                    }
+
+                    setToolPanelPresent((previous) => {
+                        if (previous === present) {
+                            return previous;
+                        }
+
+                        // console.log("Tool panel presence changed:", present);
+
+                        return present;
+                    });
                 };
 
                 checkForChange();
@@ -141,8 +150,6 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
 
                 return () => observer?.disconnect();
             }, [defaultToolActive, isGame, isFiltersPanelVisible]);
-
-            const toolPanelPresent = defaultToolActive && isGame && !!document.querySelector(".tool-panel_V_j");
 
             useLayoutEffect(() => {
                 const wrapper = document.querySelector(".wrapper_eKY") as HTMLElement | null;

@@ -225,14 +225,17 @@
   <!--Link to the forum post where the mod can be discussed-->
   <!--<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/better-bulldozer.1644977/" />-->
   <!--Version of the mod-->
-  <ModVersion Value="0.3.1" />
+  <ModVersion Value="0.3.2" />
   <!--Recommended version of the base game to use the mod-->
   <GameVersion Value="1.6.*" />
   <!--Dependency for the mod, can be set multiple-->
   <Dependency Id="74417" DisplayName="Unified Icon Library" Version="1.0.13" />
   <!--<Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />-->
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-  <ChangeLog># Patch v0.3.1
+  <ChangeLog># Patch v0.3.2
+* Code optimizations on the manipulation of the Filters Panel / expand button.
+
+# Patch v0.3.1
 * Increased the marquee lines for better visibility and to prevent issues with DLSS;
 * Minor optimizations to the marquee drawing code and filtering logic.
 
@@ -284,16 +287,7 @@
 # Patch v0.0.8
 * Buttons now have tooltips.
 * Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.
-* All languages added (many translated via GPT).
-
-# Patch V0.0.7
-* Complete revamp of the List Panel.
-* New close panel button.
-* New Select With Marquee button (not yet functional).
-* Reload from Move It button moved to the top bar along with the 2 new buttons.
-* Each listed item now includes a Remove button that removes the item from the list, but keeps the original list in memory so it can be reloaded back from Move it, provided it has not changed there.
-* Bottom bar is now clickable to expand/collapse the list panel.
-* Expanded state of panel is also kept on hidden settings and is restored along with position when the panel is reopened in the same or in a new playing session.</ChangeLog>
+* All languages added (many translated via GPT).</ChangeLog>
   <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
   <ExternalLink Type="youtube" Url="https://www.youtube.com/@Obelix-Red" />
   <ExternalLink Type="discord" Url="https://discord.com/channels/1024242828114673724/1543648594547187882" />

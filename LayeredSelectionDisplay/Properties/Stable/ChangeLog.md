@@ -1,4 +1,7 @@
-﻿# Patch v0.3.1
+﻿# Patch v0.3.2
+* Code optimizations on the manipulation of the Filters Panel / expand button.
+
+# Patch v0.3.1
 * Increased the marquee lines for better visibility and to prevent issues with DLSS;
 * Minor optimizations to the marquee drawing code and filtering logic.
 
@@ -51,12 +54,3 @@
 * Buttons now have tooltips.
 * Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.
 * All languages added (many translated via GPT).
-
-# Patch V0.0.7
-* Complete revamp of the List Panel.
-* New close panel button.
-* New Select With Marquee button (not yet functional).
-* Reload from Move It button moved to the top bar along with the 2 new buttons.
-* Each listed item now includes a Remove button that removes the item from the list, but keeps the original list in memory so it can be reloaded back from Move it, provided it has not changed there.
-* Bottom bar is now clickable to expand/collapse the list panel.
-* Expanded state of panel is also kept on hidden settings and is restored along with position when the panel is reopened in the same or in a new playing session.
