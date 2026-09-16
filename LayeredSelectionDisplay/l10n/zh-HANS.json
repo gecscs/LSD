@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "网络子对象筛选器",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "关闭此选项后，该工具将不会选择网络子对象，例如建筑物内部的电线和管道节点。",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "标记筛选器",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "关闭此选项后，该工具将不会选择建筑物内部的标记对象。"
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "关闭此选项后，该工具将不会选择建筑物内部的标记对象。",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "选择子元素",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "关闭此选项后，工具将无法选择建筑物内的植物、树木或道具等子元素。"
 }

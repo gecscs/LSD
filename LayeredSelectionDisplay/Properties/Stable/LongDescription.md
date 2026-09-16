@@ -18,6 +18,7 @@
 
   You can choose which asset types the vanilla tool is allowed to select:
 
+  - Moving Objects (cims, vehicles, animals)
   - Buildings
   - Trees
   - Plants
@@ -122,6 +123,7 @@
   These mods are **not required by LSD itself**, but may be needed for specific localization setups or provide additional functionalities:
 
   - **Move It** - if installed, LSD provides a tool to import selections made using the Move It mod as an alternative to populate the selected assets list.
+  - **Extra Detailing Tools** - if installed, LSD provides a way to directly open the Extra Detailing Tools Transform Tool panel for selected assets.
   - **I18n Everywhere**
   - **European Portuguese Localization** — only required for the European Portuguese translation.
 

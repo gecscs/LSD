@@ -20,6 +20,7 @@ const selectedVanillaFilters$ = bindValue<VanillaFilters>(mod.id, "SelectedVanil
 const isMarqueeToolSelected$ = bindValue<boolean>(mod.id, "IsMarqueeToolSelected");
 const isFiltersPanelVisible$ = bindValue<boolean>(mod.id, "IsFiltersPanelVisible");
 const allowSubObjectSelection$ = bindValue<boolean>(mod.id, "AllowSubObjectSelection", false);
+const subElementSelectionActive$ = bindValue<boolean>(mod.id, "SubElementSelectionActive", false);
 
 // These contain the coui paths to Unified Icon Library svg assets
 const uilStandard = "coui://uil/Standard/";
@@ -34,6 +35,7 @@ const propsSrc = uilStandard + "BenchAndLampProps.svg";
 const movingObjectsSrc = uilStandard + "CubeSimulation.svg";
 const netSubObjectsSrc = uilStandard + "DottedLinesMarkers.svg";
 const markersSrc = uilStandard + "MarkerSpawner.svg";
+const subElementSelectionActiveSrc = uilStandard + "Jackhammer.svg";
 
 const isDefaultToolActive$ = bindValue<boolean>(mod.id, "IsDefaultToolActive");
 
@@ -58,6 +60,11 @@ function changeSelectedVanillaFilter(filter: VanillaFilters) {
 
 function onChangeListPanelVisibility() {
     trigger(mod.id, "OnChangeListPanelVisibility");
+}
+
+// This functions trigger an event on C# side and C# designates the method to implement.
+function handleClick(eventName: string) {
+    trigger(mod.id, eventName);
 }
 
 enum VanillaFilters {
@@ -112,6 +119,7 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
             const marqueeToolIcon = isMarqueeToolSelected ? marqueeToolActiveSrc : marqueeToolSrc;
             const isFiltersPanelVisible = useValue(isFiltersPanelVisible$);
             const allowSubObjectSelection = useValue(allowSubObjectSelection$);
+            const subElementSelectionActive = useValue(subElementSelectionActive$);
 
             const [toolPanelPresent, setToolPanelPresent] =
                 useState<boolean>(() => {
@@ -242,6 +250,8 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
             const netSubObjectsFilterTooltip = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription"]);
             const markersFilterTitle = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter"]);
             const markersTooltip = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription"]);
+            const subElementSelectionActiveTitle = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive"]);
+            const subElementSelectionActiveDescription = translate("LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription", locale["LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription"]);
 
             // ORIGINAL COMPONENT
             const result: JSX.Element = Component();
@@ -503,6 +513,17 @@ export const LayeredSelectionDisplaySectionsComponent: ModuleRegistryExtend =
                             {allowSubObjectSelection && (
                                 <>
                                     <VanillaComponentResolver.instance.Section title={marqueeOnlyFilterSectionTitle}>
+
+                                        <VanillaComponentResolver.instance.ToolButton
+                                            selected={subElementSelectionActive}
+                                            tooltip={descriptionTooltip(subElementSelectionActiveTitle, subElementSelectionActiveDescription)}
+                                            onSelect={() => handleClick("OnToggleSubElementSelection")}
+                                            src={subElementSelectionActiveSrc}
+                                            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                                            className={VanillaComponentResolver.instance.toolButtonTheme.button}>
+                                        </VanillaComponentResolver.instance.ToolButton>
+
+
                                         <VanillaComponentResolver.instance.ToolButton
                                             className={VanillaComponentResolver.instance.toolButtonTheme.button}
                                             selected={

@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filtro dei sottoggetti delle reti",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Disattivando questa opzione si impedisce allo strumento di selezionare i sottoggetti delle reti, come i nodi di cavi e tubature all’interno degli edifici.",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Filtro dei contrassegni",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Disattivando questa opzione si impedisce allo strumento di selezionare gli oggetti contrassegno all’interno degli edifici."
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Disattivando questa opzione si impedisce allo strumento di selezionare gli oggetti contrassegno all’interno degli edifici.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "Selezione dei sottoelementi",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "Disattivando questa opzione, lo strumento non selezionerà sottoelementi come piante, alberi o oggetti all’interno degli edifici."
 }

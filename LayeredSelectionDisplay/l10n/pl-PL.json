@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filtr podobiektów sieci",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Wyłączenie tej opcji uniemożliwi narzędziu zaznaczanie podobiektów sieci, takich jak węzły przewodów i rur wewnątrz budynków.",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Filtr znaczników",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Wyłączenie tej opcji uniemożliwi narzędziu zaznaczanie obiektów znaczników wewnątrz budynków."
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Wyłączenie tej opcji uniemożliwi narzędziu zaznaczanie obiektów znaczników wewnątrz budynków.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "Wybieranie podelementów",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "Wyłączenie tej opcji uniemożliwi narzędziu wybieranie podelementów, takich jak rośliny, drzewa lub obiekty znajdujące się wewnątrz budynków."
 }

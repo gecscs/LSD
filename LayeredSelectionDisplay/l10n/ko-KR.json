@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "네트워크 하위 개체 필터",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "이 옵션을 끄면 도구가 건물 내부의 전선 및 배관 노드와 같은 네트워크 하위 개체를 선택하지 않습니다.",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "마커 필터",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "이 옵션을 끄면 도구가 건물 내부의 마커 개체를 선택하지 않습니다."
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "이 옵션을 끄면 도구가 건물 내부의 마커 개체를 선택하지 않습니다.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "하위 요소 선택",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "이 옵션을 끄면 도구가 건물 내부의 식물, 나무 또는 소품과 같은 하위 요소를 선택하지 않습니다."
 }

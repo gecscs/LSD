@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Фильтр сетевых подобъектов",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Отключение этой функции не позволит инструменту выделять сетевые подобъекты, например узлы проводов и труб внутри зданий.",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Фильтр маркеров",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Отключение этой функции не позволит инструменту выделять объекты-маркеры внутри зданий."
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Отключение этой функции не позволит инструменту выделять объекты-маркеры внутри зданий.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "Выбор подэлементов",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "Отключение этой функции не позволит инструменту выбирать такие подэлементы внутри зданий, как растения, деревья или объекты."
 }

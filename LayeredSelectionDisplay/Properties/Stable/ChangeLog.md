@@ -1,4 +1,9 @@
-﻿# Patch v0.3.2
+﻿# Patch v0.3.3
+* Recompiled for new game version 1.6.2f1.
+* Moving Objects filter is now active by default.
+* Added a new filter exclusive to the Marquee Tool to filter sub-elements like plants, trees, and props.
+
+# Patch v0.3.2
 * Code optimizations on the manipulation of the Filters Panel / expand button.
 
 # Patch v0.3.1

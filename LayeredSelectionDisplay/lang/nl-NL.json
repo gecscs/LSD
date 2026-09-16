@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filter voor netwerksubobjecten",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Als je dit uitschakelt, worden netwerksubobjecten niet geselecteerd, zoals draad- en buisknooppunten in gebouwen.",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Markerfilter",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Als je dit uitschakelt, worden markerobjecten in gebouwen niet geselecteerd."
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Als je dit uitschakelt, worden markerobjecten in gebouwen niet geselecteerd.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "Subelementen selecteren",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "Als u dit uitschakelt, kan de tool geen subelementen zoals planten, bomen of objecten in gebouwen selecteren."
 }

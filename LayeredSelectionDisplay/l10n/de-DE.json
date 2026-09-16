@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filter für Netzwerk-Unterobjekte",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Durch Deaktivieren dieser Option wird verhindert, dass das Werkzeug Netzwerk-Unterobjekte auswählt, z. B. Kabel- und Rohrknoten innerhalb von Gebäuden.",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Markerfilter",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Durch Deaktivieren dieser Option wird verhindert, dass das Werkzeug Markerobjekte innerhalb von Gebäuden auswählt."
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Durch Deaktivieren dieser Option wird verhindert, dass das Werkzeug Markerobjekte innerhalb von Gebäuden auswählt.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "Subelemente auswählen",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "Wenn diese Option deaktiviert wird, kann das Tool keine Subelemente wie Pflanzen, Bäume oder Objekte innerhalb von Gebäuden auswählen."
 }

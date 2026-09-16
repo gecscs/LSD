@@ -13,7 +13,7 @@
 
     internal static class EntityFilterExtensions
     {
-        public static bool MatchesLSDFilter(this EntityManager entityManager, Entity entity, LayeredSelectionDisplayUISystem.VanillaFilters filters)
+        public static bool MatchesLSDFilter(this EntityManager entityManager, Entity entity, LayeredSelectionDisplayUISystem.VanillaFilters filters, bool subElementSelectionActive)
         {
             ILog m_Log = LayeredSelectionDisplayMod.Instance?.Logger;
             //m_Log.Debug($"{nameof(EntityFilterExtensions)}.{nameof(MatchesLSDFilter)} filters: {filters.ToString()}");
@@ -76,7 +76,6 @@
             //m_Log.Debug($"{nameof(EntityFilterExtensions)}.{nameof(MatchesLSDFilter)} Watercraft? {entityManager.HasComponent<Game.Vehicles.Watercraft>(entity)}");
             //m_Log.Debug($"{nameof(EntityFilterExtensions)}.{nameof(MatchesLSDFilter)} WorkVehicle? {entityManager.HasComponent<Game.Vehicles.WorkVehicle>(entity)}");
 
-
             // Building SubObjects
             if (allowSubObjectSelection)
             {
@@ -119,15 +118,20 @@
             }
 
             // Trees
-            if ((filters & LayeredSelectionDisplayUISystem.VanillaFilters.Trees) != 0 && entityManager.HasComponent<Tree>(entity) &&
-                (allowSubObjectSelection ? true : !entityManager.HasComponent<Owner>(entity)))
+            if ((filters & LayeredSelectionDisplayUISystem.VanillaFilters.Trees) != 0 &&
+                entityManager.HasComponent<Tree>(entity) &&
+                (!entityManager.HasComponent<Owner>(entity) ||
+                 (allowSubObjectSelection && subElementSelectionActive)))
             {
                 return true;
             }
 
             // Plants
-            if ((filters & LayeredSelectionDisplayUISystem.VanillaFilters.Plants) != 0 && entityManager.HasComponent<Plant>(entity) && !entityManager.HasComponent<Tree>(entity) &&
-                (allowSubObjectSelection ? true : !entityManager.HasComponent<Owner>(entity)))
+            if ((filters & LayeredSelectionDisplayUISystem.VanillaFilters.Plants) != 0 &&
+                entityManager.HasComponent<Plant>(entity) &&
+                !entityManager.HasComponent<Tree>(entity) &&
+                (!entityManager.HasComponent<Owner>(entity) ||
+                 (allowSubObjectSelection && subElementSelectionActive)))
             {
                 return true;
             }
@@ -193,8 +197,7 @@
             //entityManager.HasComponent<CreatureData>(entity);
 
             // Props
-            if ((filters &
-                LayeredSelectionDisplayUISystem.VanillaFilters.Props) != 0 &&
+            if ((filters & LayeredSelectionDisplayUISystem.VanillaFilters.Props) != 0 &&
                 entityManager.HasComponent<Object>(entity) &&
                 entityManager.HasComponent<Static>(entity) &&
                 !entityManager.HasComponent<Tree>(entity) &&
@@ -205,7 +208,8 @@
                 !entityManager.HasComponent<SubNet>(entity) &&
                 !entityManager.HasComponent<Game.Objects.SpawnLocation>(entity) &&
                 !entityManager.HasComponent<Game.Objects.UtilityObject>(entity) &&
-                (allowSubObjectSelection ? true : !entityManager.HasComponent<Owner>(entity)))
+                (!entityManager.HasComponent<Owner>(entity) ||
+                 (allowSubObjectSelection && subElementSelectionActive)))
             {
                 return true;
             }
@@ -213,7 +217,8 @@
             // Decals
             if ((filters & LayeredSelectionDisplayUISystem.VanillaFilters.Decals) != 0 &&
                 entityManager.IsDecal(entity) &&
-                (allowSubObjectSelection ? true : !entityManager.HasComponent<Owner>(entity)))
+                (!entityManager.HasComponent<Owner>(entity) ||
+                 (allowSubObjectSelection && subElementSelectionActive)))
             {
                 return true;
             }

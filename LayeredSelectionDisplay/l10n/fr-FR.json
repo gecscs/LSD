@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filtre des sous-objets de réseau",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Désactiver cette option empêche l’outil de sélectionner les sous-objets de réseau, comme les nœuds de câbles et de canalisations à l’intérieur des bâtiments.",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Filtre des marqueurs",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Désactiver cette option empêche l’outil de sélectionner les objets marqueurs à l’intérieur des bâtiments."
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Désactiver cette option empêche l’outil de sélectionner les objets marqueurs à l’intérieur des bâtiments.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "Sélection des sous-éléments",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "Désactiver cette option empêchera l’outil de sélectionner des sous-éléments tels que des plantes, des arbres ou des objets à l’intérieur des bâtiments."
 }

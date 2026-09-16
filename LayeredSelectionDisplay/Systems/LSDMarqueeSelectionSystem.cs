@@ -413,7 +413,7 @@
                         continue;
                     }
 
-                    if (!EntityManager.MatchesLSDFilter(entity, m_UISystem.SelectedVanillaFilters))
+                    if (!EntityManager.MatchesLSDFilter(entity, m_UISystem.SelectedVanillaFilters, m_UISystem.SubElementSelectionActive))
                     {
                         continue;
                     }

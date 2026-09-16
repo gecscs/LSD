@@ -97,6 +97,8 @@ namespace LayeredSelectionDisplay.Settings
                 { "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription", "Toggling this off will prevent the tool from selecting net sub-objects (e.g., wire and pipe nodes inside buildings)." },
                 { "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter", "Markers Filter" },
                 { "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription", "Toggling this off will prevent the tool from selecting marker objects inside buildings." },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive", "Sub-Element Selection" },
+                { "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription", "Toggling this off will prevent the tool from selecting sub-elements like plants, trees or props inside buildings." },
             };
         }
 

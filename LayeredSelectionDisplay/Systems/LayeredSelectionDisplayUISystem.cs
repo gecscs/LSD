@@ -63,6 +63,8 @@ namespace LayeredSelectionDisplay.Systems
         private ValueBindingHelper<bool> m_IsEditor;
         private ValueBinding<bool> m_IsDefaultToolActive;
         private ValueBindingHelper<VanillaFilters> m_SelectedVanillaFilters;
+
+        private ValueBinding<bool> m_SubElementSelectionActive;
         private ToolBaseSystem m_ActiveDefaultToolSystem;
         private ToolUISystem m_ToolUISystem;
         private ValueBinding<bool> m_IsToolsWrapperVisible;
@@ -217,6 +219,11 @@ namespace LayeredSelectionDisplay.Systems
         public VanillaFilters SelectedVanillaFilters { get => m_SelectedVanillaFilters.Value; }
 
         /// <summary>
+        /// Gets a value indicating whether sub-element selection is active.
+        /// </summary>
+        public bool SubElementSelectionActive => m_SubElementSelectionActive.value;
+
+        /// <summary>
         /// Gets a value indicating whether the marquee tool is selected.
         /// </summary>
         public HoverState HoverState => m_HoverState;
@@ -280,7 +287,7 @@ namespace LayeredSelectionDisplay.Systems
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
             m_IsGame = CreateBinding("IsGame", false);
-            m_SelectedVanillaFilters = CreateBinding("SelectedVanillaFilters", VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props);
+            m_SelectedVanillaFilters = CreateBinding("SelectedVanillaFilters", VanillaFilters.MovingObjects | VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props);
 
             // Flag to indicate whether the filters panel is visible in the UI.
             m_IsFiltersPanelVisible = new ValueBinding<bool>(ModId, "IsFiltersPanelVisible", false);
@@ -288,6 +295,11 @@ namespace LayeredSelectionDisplay.Systems
 
             // These handle events activating actions triggered by clicking buttons in the UI.
             CreateTrigger("ChangeVanillaFilter", (int value) => ChangeVanillaFilters((VanillaFilters)value));
+            
+            m_SubElementSelectionActive = new ValueBinding<bool>(ModId, "SubElementSelectionActive", false);
+            AddBinding(m_SubElementSelectionActive);
+
+            AddBinding(new TriggerBinding(ModId, "OnToggleSubElementSelection", OnToggleSubElementSelection));
 
             // Initialize the Move It presence flag
             m_IsMoveItInstalled = new ValueBinding<bool>(ModId, "IsMoveItInstalled", false);
@@ -562,6 +574,11 @@ namespace LayeredSelectionDisplay.Systems
             {
                 m_Log?.Error(ex, $"{nameof(SetPanelPosition)}: failed to save settings");
             }
+        }
+
+        private void OnToggleSubElementSelection()
+        {
+            m_SubElementSelectionActive.Update(!m_SubElementSelectionActive.value);
         }
 
         /// <summary>

@@ -44,5 +44,7 @@
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilter": "Filtro de subobjetos de rede",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.NetSubObjectsFilterDescription": "Desativar esta opção impede que a ferramenta selecione subobjetos de rede, como nós de fios e canos dentro de edifícios.",
   "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilter": "Filtro de marcadores",
-  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Desativar esta opção impede que a ferramenta selecione objetos marcadores dentro de edifícios."
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.MarkersFilterDescription": "Desativar esta opção impede que a ferramenta selecione objetos marcadores dentro de edifícios.",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActive": "Seleção de subelementos",
+  "LAYERED_SELECTION_DISPLAY.MAINPANEL.SubElementSelectionActiveDescription": "Desativar esta opção impedirá que a ferramenta selecione subelementos, como plantas, árvores ou objetos dentro de edifícios."
 }
