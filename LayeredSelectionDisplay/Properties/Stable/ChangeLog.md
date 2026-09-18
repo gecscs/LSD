@@ -1,4 +1,8 @@
-﻿# Patch v0.3.3
+﻿# Patch v1.0.0
+* Public Release of Layered Selection Display.
+* Tutorial video added to the mod description page.
+
+# Patch v0.3.3
 * Recompiled for new game version 1.6.2f1.
 * Moving Objects filter is now active by default.
 * Added a new filter exclusive to the Marquee Tool to filter sub-elements like plants, trees, and props.

@@ -8,6 +8,11 @@
 
   No more moving half your scene just to reach one prop.
 
+---
+
+### Tutorial Video
+[![LSD Tutorial Video]](https://youtu.be/_yMvltsuGuM?si=iInRCoKOESgOkmf3)
+
   ---
 
   ## ✨ Features
