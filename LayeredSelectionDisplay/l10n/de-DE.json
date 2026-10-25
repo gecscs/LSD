@@ -33,6 +33,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Panel reduzieren",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Linksklick: Öffne das Informationsfenster des Assets, Rechtsklick: Öffne im EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Linksklick: Öffne das Informationsfenster des Assets",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT": "Kuratierte Auswahl zur Gruppenbearbeitung in EDT öffnen",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip": "Als primäres Objekt für die Gruppenbearbeitung in EDT festlegen",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Werkzeuge",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Klicken, um das Listenpanel zu öffnen und das Auswahlrechteck-Werkzeug zu verwenden, um Assets auszuwählen oder ausgewählte Assets aus Move It zu importieren.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Filterpanel ausblenden",

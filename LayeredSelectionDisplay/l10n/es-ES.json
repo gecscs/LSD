@@ -33,6 +33,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Contraer Panel",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Clic izquierdo: Abrir el panel de información del recurso, Clic derecho: Abrir en EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic izquierdo: Abrir el panel de información del recurso",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT": "Abrir la selección filtrada en EDT para manipularla en grupo",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip": "Establecer como entidad principal para la manipulación en grupo en EDT",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Herramientas",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Haz clic para abrir el panel de la lista y usar la herramienta de selección rectangular para seleccionar recursos o importar recursos seleccionados desde Move It.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Ocultar panel de filtros",

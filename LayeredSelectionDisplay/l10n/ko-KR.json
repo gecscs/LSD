@@ -33,6 +33,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "패널 축소",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "왼쪽 클릭: 자산 정보 패널 열기, 오른쪽 클릭: EDT Transform Tool에서 열기",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "왼쪽 클릭: 자산 정보 패널 열기",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT": "그룹 조작을 위해 선별된 선택 항목을 EDT에서 열기",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip": "EDT에서 그룹 조작을 위한 기본 엔티티로 설정",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "도구",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "클릭하여 목록 패널을 열고 영역 선택 도구로 에셋을 선택하거나 Move It에서 선택한 에셋을 가져옵니다.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "필터 패널 숨기기",
