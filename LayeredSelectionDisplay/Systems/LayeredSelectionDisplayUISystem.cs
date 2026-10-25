@@ -764,7 +764,7 @@ namespace LayeredSelectionDisplay.Systems
 
         private void OnPrimaryEntitySelect(int index, int version)
         {
-            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnPrimaryEntitySelect)} Entity selected: {index}, {version}");
+            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnPrimaryEntitySelect)} Entity selected as primary: {index}, {version}");
             Entity entity = new Entity
             {
                 Index = index,
@@ -772,7 +772,7 @@ namespace LayeredSelectionDisplay.Systems
             };
             if (EntityManager.Exists(entity))
             {
-                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnPrimaryEntitySelect)} Entity exists: {index}, {version}");
+                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnPrimaryEntitySelect)} Entity exists: {index}, {version}");
                 m_PrimaryEntityBinding.Update(new SelectedEntity { Index = entity.Index, Version = entity.Version });
             }
             else
@@ -848,9 +848,6 @@ namespace LayeredSelectionDisplay.Systems
 
             m_PendingTransformMode = 0;
             m_SetPendingTransformMode = true;
-
-            SelectedEntity primaryEntity = currentCuratedBinding.Entities[0];
-            m_PrimaryEntityBinding.Update(primaryEntity);
         }
 
         /// <summary>

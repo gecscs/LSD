@@ -163,19 +163,19 @@ export const SelectionListPanel = () => {
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip",
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip"]
-        ) ?? "Refresh";
+        ) ?? "Import from Move It";
 
     const listPanelMarqueeSelectionToolTip =
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip",
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip"]
-        ) ?? "Refresh";    
+        ) ?? "Marquee Tool";    
 
     const removeFromListToolTip =
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip",
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip"]
-        ) ?? "Refresh";
+        ) ?? "Remove";
 
     const listPanelNoItemsSelectedNoMoveIt =
         translate(
@@ -240,8 +240,8 @@ export const SelectionListPanel = () => {
     const listPanelSetPrimaryEntityToolTip =
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip",
-            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip"]
-        );
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip"],
+        ) ?? "";
 
     const isGame = useValue(isGame$);
 
@@ -265,6 +265,9 @@ export const SelectionListPanel = () => {
 
     const selectedEntities =
         useValue(selectedEntities$);
+
+    const primarySelectedEntity =
+        useValue(primarySelectedEntity$);
 
     const panelPosition =
         useValue(panelPosition$);
@@ -540,8 +543,31 @@ export const SelectionListPanel = () => {
                                                             <span
                                                                 className={styles.separator}
                                                             />
-
-                                                            
+                                                            <Tooltip tooltip={listPanelSetPrimaryEntityToolTip}>
+                                                                <button
+                                                                    className={classNames(
+                                                                        styles.setPrimaryButton,
+                                                                        entity.Index === primarySelectedEntity.Index &&
+                                                                            entity.Version === primarySelectedEntity.Version
+                                                                            ? styles.setPrimaryButtonOn
+                                                                            : styles.setPrimaryButtonOff
+                                                                    )}
+                                                                    //title={listPanelSetPrimaryEntityToolTip}
+                                                                    onMouseDown={event => {
+                                                                        event.stopPropagation();
+                                                                        event.preventDefault();
+                                                                    }}
+                                                                    onClick={event => {
+                                                                        event.stopPropagation();
+                                                                        OnPrimaryEntitySelect(
+                                                                            entity.Index,
+                                                                            entity.Version
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <img src={primaryEntityMarkerSrc} />
+                                                                </button>
+                                                            </Tooltip>
 
                                                             <span
                                                                 className={ styles.separator}

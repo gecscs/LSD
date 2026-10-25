@@ -60,6 +60,8 @@
 	  - Quickly identify the asset you are looking for, even when it is buried under other assets.
 	  - Click an item to select it and open its Info Panel.
 	  - Continue working with multiple assets from the same list.
+	  - Remove unwanted assets from the list to keep only the ones you want to work with.
+	  - Open all selected assets in the Extra Detailing Tools Transform Tool panel for group manipulation.
 
 	  The selection list persists until you perform or import a new one, allowing you to manipulate multiple assets without having to repeat the marquee selection.
 
@@ -82,6 +84,14 @@
 	  5. Hover over an item in the list to highlight the corresponding asset in the game world.
 	  6. Click an item to select the asset and open its Info Panel.
 	  7. Remove any unwanted assets from the list to keep only the assets you want to work with.
+
+	  ### Open Selected Assets in Extra Detailing Tools Transform Tool Panel for Group Manipulation
+
+	  1. Open the **Marquee List** panel by clicking the **Marquee Tool** button next to the selection filters.
+	  2. Use the Marquee Tool to select the area containing the assets you want to work with, or alternatively, use the **Move It** mod to import its selection.
+	  3. Curate the list to keep only the assets you want to work with by removing the ones you don't need.
+	  4. Select the asset you want to use as a reference/pivot for the group manipulation by clicking the new button before the asset's name.
+	  5. Click the **Open in EDT TT** button at the top of the list panel to open the Extra Detailing Tools Transform Tool panel with all selected assets.
 
 	  ### Import Move It's Selection
 
@@ -241,6 +251,10 @@
   <!--<Dependency Id="74324" DisplayName="Move It" Version="0.5.15" />-->
   <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
   <ChangeLog>
+	  # Patch v1.1.0
+	  * Curated selections can now be opened as a group in Extra Detailing Tools Transform Tool panel, if the user has it installed, allowing for group manipulation inside the mentioned panel.
+	  * Refactored the code to use a new method when right-clicking an item to open the EDT TT panel.
+
 	  # Patch v1.0.0
 	  * Public Release of Layered Selection Display.
 	  * Tutorial video added to the mod description page.
@@ -269,43 +283,7 @@
 	  * Filters panel now starts hidden and can be toggled with a slim button at the bottom of the game view.
 	  * Changed Reload from MoveIt and Minimize icons.
 	  * Localized the tooltips for the show and hide buttons and added all translations.
-
-	  # Patch v0.1.6
-	  * More corrections to publishing settings.
-
-	  # Patch v0.1.5
-	  * Corrected publishing settings.
-
-	  # Patch v0.1.4
-	  * Removed unrecognized CSS properties from SCSS stylesheet.
-
-	  # Patch v0.1.3
-	  * Extra Detailing Tools Transform Tool Panel now opens on move mode.
-	  * Leaving only the props filter on will no longer include trees and plants on the results.
-
-	  # Patch v0.1.2
-	  * If Extra Detailing Tools new version with the external Gizmo Transform Tool panel is available, the user now can right click the item on the list to open it on the new EDT TT panel.
-	  * Retouched Marquee overlay for better performance and visibility.
-	  * Updated localized strings to cover EDT's TT absence.
-
-	  # Patch v0.1.1
-	  * Trees and Plants are now correctly filtered by the Marquee Tool.
-	  * Move It is no longer a dependency. If not found, the Reload From Move It button is hidden.
-	  * Updated localized strings to cover Move It's absence.
-
-	  # Patch v0.1.0
-	  * Own Marquee Selection Tool implemented.
-	  * Changed Marquee Tool button icon to the same as the main panel, and icon changes while the marquee tool has been selected and while its being drawn, toggling back  when the selection is finished.
-	  * Updated localized strings.
-
-	  # Patch v0.0.9
-	  * List Panel design retouched to be closer to the vanilla panels.
-	  * Marquee Selector Button is now hidden until it gets its proper functionality.
-
-	  # Patch v0.0.8
-	  * Buttons now have tooltips.
-	  * Reopening the List Panel does not reload selected entities from Move It if there is already a previous selection imported. This prevents unintended renewals of the list allowing the user to persist a curated list, only updating it by clicking the reload button.
-	  * All languages added (many translated via GPT).</ChangeLog>
+  </ChangeLog>
   <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
   <ExternalLink Type="youtube" Url="https://www.youtube.com/@Obelix-Red" />
   <ExternalLink Type="discord" Url="https://discord.com/channels/1024242828114673724/1543648594547187882" />
