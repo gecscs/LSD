@@ -13,6 +13,8 @@ import classNames from "classnames";
 
 import marqueeToolSrc from "../img/icon_Marquee_Off.svg";
 import marqueeToolActiveSrc from "../img/icon_Marquee_Active.svg";
+import gizmoToolSrc from "../img/icon_Gizmo.svg";
+import primaryEntityMarkerSrc from "../img/icon_Pivot_BoundsCenter.svg";
 
 
 const isGame$ = bindValue<boolean>(
@@ -41,6 +43,18 @@ const selectedEntities$ = bindValue<SelectedEntities>(
     { Entities: [] }
 );
 
+const curatedEntities$ = bindValue<SelectedEntities>(
+    mod.id,
+    "CuratedEntities",
+    { Entities: [] }
+);
+
+const primarySelectedEntity$ = bindValue<SelectedEntity>(
+    mod.id,
+    "PrimaryEntity",
+    { Index: -1, Name: "", Version: 0 }
+);
+
 const panelPosition$ = bindValue(
     mod.id,
     "PanelPosition",
@@ -52,6 +66,12 @@ const expandedListPanel$ = bindValue(mod.id, "ExpandedListPanel", false);
 const edtToolExists$ = bindValue<boolean>(mod.id, "EdtExists");
 const transformGizmoToolExists$ = bindValue<boolean>(mod.id, "TransformGizmoToolExists", false);
 
+const uilStandard = "coui://uil/Standard/";
+const uilDark = "coui://uil/Dark/";
+
+const markerLightIcon = uilStandard + "MapMarker.svg";
+const markerDarkIcon = uilDark + "MapMarker.svg";
+
 
 function OnEntityHover(index: number, version: number) {
     trigger(mod.id, "OnEntityHover", index, version);
@@ -59,6 +79,10 @@ function OnEntityHover(index: number, version: number) {
 
 function OnEntityLeave(index: number, version: number) {
     trigger(mod.id, "OnEntityLeave", index, version);
+}
+
+function OnRemoveEntity(index: number, version: number) {
+    trigger(mod.id, "OnRemoveEntity", index, version);
 }
 
 function OnEntitySelect(index: number, version: number, button: number) {
@@ -72,6 +96,11 @@ function OnEntitySelect(index: number, version: number, button: number) {
 
     // Trigger the entity select event for left mouse button clicks.
     trigger(mod.id, "OnEntitySelect", index, version);
+}
+
+function OnPrimaryEntitySelect(index: number, version: number) {
+    // Set the entity to use as primary/pivot when exporting the curated list to EDT for group manipulation
+    trigger(mod.id, "OnPrimaryEntitySelect", index, version);
 }
 
 function RefreshSelection() {
@@ -202,6 +231,18 @@ export const SelectionListPanel = () => {
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip"]
         );
 
+    const listPanelOpenSelectionInEDTToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT"]
+        );
+
+    const listPanelSetPrimaryEntityToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip"]
+        );
+
     const isGame = useValue(isGame$);
 
     const isMoveItInstalled = useValue(isMoveItInstalled$);
@@ -255,13 +296,18 @@ export const SelectionListPanel = () => {
         RefreshSelection();
     }
 
-    function HandleRemoveEntity(index: number) {
+    function HandleRemoveEntity(index: number, version: number) {
         setRemovedEntityIndexes(
             previous =>
                 previous.includes(index)
                     ? previous
                     : [...previous, index]
         );
+        OnRemoveEntity(index, version);
+    }
+
+    function HandleOpenSelectionInEDT() {
+        trigger(mod.id, "OpenSelectionInEDT");
     }
 
     const panelHeader = (
@@ -290,7 +336,7 @@ export const SelectionListPanel = () => {
 
             <div className={styles.headerButtons}>
 
-                {/* Marquee */}                
+                {/* Marquee Tool */}                
                 <Tooltip tooltip={listPanelMarqueeSelectionToolTip} >
                     <button
                         className={styles.headerButton}
@@ -306,7 +352,7 @@ export const SelectionListPanel = () => {
                 <>
                     {isMoveItInstalled ? (
                         <>
-                            {/* Refresh */}
+                            {/* Import selection from Move It */}
                             <Tooltip tooltip={listPanelRefreshButtonToolTip} >
                                 <button
                                     className={styles.headerButton}
@@ -322,6 +368,26 @@ export const SelectionListPanel = () => {
                         </>                
                     ) : null }
                 </>
+
+                {/* Open selection in EDT */} 
+                <>
+                    {transformGizmoToolExists ? (
+                        <>
+                            <Tooltip tooltip={listPanelOpenSelectionInEDTToolTip} >
+                                <button
+                                    className={styles.headerButton}
+                                    onMouseDown={event =>
+                                        event.stopPropagation()
+                                    }
+                                    onClick={HandleOpenSelectionInEDT}
+                                >
+                                    <img src={gizmoToolSrc} />
+                                </button>
+                            </Tooltip>
+                        </>
+                    ) : null}
+                </>
+
 
                 {/* Close */}
                 <Tooltip tooltip={listPanelCloseButtonToolTip} >
@@ -472,6 +538,12 @@ export const SelectionListPanel = () => {
                                                             </span>
 
                                                             <span
+                                                                className={styles.separator}
+                                                            />
+
+                                                            
+
+                                                            <span
                                                                 className={ styles.separator}
                                                             />
 
@@ -499,15 +571,17 @@ export const SelectionListPanel = () => {
                                                                     }
                                                                     title={removeFromListToolTip}
                                                                     onMouseDown={event =>{
-                                                                        event.stopPropagation();                                                                        event.preventDefault();
+                                                                        event.stopPropagation();
                                                                         event.preventDefault();
                                                                     }}
                                                                     onClick={event => {
                                                                         event.stopPropagation();
 
                                                                         HandleRemoveEntity(
-                                                                            entity.Index
+                                                                            entity.Index,
+                                                                            entity.Version
                                                                         );
+                                                                        
                                                                     }}
                                                                 >
                                                                     −
