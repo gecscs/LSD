@@ -79,7 +79,6 @@ namespace LayeredSelectionDisplay.Systems
         private PropertyInfo m_MoveItSelectedEntitiesPropertyInfo;
         private GetterValueBinding<HashSet<Entity>> m_MoveItSelectedEntitiesBinding;
         private ValueBinding<SelectedEntities> m_SelectedEntitiesBinding;
-        public ValueBinding<SelectedEntities> m_CuratedEntitiesBinding;
         public ValueBinding<SelectedEntity> m_PrimaryEntityBinding;
         private JobHandle m_writeDeps;
         private JobHandle m_readDeps;
@@ -261,10 +260,10 @@ namespace LayeredSelectionDisplay.Systems
 
             m_SelectedEntitiesBinding.Update(
                 binding);
-            m_CuratedEntitiesBinding.Update(
-                binding);
+            m_SelectedEntitiesBinding.TriggerUpdate();
             m_PrimaryEntityBinding.Update(
                 binding.Entities.Count > 0 ? binding.Entities[0] : new SelectedEntity());
+            m_PrimaryEntityBinding.TriggerUpdate();
         }
 
         /// <inheritdoc/>
@@ -361,7 +360,6 @@ namespace LayeredSelectionDisplay.Systems
             AddBinding(m_TransformGizmoToolExists);
 
             AddBinding(m_SelectedEntitiesBinding = new ValueBinding<SelectedEntities>(ModId, "SelectedEntities", new SelectedEntities() { Entities = new List<SelectedEntity>() }));
-            AddBinding(m_CuratedEntitiesBinding = new ValueBinding<SelectedEntities>(ModId, "CuratedEntities", new SelectedEntities() { Entities = new List<SelectedEntity>() }));
             AddBinding(m_PrimaryEntityBinding = new ValueBinding<SelectedEntity>(ModId, "PrimaryEntity", new SelectedEntity()));
 
             EntityQuery m_HighlightedQuery = GetEntityQuery(new EntityQueryDesc
@@ -513,7 +511,7 @@ namespace LayeredSelectionDisplay.Systems
             if (m_EDTTransformTool != null && m_ToolSystem.activeTool == m_EDTTransformTool && m_SetPendingTransformMode)
             {
 
-                List<SelectedEntity> curatedEntities = m_CuratedEntitiesBinding.value.Entities;
+                List<SelectedEntity> curatedEntities = m_SelectedEntitiesBinding.value.Entities;
                 SelectedEntity primaryEntity = m_PrimaryEntityBinding.value;
 
                 if (m_PendingTransformMode == 1)
@@ -728,10 +726,10 @@ namespace LayeredSelectionDisplay.Systems
 
             m_SelectedEntitiesBinding.Update(
                 binding);
-            m_CuratedEntitiesBinding.Update(
-                binding);
+            m_SelectedEntitiesBinding.TriggerUpdate();
             m_PrimaryEntityBinding.Update(
                 binding.Entities.Count > 0 ? binding.Entities[0] : new SelectedEntity());
+            m_PrimaryEntityBinding.TriggerUpdate();
         }
 
         /// <summary>
@@ -793,14 +791,12 @@ namespace LayeredSelectionDisplay.Systems
             {
                 // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnRemoveEntity)} Entity exists: {index}, {version}");
 
-                SelectedEntities currentCuratedBinding = m_CuratedEntitiesBinding.value;
+                SelectedEntities selectedEntities = m_SelectedEntitiesBinding.value;
 
-                List<SelectedEntity> currentCuratedList = currentCuratedBinding.Entities;
+                selectedEntities.Entities.RemoveAll(e => e.Index == entity.Index && e.Version == entity.Version);
 
-                currentCuratedList.RemoveAll(e => e.Index == entity.Index && e.Version == entity.Version);
-
-                m_CuratedEntitiesBinding.Update(new SelectedEntities { Entities = currentCuratedList });
-
+                m_SelectedEntitiesBinding.Update(selectedEntities);
+                m_SelectedEntitiesBinding.TriggerUpdate();
             }
             else
             {
@@ -839,8 +835,8 @@ namespace LayeredSelectionDisplay.Systems
 
         private void OpenSelectionInEDT()
         {
-            SelectedEntities currentCuratedBinding = m_CuratedEntitiesBinding.value;
-            if (currentCuratedBinding.Entities.Count == 0)
+            SelectedEntities selectedEntities = m_SelectedEntitiesBinding.value;
+            if (selectedEntities.Entities.Count == 0)
             {
                 m_Log?.Warn($"{nameof(OpenSelectionInEDT)}: No entities selected to open in EDT.");
                 return;

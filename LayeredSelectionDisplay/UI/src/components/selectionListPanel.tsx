@@ -280,32 +280,32 @@ export const SelectionListPanel = () => {
      * Entities are hidden only from this UI list.
      * They are not removed from the actual Move It of future custom selection.
      */
-    const [removedEntityIndexes, setRemovedEntityIndexes] =
-        useState<number[]>([]);  
+    // const [removedEntityIndexes, setRemovedEntityIndexes] =
+    //     useState<number[]>([]);  
 
     const visibleEntities =
         [...selectedEntities.Entities]
-            .filter(
-                (entity: SelectedEntity) =>
-                    !removedEntityIndexes.includes(entity.Index)
-            )
+            // .filter(
+            //     (entity: SelectedEntity) =>
+            //         !removedEntityIndexes.includes(entity.Index)
+            // )
             .sort(
                 (a: SelectedEntity, b: SelectedEntity) =>
                     a.Name.localeCompare(b.Name)
             );
 
     function HandleRefresh() {
-        setRemovedEntityIndexes([]);
+        //setRemovedEntityIndexes([]);
         RefreshSelection();
     }
 
     function HandleRemoveEntity(index: number, version: number) {
-        setRemovedEntityIndexes(
-            previous =>
-                previous.includes(index)
-                    ? previous
-                    : [...previous, index]
-        );
+        // setRemovedEntityIndexes(
+        //     previous =>
+        //         previous.includes(index)
+        //             ? previous
+        //             : [...previous, index]
+        // );
         OnRemoveEntity(index, version);
     }
 
