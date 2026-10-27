@@ -225,6 +225,11 @@ export const SelectionListPanel = () => {
     const selectedEntities =
         useValue(selectedEntities$);
 
+    selectedEntities.Entities = selectedEntities.Entities.sort(
+        (a: SelectedEntity, b: SelectedEntity) =>
+            a.Name.localeCompare(b.Name)
+    );
+
     const panelPosition =
         useValue(panelPosition$);
 
@@ -232,36 +237,20 @@ export const SelectionListPanel = () => {
 
     const panelHeight = expandedListPanel ? 640 : 340;
 
-    /*
-     * Entities are hidden only from this UI list.
-     * They are not removed from the actual Move It of future custom selection.
-     */
-    const [removedEntityIndexes, setRemovedEntityIndexes] =
-        useState<number[]>([]);  
 
-    const visibleEntities =
-        [...selectedEntities.Entities]
-            .filter(
-                (entity: SelectedEntity) =>
-                    !removedEntityIndexes.includes(entity.Index)
-            )
-            .sort(
-                (a: SelectedEntity, b: SelectedEntity) =>
-                    a.Name.localeCompare(b.Name)
-            );
+    // const visibleEntities =
+    //     [...selectedEntities.Entities]            
+    //         .sort(
+    //             (a: SelectedEntity, b: SelectedEntity) =>
+    //                 a.Name.localeCompare(b.Name)
+    //     );
 
     function HandleRefresh() {
-        setRemovedEntityIndexes([]);
         RefreshSelection();
     }
 
-    function HandleRemoveEntity(index: number) {
-        setRemovedEntityIndexes(
-            previous =>
-                previous.includes(index)
-                    ? previous
-                    : [...previous, index]
-        );
+    function HandleRemoveEntity(index: number, version: number) {
+        trigger(mod.id, "OnEntityRemove", index, version);
     }
 
     const panelHeader = (
@@ -377,7 +366,7 @@ export const SelectionListPanel = () => {
 
                             <div className={styles.body}>
 
-                                {visibleEntities.length === 0 ? (
+                            {selectedEntities.Entities.length === 0 ? (
 
                                     <div className={styles.emptyState}>
 
@@ -426,7 +415,7 @@ export const SelectionListPanel = () => {
                                         >
                                             <p>
                                                 <span>
-                                                    {visibleEntities.length}
+                                                    {selectedEntities.Entities.length}
                                                 </span>
                                                 {" "} elements in selection
                                             </p>
@@ -439,7 +428,7 @@ export const SelectionListPanel = () => {
 
                                             <ul className={styles.listedAssets}>
 
-                                                {visibleEntities.map(
+                                                {selectedEntities.Entities.map(
                                                     (entity, index) => (
 
                                                         
@@ -499,14 +488,14 @@ export const SelectionListPanel = () => {
                                                                     }
                                                                     title={removeFromListToolTip}
                                                                     onMouseDown={event =>{
-                                                                        event.stopPropagation();                                                                        event.preventDefault();
-                                                                        event.preventDefault();
+                                                                        event.stopPropagation();
                                                                     }}
                                                                     onClick={event => {
                                                                         event.stopPropagation();
 
                                                                         HandleRemoveEntity(
-                                                                            entity.Index
+                                                                            entity.Index,
+                                                                            entity.Version
                                                                         );
                                                                     }}
                                                                 >

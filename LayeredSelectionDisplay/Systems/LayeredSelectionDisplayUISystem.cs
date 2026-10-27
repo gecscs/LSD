@@ -345,6 +345,8 @@ namespace LayeredSelectionDisplay.Systems
             CreateTrigger("OnEntityLeave", (int index, int version) => OnEntityLeave(index, version));
             CreateTrigger("RefreshSelection", () => GetUpdatedSelectedEntitiesFromMoveIt());
 
+            CreateTrigger("OnEntityRemove", (int index, int version) => OnEntityRemove(index, version));
+
             var moveItTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID));
 
             m_TransformGizmoToolExists = new ValueBinding<bool>(ModId, "TransformGizmoToolExists", false);
@@ -714,6 +716,7 @@ namespace LayeredSelectionDisplay.Systems
                 AddEntityToSelectedEntities(binding, entity);
             }
 
+
             m_SelectedEntitiesBinding.Update(
                 binding);
         }
@@ -743,6 +746,29 @@ namespace LayeredSelectionDisplay.Systems
             else
             {
                 m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntitySelect)} Entity does not exist: {index}, {version}");
+            }
+        }
+
+        private void OnEntityRemove(int index, int version)
+        {
+            //m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityRemove)} Entity remove requested: {index}, {version}");
+
+            Entity entity = new Entity
+            {
+                Index = index,
+                Version = version,
+            };
+            if (EntityManager.Exists(entity))
+            {
+                var currentList = m_SelectedEntitiesBinding.value;
+
+                currentList.Entities.RemoveAll(e => e.Index == index && e.Version == version);
+                m_SelectedEntitiesBinding.Update(currentList);
+                m_SelectedEntitiesBinding.TriggerUpdate();
+            }
+            else
+            {
+                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityRemove)} Entity does not exist: {index}, {version}");
             }
         }
 
