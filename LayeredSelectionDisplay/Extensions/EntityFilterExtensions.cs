@@ -206,7 +206,7 @@
                 !entityManager.HasComponent<Marker>(entity) &&
                 !entityManager.HasComponent<SubLane>(entity) &&
                 !entityManager.HasComponent<SubNet>(entity) &&
-                !entityManager.HasComponent<Game.Objects.SpawnLocation>(entity) &&
+                //!entityManager.HasComponent<Game.Objects.SpawnLocation>(entity) &&
                 !entityManager.HasComponent<Game.Objects.UtilityObject>(entity) &&
                 (!entityManager.HasComponent<Owner>(entity) ||
                  (allowSubObjectSelection && subElementSelectionActive)))
