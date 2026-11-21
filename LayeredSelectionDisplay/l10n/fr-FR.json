@@ -33,6 +33,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Réduire le Panneau",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Clic gauche : Ouvrir le panneau d'informations de l'asset, Clic droit : Ouvrir dans EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Clic gauche : Ouvrir le panneau d'informations de l'asset",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT": "Ouvrir la sélection organisée dans EDT pour la manipulation de groupe",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip": "Définir comme entité principale pour la manipulation de groupe dans EDT",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Outils",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.MarqueeToolToolTip": "Cliquez pour ouvrir le panneau de liste et utiliser l'outil de sélection rectangulaire pour sélectionner des assets ou importer les assets sélectionnés depuis Move It.",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Masquer le panneau des filtres",

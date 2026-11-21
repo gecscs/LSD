@@ -13,6 +13,8 @@ import classNames from "classnames";
 
 import marqueeToolSrc from "../img/icon_Marquee_Off.svg";
 import marqueeToolActiveSrc from "../img/icon_Marquee_Active.svg";
+import gizmoToolSrc from "../img/icon_Gizmo.svg";
+import primaryEntityMarkerSrc from "../img/icon_Pivot_BoundsCenter.svg";
 
 
 const isGame$ = bindValue<boolean>(
@@ -41,6 +43,18 @@ const selectedEntities$ = bindValue<SelectedEntities>(
     { Entities: [] }
 );
 
+const curatedEntities$ = bindValue<SelectedEntities>(
+    mod.id,
+    "CuratedEntities",
+    { Entities: [] }
+);
+
+const primarySelectedEntity$ = bindValue<SelectedEntity>(
+    mod.id,
+    "PrimaryEntity",
+    { Index: -1, Name: "", Version: 0 }
+);
+
 const panelPosition$ = bindValue(
     mod.id,
     "PanelPosition",
@@ -52,6 +66,12 @@ const expandedListPanel$ = bindValue(mod.id, "ExpandedListPanel", false);
 const edtToolExists$ = bindValue<boolean>(mod.id, "EdtExists");
 const transformGizmoToolExists$ = bindValue<boolean>(mod.id, "TransformGizmoToolExists", false);
 
+const uilStandard = "coui://uil/Standard/";
+const uilDark = "coui://uil/Dark/";
+
+const markerLightIcon = uilStandard + "MapMarker.svg";
+const markerDarkIcon = uilDark + "MapMarker.svg";
+
 
 function OnEntityHover(index: number, version: number) {
     trigger(mod.id, "OnEntityHover", index, version);
@@ -59,6 +79,10 @@ function OnEntityHover(index: number, version: number) {
 
 function OnEntityLeave(index: number, version: number) {
     trigger(mod.id, "OnEntityLeave", index, version);
+}
+
+function OnRemoveEntity(index: number, version: number) {
+    trigger(mod.id, "OnRemoveEntity", index, version);
 }
 
 function OnEntitySelect(index: number, version: number, button: number) {
@@ -72,6 +96,11 @@ function OnEntitySelect(index: number, version: number, button: number) {
 
     // Trigger the entity select event for left mouse button clicks.
     trigger(mod.id, "OnEntitySelect", index, version);
+}
+
+function OnPrimaryEntitySelect(index: number, version: number) {
+    // Set the entity to use as primary/pivot when exporting the curated list to EDT for group manipulation
+    trigger(mod.id, "OnPrimaryEntitySelect", index, version);
 }
 
 function RefreshSelection() {
@@ -134,19 +163,19 @@ export const SelectionListPanel = () => {
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip",
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RefreshButtonToolTip"]
-        ) ?? "Refresh";
+        ) ?? "Import from Move It";
 
     const listPanelMarqueeSelectionToolTip =
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip",
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.MarqueeSelectionToolTip"]
-        ) ?? "Refresh";    
+        ) ?? "Marquee Tool";    
 
     const removeFromListToolTip =
         translate(
             "LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip",
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.RemoveButtonToolTip"]
-        ) ?? "Refresh";
+        ) ?? "Remove";
 
     const listPanelNoItemsSelectedNoMoveIt =
         translate(
@@ -202,6 +231,18 @@ export const SelectionListPanel = () => {
             locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip"]
         );
 
+    const listPanelOpenSelectionInEDTToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT"]
+        );
+
+    const listPanelSetPrimaryEntityToolTip =
+        translate(
+            "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip",
+            locale["LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip"],
+        ) ?? "";
+
     const isGame = useValue(isGame$);
 
     const isMoveItInstalled = useValue(isMoveItInstalled$);
@@ -225,6 +266,9 @@ export const SelectionListPanel = () => {
     const selectedEntities =
         useValue(selectedEntities$);
 
+    const primarySelectedEntity =
+        useValue(primarySelectedEntity$);
+
     selectedEntities.Entities = selectedEntities.Entities.sort(
         (a: SelectedEntity, b: SelectedEntity) =>
             a.Name.localeCompare(b.Name)
@@ -237,20 +281,41 @@ export const SelectionListPanel = () => {
 
     const panelHeight = expandedListPanel ? 640 : 340;
 
+    /*
+     * Entities are hidden only from this UI list.
+     * They are not removed from the actual Move It of future custom selection.
+     */
+    // const [removedEntityIndexes, setRemovedEntityIndexes] =
+    //     useState<number[]>([]);  
 
-    // const visibleEntities =
-    //     [...selectedEntities.Entities]            
-    //         .sort(
-    //             (a: SelectedEntity, b: SelectedEntity) =>
-    //                 a.Name.localeCompare(b.Name)
-    //     );
+    const visibleEntities =
+        [...selectedEntities.Entities]
+            // .filter(
+            //     (entity: SelectedEntity) =>
+            //         !removedEntityIndexes.includes(entity.Index)
+            // )
+            .sort(
+                (a: SelectedEntity, b: SelectedEntity) =>
+                    a.Name.localeCompare(b.Name)
+            );
 
     function HandleRefresh() {
+        //setRemovedEntityIndexes([]);
         RefreshSelection();
     }
 
     function HandleRemoveEntity(index: number, version: number) {
-        trigger(mod.id, "OnEntityRemove", index, version);
+        // setRemovedEntityIndexes(
+        //     previous =>
+        //         previous.includes(index)
+        //             ? previous
+        //             : [...previous, index]
+        // );
+        OnRemoveEntity(index, version);
+    }
+
+    function HandleOpenSelectionInEDT() {
+        trigger(mod.id, "OpenSelectionInEDT");
     }
 
     const panelHeader = (
@@ -279,7 +344,7 @@ export const SelectionListPanel = () => {
 
             <div className={styles.headerButtons}>
 
-                {/* Marquee */}                
+                {/* Marquee Tool */}                
                 <Tooltip tooltip={listPanelMarqueeSelectionToolTip} >
                     <button
                         className={styles.headerButton}
@@ -295,7 +360,7 @@ export const SelectionListPanel = () => {
                 <>
                     {isMoveItInstalled ? (
                         <>
-                            {/* Refresh */}
+                            {/* Import selection from Move It */}
                             <Tooltip tooltip={listPanelRefreshButtonToolTip} >
                                 <button
                                     className={styles.headerButton}
@@ -311,6 +376,26 @@ export const SelectionListPanel = () => {
                         </>                
                     ) : null }
                 </>
+
+                {/* Open selection in EDT */} 
+                <>
+                    {transformGizmoToolExists ? (
+                        <>
+                            <Tooltip tooltip={listPanelOpenSelectionInEDTToolTip} >
+                                <button
+                                    className={styles.headerButton}
+                                    onMouseDown={event =>
+                                        event.stopPropagation()
+                                    }
+                                    onClick={HandleOpenSelectionInEDT}
+                                >
+                                    <img src={gizmoToolSrc} />
+                                </button>
+                            </Tooltip>
+                        </>
+                    ) : null}
+                </>
+
 
                 {/* Close */}
                 <Tooltip tooltip={listPanelCloseButtonToolTip} >
@@ -460,6 +545,48 @@ export const SelectionListPanel = () => {
                                                                 )}
                                                             </span>
 
+
+
+                                                            <>
+                                                                {transformGizmoToolExists ? (
+                                                                    <>
+                                                                        <span
+                                                                            className={styles.separator}
+                                                                        />
+                                                                        <Tooltip tooltip={listPanelSetPrimaryEntityToolTip}>
+                                                                            <button
+                                                                                className={classNames(
+                                                                                    styles.setPrimaryButton,
+                                                                                    entity.Index === primarySelectedEntity.Index &&
+                                                                                        entity.Version === primarySelectedEntity.Version
+                                                                                        ? styles.setPrimaryButtonOn
+                                                                                        : styles.setPrimaryButtonOff
+                                                                                )}
+                                                                                //title={listPanelSetPrimaryEntityToolTip}
+                                                                                onMouseDown={event => {
+                                                                                    event.stopPropagation();
+                                                                                    event.preventDefault();
+                                                                                }}
+                                                                                onClick={event => {
+                                                                                    event.stopPropagation();
+                                                                                    OnPrimaryEntitySelect(
+                                                                                        entity.Index,
+                                                                                        entity.Version
+                                                                                    );
+                                                                                }}
+                                                                            >
+                                                                                <img src={primaryEntityMarkerSrc} />
+                                                                            </button>
+                                                                        </Tooltip>
+                                                                    </>
+                                                                ) : null}
+                                                            </>
+
+
+
+                                                        
+                                                            
+
                                                             <span
                                                                 className={ styles.separator}
                                                             />
@@ -489,6 +616,7 @@ export const SelectionListPanel = () => {
                                                                     title={removeFromListToolTip}
                                                                     onMouseDown={event =>{
                                                                         event.stopPropagation();
+                                                                        event.preventDefault();
                                                                     }}
                                                                     onClick={event => {
                                                                         event.stopPropagation();
@@ -497,6 +625,7 @@ export const SelectionListPanel = () => {
                                                                             entity.Index,
                                                                             entity.Version
                                                                         );
+                                                                        
                                                                     }}
                                                                 >
                                                                     −

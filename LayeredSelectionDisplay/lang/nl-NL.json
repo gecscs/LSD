@@ -33,6 +33,8 @@
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip": "Paneel inklappen",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip": "Linker muisklik: Open asset-informatiepaneel, Rechter muisklik: Open in EDT Transform Tool",
   "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip": "Linker muisklik: Open asset-informatiepaneel",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT": "Geselecteerde objecten in EDT openen voor groepsbewerking",
+  "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip": "Instellen als primair object voor groepsbewerking in EDT",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip": "Filterpaneel verbergen",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip": "Filterpaneel tonen",
   "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools": "Gereedschappen",

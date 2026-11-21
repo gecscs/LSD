@@ -79,6 +79,7 @@ namespace LayeredSelectionDisplay.Systems
         private PropertyInfo m_MoveItSelectedEntitiesPropertyInfo;
         private GetterValueBinding<HashSet<Entity>> m_MoveItSelectedEntitiesBinding;
         private ValueBinding<SelectedEntities> m_SelectedEntitiesBinding;
+        public ValueBinding<SelectedEntity> m_PrimaryEntityBinding;
         private JobHandle m_writeDeps;
         private JobHandle m_readDeps;
         private Entity m_HoveredEntity = Entity.Null;
@@ -259,6 +260,10 @@ namespace LayeredSelectionDisplay.Systems
 
             m_SelectedEntitiesBinding.Update(
                 binding);
+            m_SelectedEntitiesBinding.TriggerUpdate();
+            m_PrimaryEntityBinding.Update(
+                binding.Entities.Count > 0 ? binding.Entities[0] : new SelectedEntity());
+            m_PrimaryEntityBinding.TriggerUpdate();
         }
 
         /// <inheritdoc/>
@@ -287,6 +292,7 @@ namespace LayeredSelectionDisplay.Systems
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
             m_IsGame = CreateBinding("IsGame", false);
+            m_IsEditor = CreateBinding("IsEditor", false);
             m_SelectedVanillaFilters = CreateBinding("SelectedVanillaFilters", VanillaFilters.MovingObjects | VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props);
 
             // Flag to indicate whether the filters panel is visible in the UI.
@@ -341,11 +347,15 @@ namespace LayeredSelectionDisplay.Systems
 
             CreateTrigger("OnOpenTransform", (int index, int version) => OnOpenTransform(index, version));
             CreateTrigger("OnEntitySelect", (int index, int version) => OnEntitySelect(index, version));
+            CreateTrigger("OnPrimaryEntitySelect", (int index, int version) => OnPrimaryEntitySelect(index, version));
+            CreateTrigger("OnRemoveEntity", (int index, int version) => OnRemoveEntity(index, version));
             CreateTrigger("OnEntityHover", (int index, int version) => OnEntityHover(index, version));
             CreateTrigger("OnEntityLeave", (int index, int version) => OnEntityLeave(index, version));
             CreateTrigger("RefreshSelection", () => GetUpdatedSelectedEntitiesFromMoveIt());
 
             CreateTrigger("OnEntityRemove", (int index, int version) => OnEntityRemove(index, version));
+
+            AddBinding(new TriggerBinding(ModId, "OpenSelectionInEDT", OpenSelectionInEDT));
 
             var moveItTool = World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID));
 
@@ -353,6 +363,7 @@ namespace LayeredSelectionDisplay.Systems
             AddBinding(m_TransformGizmoToolExists);
 
             AddBinding(m_SelectedEntitiesBinding = new ValueBinding<SelectedEntities>(ModId, "SelectedEntities", new SelectedEntities() { Entities = new List<SelectedEntity>() }));
+            AddBinding(m_PrimaryEntityBinding = new ValueBinding<SelectedEntity>(ModId, "PrimaryEntity", new SelectedEntity()));
 
             EntityQuery m_HighlightedQuery = GetEntityQuery(new EntityQueryDesc
             {
@@ -370,6 +381,36 @@ namespace LayeredSelectionDisplay.Systems
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
         {
             base.OnGameLoadingComplete(purpose, mode);
+
+            // ensure settings are available before any trigger using them
+            m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
+
+            float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
+
+            if (mode == GameMode.Editor)
+            {
+                m_IsEditor.Value = true;
+                m_IsGame.Value = false;
+                m_PanelPosition?.Update(m_settings?.EditorListPanelPosition ?? initialPanelPosition);
+
+                World.GetOrCreateSystemManaged<LayeredSelectionDisplayHighlightSystem>().Enabled = false;
+                World.GetOrCreateSystemManaged<LSDMarqueeSelectionSystem>().Enabled = false;
+                World.GetOrCreateSystemManaged<LSDMarqueeOverlaySystem>().Enabled = false;
+                return;
+            }
+
+            if (mode == GameMode.Game)
+            {
+                m_IsEditor.Value = false;
+                m_IsGame.Value = true;
+                m_PanelPosition?.Update(m_settings?.GameListPanelPosition ?? initialPanelPosition);
+
+                World.GetOrCreateSystemManaged<LayeredSelectionDisplayHighlightSystem>().Enabled = true;
+                World.GetOrCreateSystemManaged<LSDMarqueeSelectionSystem>().Enabled = true;
+                World.GetOrCreateSystemManaged<LSDMarqueeOverlaySystem>().Enabled = true;
+                return;
+            }
+
 
             // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} before getting Move It tool.");
 
@@ -447,26 +488,23 @@ namespace LayeredSelectionDisplay.Systems
                 m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} {toolBaseSystem.toolID}");
             }
 
-            // ensure settings are available before any trigger using them
-            m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
+            //float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
 
-            float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
+            //if (mode == GameMode.Game)
+            //{
+            //    m_IsGame.Value = true;
+            //    m_PanelPosition.Update(m_settings?.GameListPanelPosition ?? initialPanelPosition);
+            //    return;
+            //}
 
-            if (mode == GameMode.Game)
-            {
-                m_IsGame.Value = true;
-                m_PanelPosition.Update(m_settings?.GameListPanelPosition ?? initialPanelPosition);
-                return;
-            }
+            //if (mode == GameMode.Editor)
+            //{
+            //    m_IsEditor.Value = true;
+            //    m_PanelPosition.Update(m_settings?.EditorListPanelPosition ?? initialPanelPosition);
+            //    return;
+            //}
 
-            if (mode == GameMode.Editor)
-            {
-                m_IsEditor.Value = true;
-                m_PanelPosition.Update(m_settings?.EditorListPanelPosition ?? initialPanelPosition);
-                return;
-            }
-
-            m_IsGame.Value = false;
+            //m_IsGame.Value = false;
             m_IsMarqueeToolSelected.Update(false);
         }
 
@@ -491,48 +529,47 @@ namespace LayeredSelectionDisplay.Systems
             }
 
             // Phase 1:
-            // Restart EDT with a new entity.
-            if (m_RestartTransformGizmo)
+            // If EDT is not open, open it and skip to next frame.
+            if (m_ToolSystem.activeTool != m_EDTTransformTool && m_SetPendingTransformMode)
             {
-                m_RestartTransformGizmo = false;
-
-                Entity entity = m_PendingTransformEntity;
-                m_PendingTransformEntity = Entity.Null;
-
-                if (entity == Entity.Null ||
-                    !EntityManager.Exists(entity))
-                {
-                    return;
-                }
-
-                // EDT restores ToolSystem.selected when it shuts down.
-                // Clear that value and provide the entity to consume
-                m_ToolSystem.selected = Entity.Null;
-                m_ToolSystem.selected = entity;
-
-                // Activate EDT
-                // Do NOT set the mode yet.
-                if (EDTBridge.OpenTransformGizmo(World, entity))
-                {
-                    // The mode will be applied on the next update.
-                    m_PendingTransformMode = 1;
-                    m_SetPendingTransformMode = true;
-                }
-
+                m_ToolSystem.activeTool = m_EDTTransformTool;
                 return;
             }
 
             // Phase 2:
-            // Apply the desired mode AFTER EDT has initialized.
-            if (m_SetPendingTransformMode)
+            // Apply the desired mode AFTER making sure EDT has initialized.
+            if (m_EDTTransformTool != null && m_ToolSystem.activeTool == m_EDTTransformTool && m_SetPendingTransformMode)
             {
-                // Make sure EDT is now the active tool.
-                if (m_EDTTransformTool != null && m_ToolSystem.activeTool == m_EDTTransformTool)
+
+                List<SelectedEntity> curatedEntities = m_SelectedEntitiesBinding.value.Entities;
+                SelectedEntity primaryEntity = m_PrimaryEntityBinding.value;
+
+                if (m_PendingTransformMode == 1)
                 {
-                    if (EDTBridge.SetMode(World, m_PendingTransformMode))
+                    // If Single Selection mode, only use the pending entity as the primary entity and clear the curated list to after insert the primary entity only.
+                    primaryEntity = new SelectedEntity
+                    {
+                        Index = m_PendingTransformEntity.Index,
+                        Version = m_PendingTransformEntity.Version,
+                    };
+
+                    List<SelectedEntity> singleEntityList = new List<SelectedEntity>()
+                    {
+                        primaryEntity,
+                    };
+
+                    if (EDTBridge.SelectEntities(World, singleEntityList, primaryEntity))
                     {
                         m_SetPendingTransformMode = false;
+                        m_PendingTransformEntity = Entity.Null;
                     }
+
+                    return;
+                }
+
+                if (EDTBridge.SelectEntities(World, curatedEntities, primaryEntity))
+                {
+                    m_SetPendingTransformMode = false;
                 }
             }
         }
@@ -691,6 +728,7 @@ namespace LayeredSelectionDisplay.Systems
             // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} Start LSD Marquee Selection");
             // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} m_MoveItSelectedEntities (before): {m_MoveItSelectedEntities.Count}");
             m_MarqueeSelectionSystem.StartSelection();
+
             // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(SelectMarqueeTool)} m_MoveItSelectedEntities (after): {m_MoveItSelectedEntities.Count}");
         }
 
@@ -719,6 +757,10 @@ namespace LayeredSelectionDisplay.Systems
 
             m_SelectedEntitiesBinding.Update(
                 binding);
+            m_SelectedEntitiesBinding.TriggerUpdate();
+            m_PrimaryEntityBinding.Update(
+                binding.Entities.Count > 0 ? binding.Entities[0] : new SelectedEntity());
+            m_PrimaryEntityBinding.TriggerUpdate();
         }
 
         /// <summary>
@@ -765,10 +807,66 @@ namespace LayeredSelectionDisplay.Systems
                 currentList.Entities.RemoveAll(e => e.Index == index && e.Version == version);
                 m_SelectedEntitiesBinding.Update(currentList);
                 m_SelectedEntitiesBinding.TriggerUpdate();
+
+                if (m_PrimaryEntityBinding.value.Index == index && m_PrimaryEntityBinding.value.Version == version)
+                {
+                    m_PrimaryEntityBinding.Update(m_SelectedEntitiesBinding.value.Entities[0]);
+                    m_PrimaryEntityBinding.TriggerUpdate();
+                }
             }
             else
             {
                 m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnEntityRemove)} Entity does not exist: {index}, {version}");
+            }
+        }
+
+        private void OnPrimaryEntitySelect(int index, int version)
+        {
+            m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnPrimaryEntitySelect)} Entity selected as primary: {index}, {version}");
+            Entity entity = new Entity
+            {
+                Index = index,
+                Version = version,
+            };
+            if (EntityManager.Exists(entity))
+            {
+                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnPrimaryEntitySelect)} Entity exists: {index}, {version}");
+                m_PrimaryEntityBinding.Update(new SelectedEntity { Index = entity.Index, Version = entity.Version });
+            }
+            else
+            {
+                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnPrimaryEntitySelect)} Entity does not exist: {index}, {version}");
+            }
+        }
+
+        private void OnRemoveEntity(int index, int version)
+        {
+            // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnRemoveEntity)} Entity to remove: {index}, {version}");
+            Entity entity = new Entity
+            {
+                Index = index,
+                Version = version,
+            };
+            if (EntityManager.Exists(entity))
+            {
+                // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnRemoveEntity)} Entity exists: {index}, {version}");
+
+                SelectedEntities selectedEntities = m_SelectedEntitiesBinding.value;
+
+                selectedEntities.Entities.RemoveAll(e => e.Index == entity.Index && e.Version == entity.Version);
+
+                m_SelectedEntitiesBinding.Update(selectedEntities);
+                m_SelectedEntitiesBinding.TriggerUpdate();
+
+                if (m_PrimaryEntityBinding.value.Index == index && m_PrimaryEntityBinding.value.Version == version)
+                {
+                    m_PrimaryEntityBinding.Update(m_SelectedEntitiesBinding.value.Entities[0]);
+                    m_PrimaryEntityBinding.TriggerUpdate();
+                }
+            }
+            else
+            {
+                m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnRemoveEntity)} Entity does not exist: {index}, {version}");
             }
         }
 
@@ -796,34 +894,22 @@ namespace LayeredSelectionDisplay.Systems
                 return;
             }
 
-            // Set to open in Move mode
-            const int desiredMode = 1;
+            m_PendingTransformEntity = entity;
+            m_PendingTransformMode = 1;
+            m_SetPendingTransformMode = true;
+        }
 
-            // Restart EDT so it gets the new entity through its normal initialization path
-            if (m_ToolSystem.activeTool == m_EDTTransformTool)
+        private void OpenSelectionInEDT()
+        {
+            SelectedEntities selectedEntities = m_SelectedEntitiesBinding.value;
+            if (selectedEntities.Entities.Count == 0)
             {
-                m_PendingTransformEntity = entity;
-                m_PendingTransformMode = desiredMode;
-                m_RestartTransformGizmo = true;
-
-                // Cancel any previous deferred mode operation
-                m_SetPendingTransformMode = false;
-
-                // Let EDT perform its normal shutdown so that it can be opened fresh
-                m_ToolSystem.activeTool = m_DefaultToolSystem;
-
+                m_Log?.Warn($"{nameof(OpenSelectionInEDT)}: No entities selected to open in EDT.");
                 return;
             }
 
-            m_ToolSystem.selected = entity;
-
-            if (EDTBridge.OpenTransformGizmo(World, entity))
-            {
-                // EDT will initialize itself during this frame/update.
-                // Apply mode 1 on the following update.
-                m_PendingTransformMode = desiredMode;
-                m_SetPendingTransformMode = true;
-            }
+            m_PendingTransformMode = 0;
+            m_SetPendingTransformMode = true;
         }
 
         /// <summary>

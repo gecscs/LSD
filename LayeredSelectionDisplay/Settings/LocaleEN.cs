@@ -85,6 +85,8 @@ namespace LayeredSelectionDisplay.Settings
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.CollapseButtonToolTip", "Collapse Panel" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemToolTip", "Left click: Open asset info panel, Right click: Open in EDT Transform Tool" },
                 { "LAYERED_SELECTION_DISPLAY_LISTPANEL.ListItemNoEdtToolTip", "Left click: Open asset info panel" },
+                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.OpenSelectionInEDT", "Open curated selection in EDT for group manipulation" },
+                { "LAYERED_SELECTION_DISPLAY_LISTPANEL.SetPrimaryEntityToolTip", "Set as primary entity for group manipulation in EDT" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.Tools", "Tools" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.HidePanelToolTip", "Hide filters panel" },
                 { "LAYERED_SELECTION_DISPLAY_MAINPANEL.ShowPanelToolTip", "Show filters panel" },
