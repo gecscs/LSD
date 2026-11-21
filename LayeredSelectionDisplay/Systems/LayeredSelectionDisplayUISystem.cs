@@ -292,6 +292,7 @@ namespace LayeredSelectionDisplay.Systems
             // These establish binding with UI.
             AddBinding(m_RaycastTarget = new ValueBinding<int>(ModId, "RaycastTarget", (int)RaycastTarget.Vanilla));
             m_IsGame = CreateBinding("IsGame", false);
+            m_IsEditor = CreateBinding("IsEditor", false);
             m_SelectedVanillaFilters = CreateBinding("SelectedVanillaFilters", VanillaFilters.MovingObjects | VanillaFilters.Networks | VanillaFilters.Buildings | VanillaFilters.Trees | VanillaFilters.Plants | VanillaFilters.Decals | VanillaFilters.Props);
 
             // Flag to indicate whether the filters panel is visible in the UI.
@@ -379,6 +380,36 @@ namespace LayeredSelectionDisplay.Systems
         {
             base.OnGameLoadingComplete(purpose, mode);
 
+            // ensure settings are available before any trigger using them
+            m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
+
+            float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
+
+            if (mode == GameMode.Editor)
+            {
+                m_IsEditor.Value = true;
+                m_IsGame.Value = false;
+                m_PanelPosition?.Update(m_settings?.EditorListPanelPosition ?? initialPanelPosition);
+
+                World.GetOrCreateSystemManaged<LayeredSelectionDisplayHighlightSystem>().Enabled = false;
+                World.GetOrCreateSystemManaged<LSDMarqueeSelectionSystem>().Enabled = false;
+                World.GetOrCreateSystemManaged<LSDMarqueeOverlaySystem>().Enabled = false;
+                return;
+            }
+
+            if (mode == GameMode.Game)
+            {
+                m_IsEditor.Value = false;
+                m_IsGame.Value = true;
+                m_PanelPosition?.Update(m_settings?.GameListPanelPosition ?? initialPanelPosition);
+
+                World.GetOrCreateSystemManaged<LayeredSelectionDisplayHighlightSystem>().Enabled = true;
+                World.GetOrCreateSystemManaged<LSDMarqueeSelectionSystem>().Enabled = true;
+                World.GetOrCreateSystemManaged<LSDMarqueeOverlaySystem>().Enabled = true;
+                return;
+            }
+
+
             // m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} before getting Move It tool.");
 
             if (World.GetOrCreateSystemManaged<ToolSystem>().tools.Find(x => x.toolID.Equals(MoveItToolID)) is ToolBaseSystem moveItTool)
@@ -455,26 +486,23 @@ namespace LayeredSelectionDisplay.Systems
                 m_Log.Debug($"{nameof(LayeredSelectionDisplayUISystem)}.{nameof(OnGameLoadingComplete)} {toolBaseSystem.toolID}");
             }
 
-            // ensure settings are available before any trigger using them
-            m_settings = LayeredSelectionDisplayMod.Instance?.Settings;
+            //float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
 
-            float2 initialPanelPosition = new float2(x: 0.5f, y: 0.5f); // Default position if settings are not available
+            //if (mode == GameMode.Game)
+            //{
+            //    m_IsGame.Value = true;
+            //    m_PanelPosition.Update(m_settings?.GameListPanelPosition ?? initialPanelPosition);
+            //    return;
+            //}
 
-            if (mode == GameMode.Game)
-            {
-                m_IsGame.Value = true;
-                m_PanelPosition.Update(m_settings?.GameListPanelPosition ?? initialPanelPosition);
-                return;
-            }
+            //if (mode == GameMode.Editor)
+            //{
+            //    m_IsEditor.Value = true;
+            //    m_PanelPosition.Update(m_settings?.EditorListPanelPosition ?? initialPanelPosition);
+            //    return;
+            //}
 
-            if (mode == GameMode.Editor)
-            {
-                m_IsEditor.Value = true;
-                m_PanelPosition.Update(m_settings?.EditorListPanelPosition ?? initialPanelPosition);
-                return;
-            }
-
-            m_IsGame.Value = false;
+            //m_IsGame.Value = false;
             m_IsMarqueeToolSelected.Update(false);
         }
 
